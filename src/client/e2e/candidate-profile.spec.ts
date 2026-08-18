@@ -14,6 +14,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('TC-CP-E2E-001 แสดงฟิลด์และปุ่มตามข้อกำหนด', async ({ page }) => {
+  await expect(page.locator('link[rel="stylesheet"]')).toHaveAttribute('media', 'all');
   await expect(page.getByTestId('candidate-profile-page')).toBeVisible();
   await expect(page.getByTestId('candidate-profile-form')).toBeVisible();
   await expect(page.getByTestId('first-name-input')).toBeVisible();
