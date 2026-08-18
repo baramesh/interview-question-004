@@ -2,7 +2,7 @@
 doc_id: FR-CP-01
 module: CANDIDATE_PROFILE
 source_refs:
-  - design-new/00-intake/source-register.md
+  - documentation/00-intake/source-register.md
 ---
 
 # FR-CP-01 — สร้างโปรไฟล์ผู้สมัคร

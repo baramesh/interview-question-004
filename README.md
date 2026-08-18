@@ -80,6 +80,6 @@ npm audit
 
 ## Design documentation
 
-Start with [`design-new/README.md`](design-new/README.md). It traces the attached requirements through business flow, PostgreSQL data design, runtime architecture, UI behavior, API contract, security boundary, and test evidence.
+Start with [`documentation/README.md`](documentation/README.md). It traces the attached requirements through business flow, PostgreSQL data design, runtime architecture, UI behavior, API contract, security boundary, and test evidence.
 
-Playwright test cases and the generated latest result are stored in [`design-new/09-qa-and-test/01-candidate-profile`](design-new/09-qa-and-test/01-candidate-profile).
+Playwright and unit test cases, steps, generated results, and screenshots are stored in [`documentation/09-qa-and-test/01-candidate-profile`](documentation/09-qa-and-test/01-candidate-profile).

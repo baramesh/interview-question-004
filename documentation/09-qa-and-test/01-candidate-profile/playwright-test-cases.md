@@ -97,4 +97,4 @@ cd src/client
 npm run test:e2e
 ```
 
-ตัวรายงานจะเขียนผลล่าสุดลง `playwright-test-result.md` โดยตรง รหัสในผลต้องตรงกับรหัสในเอกสารนี้และชื่อ `test()` ใน `candidate-profile.spec.ts`
+ตัวรายงานจะเขียนผลล่าสุดลง `playwright-test-result.md` และบันทึก screenshot ของทุกกรณีใต้ `screenshots/` โดยตรง รหัสในผล ชื่อภาพ และชื่อ `test()` ใน `candidate-profile.spec.ts` ต้องตรงกัน

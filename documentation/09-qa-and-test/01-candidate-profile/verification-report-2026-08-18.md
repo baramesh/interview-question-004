@@ -12,7 +12,7 @@ verified_at: 2026-08-18
 | xUnit                      | ผ่าน 11 รายการ; ผลรายกรณีอยู่ใน `unit-test-result.md`                              |
 | Angular Vitest             | ผ่าน 5 รายการ; ผลรายกรณีอยู่ใน `unit-test-result.md`                               |
 | Playwright Chromium        | ผ่าน 8 รายการ; ผลรายกรณีอยู่ใน `playwright-test-result.md`                         |
-| Angular production build   | ผ่าน ขนาดเริ่มต้น 612.38 kB                                                        |
+| Angular production build   | ผ่าน ขนาดเริ่มต้น 613.11 kB                                                        |
 | NuGet vulnerability scan   | ไม่พบแพ็กเกจที่มีช่องโหว่จากแหล่งปัจจุบัน                                          |
 | npm audit                  | ไม่พบช่องโหว่                                                                      |
 | Docker Compose บน OrbStack | client, api, postgres ทำงานครบ; postgres healthy                                   |
@@ -22,9 +22,10 @@ verified_at: 2026-08-18
 | Desktop visual             | แบบฟอร์มสองคอลัมน์ การแจ้งสำเร็จ และการล้างสถานะถูกต้อง                            |
 | Mobile visual              | viewport 390px ไม่มี horizontal overflow (`scrollWidth = 390`)                     |
 | Browser console            | ไม่มี error หรือ warning หลังบันทึก                                                |
+| OWASP security design      | จัดทำ `SV-CP-02` และ `QAT-CP-08`; ยังไม่ผ่าน production security gate              |
 
 ## หลักฐาน runtime ล่าสุด
 
-- การส่งผ่านหน้าเว็บได้ `save data success · ID: 3`
+- การส่งผ่านหน้าเว็บได้ `save data success` พร้อม ID ที่ PostgreSQL สร้าง
 - หลังบันทึกจำนวน Angular Material invalid field เท่ากับ `0`
 - ชุดบริการยังเปิดไว้ที่ `http://localhost:4204` เพื่อให้ตรวจต่อได้

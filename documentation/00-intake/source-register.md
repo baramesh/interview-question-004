@@ -11,6 +11,7 @@ type: source-register
 | 1     | `/Users/baramesh/Downloads/No4.docx` หัวข้อ `IT-04-1 Create Profile Form` | เอกสารโจทย์แนบ | ฟิลด์บังคับ การตรวจข้อมูล การบันทึก และข้อความสำเร็จ                                                                                |
 | 2     | คำสั่งของมาสเตอร์วันที่ 18 สิงหาคม 2026                                   | คำสั่งส่งมอบ   | C# กับ Angular, PostgreSQL, OrbStack, Tailwind CSS, Angular Material และเอกสารรูปแบบ `design-new`                                   |
 | 3     | คำสั่งของมาสเตอร์วันที่ 18 สิงหาคม 2026 เรื่องข้อมูลหลักและการทดสอบ       | คำสั่งออกแบบ   | เอาคำนำหน้าจากต้นแบบออกจาก `doc_id`, ทำ Occupation เป็นข้อมูลหลัก, ให้หน้าเว็บอ่าน API และส่ง code กลับ รวมถึงจัดทำเอกสาร Unit Test |
+| 4     | คำสั่งของมาสเตอร์วันที่ 18 สิงหาคม 2026 เรื่องเอกสารและ security          | คำสั่งส่งมอบ   | เปลี่ยนโฟลเดอร์เป็น `documentation`, ฝัง screenshot ในผล Playwright, ชี้ตำแหน่ง Test Step และออกแบบ OWASP security baseline         |
 
 ## กฎการตีความ
 

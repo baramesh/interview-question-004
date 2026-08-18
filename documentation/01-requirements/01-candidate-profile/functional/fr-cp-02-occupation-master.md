@@ -2,7 +2,7 @@
 doc_id: FR-CP-02
 module: CANDIDATE_PROFILE
 source_refs:
-  - design-new/00-intake/source-register.md
+  - documentation/00-intake/source-register.md
 ---
 
 # FR-CP-02 — อ่านข้อมูลหลักอาชีพ

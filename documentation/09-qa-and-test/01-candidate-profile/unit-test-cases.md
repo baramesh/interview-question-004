@@ -41,6 +41,32 @@ client_test_source:
 | `UT-UI-CP-004` | `loads occupation master data from the API` | GET ข้อมูลหลักและเก็บ code ในตัวควบคุม | เรียก `/api/occupations` และเลือกค่า `software-engineer` ได้ |
 | `UT-UI-CP-005` | `posts the selected occupation code`        | payload เมื่อบันทึกฟอร์มที่ถูกต้อง     | POST ส่ง `occupationCode = software-engineer`                |
 
+## ขั้นตอน Unit Test
+
+### UT-API-CP-001–UT-API-CP-008 — Request validation
+
+1. Arrange: สร้าง `CreateCandidateProfileRequest` มาตรฐาน แล้วแทนค่าฟิลด์ที่ต้องการทดสอบ
+2. Act: เรียก `Validator.TryValidateObject` พร้อมตรวจ property ทั้งหมด
+3. Assert: กรณีถูกต้องไม่มีผลผิดพลาด; กรณีผิดต้องมี `MemberNames` ตรงฟิลด์เป้าหมาย
+
+### UT-API-CP-009 — Occupation list
+
+1. Arrange: สร้างฐานข้อมูล InMemory ที่มีข้อมูล active สองรายการต่างลำดับและ inactive หนึ่งรายการ
+2. Act: เรียก `OccupationsController.GetAll`
+3. Assert: response มีเฉพาะ active และเรียงตาม `displayOrder`
+
+### UT-API-CP-010–UT-API-CP-011 — Occupation code mapping
+
+1. Arrange: สร้างฐานข้อมูล InMemory แล้วเตรียม request ด้วย code ที่ไม่รู้จักหรือ code ที่มีอยู่
+2. Act: เรียก `CandidateProfilesController.Create`
+3. Assert: code ผิดต้องไม่สร้างระเบียน; code ถูกต้องต้องบันทึก `occupation_id` ที่จับคู่ได้
+
+### UT-UI-CP-001–UT-UI-CP-005 — Angular component
+
+1. Arrange: สร้าง `App` ผ่าน Angular TestBed และใช้ HTTP testing backend
+2. Act: จำลอง `GET /api/occupations`, การกด Save/Clear หรือการส่งฟอร์มตามกรณี
+3. Assert: ตรวจ DOM, สถานะแบบฟอร์ม, HTTP method, URL และ `occupationCode` ใน request body
+
 ## คำสั่ง
 
 ```bash

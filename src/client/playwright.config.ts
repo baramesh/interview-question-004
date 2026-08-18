@@ -18,7 +18,8 @@ export default defineConfig({
       './e2e/support/markdown-reporter.ts',
       {
         outputFile:
-          '../../design-new/09-qa-and-test/01-candidate-profile/playwright-test-result.md',
+          '../../documentation/09-qa-and-test/01-candidate-profile/playwright-test-result.md',
+        screenshotDir: '../../documentation/09-qa-and-test/01-candidate-profile/screenshots',
         baseURL,
       },
     ],
@@ -28,7 +29,7 @@ export default defineConfig({
   use: {
     baseURL,
     trace: 'retain-on-failure',
-    screenshot: 'only-on-failure',
+    screenshot: 'on',
     video: 'retain-on-failure',
   },
   projects: [

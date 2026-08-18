@@ -16,6 +16,7 @@ type: test-strategy
 | End-to-end       | กรอกครบ อัปโหลดรูป บันทึก ได้ ID ข้อความสำเร็จ และฐานข้อมูลมีระเบียน                               |
 | Visual           | จอ desktop และ mobile ไม่มีส่วนล้นหรือองค์ประกอบซ้อน                                               |
 | Dependency       | `npm audit` และ NuGet vulnerability scan ไม่มีรายการระดับที่ต้องแก้                                |
+| Security design  | ตรวจ control matrix และ production gate ตาม `SV-CP-02`; รายการ GAP ติดตามใน `QAT-CP-08`            |
 
 ## Exit condition
 
@@ -23,6 +24,7 @@ type: test-strategy
 - `docker compose ps` แสดงสามบริการทำงานและ PostgreSQL healthy
 - บันทึกผ่าน `http://localhost:4204` ได้จริงและตรวจระเบียนใน PostgreSQL ได้
 - `npm run test:e2e` ผ่านครบและสร้าง `playwright-test-result.md` จากตัวรายงานอัตโนมัติ
+- ผล Playwright ต้องมี screenshot ครบทุก Test Case ID และฝังภาพไว้ในรายงาน
 
 ## คำสั่งทดสอบ Playwright
 
@@ -33,8 +35,14 @@ npm run test:e2e
 
 - นิยามกรณีทดสอบ: `playwright-test-cases.md`
 - ผลรันล่าสุด: `playwright-test-result.md`
+- ภาพหลักฐาน: `screenshots/`
 
 ## เอกสาร Unit Test
 
 - นิยามกรณีทดสอบ: `unit-test-cases.md`
 - ผลรันล่าสุด: `unit-test-result.md`
+
+## Security gate
+
+- แผนตรวจ OWASP: `security-test-plan.md`
+- สถานะปัจจุบัน: ผ่านเฉพาะ local functional test และยังไม่ผ่าน production security gate

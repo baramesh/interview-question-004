@@ -98,7 +98,10 @@ test('TC-CP-E2E-005 บันทึกโปรไฟล์ผ่าน API แ�
     `save data success · ID: ${body.id}`,
   );
   await expect(page.getByTestId('first-name-input')).toHaveValue('');
+  await expect(page.getByRole('radio', { checked: true })).toHaveCount(0);
+  await expect(page.locator('mat-radio-button.mat-mdc-radio-checked')).toHaveCount(0);
   await expect(page.locator('.mat-form-field-invalid')).toHaveCount(0);
+  await page.getByTestId('save-button').focus();
 });
 
 test('TC-CP-E2E-006 API ตอบ ValidationProblemDetails เมื่อ payload ไม่ถูกต้อง', async ({
