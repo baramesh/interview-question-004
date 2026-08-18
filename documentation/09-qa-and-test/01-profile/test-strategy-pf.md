@@ -10,7 +10,7 @@ type: test-strategy
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | Unit ฝั่ง API    | กฎ payload การกรองข้อมูลหลักอาชีพ การปฏิเสธ code ผิด และการจับคู่เป็น foreign key                                        |
 | Unit ฝั่ง Client | หน้าแสดงแบบฟอร์ม ไม่ส่งเมื่อข้อมูลว่าง ล้างสถานะผิด และอ่านข้อมูลหลักผ่าน API                                            |
-| Playwright       | ตรวจเส้นทางผู้ใช้ 9 กรณี รวม avatar และ OWASP 5 กรณี ได้แก่ file size/signature, request/rate limit และ security headers |
+| Playwright       | ตรวจเส้นทางผู้ใช้ 11 กรณี รวม avatar, Success/Error Toast และ OWASP 6 กรณี ได้แก่ file type/size/signature, request/rate limit และ security headers |
 | build            | .NET และ Angular สร้างชิ้นงาน Release สำเร็จ                                                                             |
 | Container        | PostgreSQL healthy, API migration สำเร็จ, Nginx ส่งคำขอ `/api` ได้                                                       |
 | End-to-end       | กรอกครบ อัปโหลดรูป บันทึก ได้ ID ข้อความสำเร็จ และฐานข้อมูลมีระเบียน                                                     |

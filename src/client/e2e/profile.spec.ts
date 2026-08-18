@@ -216,6 +216,37 @@ test('TC-PF-E2E-010 เลือกวันเกิดผ่าน Angular Mat
   await expect(page.getByRole('grid')).toBeVisible();
 });
 
+test('TC-PF-E2E-011 API ล้มเหลวแสดง Error Toast และคงข้อมูล', async ({ page }) => {
+  await page.route('**/api/profiles', async (route) => {
+    if (route.request().method() !== 'POST') {
+      await route.continue();
+      return;
+    }
+    await route.fulfill({
+      status: 500,
+      contentType: 'application/problem+json',
+      body: JSON.stringify({ title: 'Unable to save profile.' }),
+    });
+  });
+  await fillValidForm(page, 'save-error');
+  const responsePromise = page.waitForResponse(
+    (response) =>
+      response.request().method() === 'POST' && response.url().endsWith('/api/profiles'),
+  );
+
+  await page.getByTestId('save-button').click();
+
+  expect((await responsePromise).status()).toBe(500);
+  const toast = page.locator('mat-snack-bar-container');
+  await expect(toast).toContainText('Unable to save profile.');
+  await expect(toast.getByRole('button', { name: 'Close' })).toBeVisible();
+  await expect(page.getByTestId('first-name-input')).toHaveValue('Grace');
+  await expect(page.getByTestId('last-name-input')).toHaveValue('Hopper');
+  await expect(page.getByTestId('email-input')).toHaveValue('grace.hopper.save-error@example.com');
+  await expect(page.getByTestId('occupation-select')).toContainText('Software Engineer');
+  await expect(page.getByTestId('save-button')).toBeEnabled();
+});
+
 async function fillValidForm(page: Page, suffix: string): Promise<void> {
   await page.getByTestId('first-name-input').fill('Grace');
   await page.getByTestId('last-name-input').fill('Hopper');
