@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, ViewChild, computed, signal } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, computed, signal } from '@angular/core';
 import { FormBuilder, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,6 +11,11 @@ import { MatSelectModule } from '@angular/material/select';
 interface SaveResponse {
   id: number;
   message: string;
+}
+
+interface OccupationOption {
+  code: string;
+  name: string;
 }
 
 @Component({
@@ -27,17 +32,13 @@ interface SaveResponse {
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App {
+export class App implements OnInit {
   @ViewChild('profileInput') private profileInput?: ElementRef<HTMLInputElement>;
   @ViewChild(FormGroupDirective) private formDirective?: FormGroupDirective;
 
-  protected readonly occupations = [
-    'Software Engineer',
-    'Business Analyst',
-    'Quality Assurance',
-    'UX/UI Designer',
-    'Project Manager',
-  ];
+  protected readonly occupations = signal<OccupationOption[]>([]);
+  protected readonly isLoadingOccupations = signal(true);
+  protected readonly occupationLoadError = signal<string | null>(null);
   protected readonly isSaving = signal(false);
   protected readonly notification = signal<{ type: 'success' | 'error'; text: string } | null>(
     null,
@@ -59,8 +60,21 @@ export class App {
       phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9](?:[0-9 .()-]{7,18}[0-9])$/)]],
       profileBase64: ['', Validators.required],
       birthDate: ['', [Validators.required, this.birthDateValidator]],
-      occupation: ['', Validators.required],
+      occupationCode: ['', Validators.required],
       sex: ['', Validators.required],
+    });
+  }
+
+  ngOnInit(): void {
+    this.http.get<OccupationOption[]>('/api/occupations').subscribe({
+      next: (occupations) => {
+        this.occupations.set(occupations);
+        this.isLoadingOccupations.set(false);
+      },
+      error: () => {
+        this.occupationLoadError.set('Unable to load occupations. Please refresh the page.');
+        this.isLoadingOccupations.set(false);
+      },
     });
   }
 

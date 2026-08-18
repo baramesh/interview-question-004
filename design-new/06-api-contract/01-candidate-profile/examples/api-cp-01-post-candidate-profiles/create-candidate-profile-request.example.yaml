@@ -7,5 +7,5 @@ body:
   phone: "+66 81 234 5678"
   profileBase64: "data:image/png;base64,iVBORw0KGgo="
   birthDate: "18/08/1990"
-  occupation: Software Engineer
+  occupationCode: software-engineer
   sex: Female

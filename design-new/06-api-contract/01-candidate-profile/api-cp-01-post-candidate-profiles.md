@@ -1,5 +1,5 @@
 ---
-doc_id: DNEW-API-CP-01
+doc_id: API-CP-01
 api_key: cpf-candidate-profile-create
 print_id: API-CP-01
 module: CANDIDATE_PROFILE
@@ -7,39 +7,40 @@ name_th: สร้างโปรไฟล์ผู้สมัคร
 name_en: post-candidate-profiles
 http_method: POST
 route: /api/candidate-profiles
-runtime_view: DNEW-RV-CP-01
-security_view: DNEW-SV-CP-01
+runtime_view: RV-CP-01
+security_view: SV-CP-01
 caller_kind: ui-interaction
 caller_refs:
-  - DNEW-UIX-CP-01
+  - UIX-CP-01
 traces_up:
-  - DNEW-FR-CP-01
-  - DNEW-BR-CP-01
+  - FR-CP-01
+  - BR-CP-01
 data_refs:
-  - DNEW-DDC-CP-01
+  - DDC-CP-01
+  - DDC-CP-02
 traces_down:
-  - DNEW-RV-CP-01
-  - DNEW-UIX-CP-01
-  - DNEW-QAT-CP-01
+  - RV-CP-01
+  - UIX-CP-01
+  - QAT-CP-01
 ---
 
-# DNEW-API-CP-01 — POST /api/candidate-profiles
+# API-CP-01 — POST /api/candidate-profiles
 
 ## สรุป
 
-รับข้อมูลโปรไฟล์จากหน้าสร้างโปรไฟล์ ตรวจ payload แล้วสร้าง `CandidateProfile` หนึ่งระเบียนใน PostgreSQL เมื่อสำเร็จจะคืนรหัส `id` ที่ฐานข้อมูลสร้างพร้อมข้อความ `save data success`
+รับข้อมูลโปรไฟล์จากหน้าสร้างโปรไฟล์ ตรวจ payload จับคู่ `occupationCode` กับข้อมูลหลักอาชีพที่ใช้งาน แล้วสร้าง `CandidateProfile` หนึ่งระเบียนใน PostgreSQL เมื่อสำเร็จจะคืนรหัส `id` ที่ฐานข้อมูลสร้างพร้อมข้อความ `save data success`
 
 ## Caller / Consumer
 
-| caller kind      | caller refs      | trigger                                                          | use                                 |
-| ---------------- | ---------------- | ---------------------------------------------------------------- | ----------------------------------- |
-| `ui-interaction` | `DNEW-UIX-CP-01` | ผู้สมัครกดปุ่ม `save-button` เมื่อแบบฟอร์มผ่านการตรวจฝั่ง Client | สร้างโปรไฟล์และแสดงผลสำเร็จพร้อม ID |
+| caller kind      | caller refs | trigger                                                          | use                                 |
+| ---------------- | ----------- | ---------------------------------------------------------------- | ----------------------------------- |
+| `ui-interaction` | `UIX-CP-01` | ผู้สมัครกดปุ่ม `save-button` เมื่อแบบฟอร์มผ่านการตรวจฝั่ง Client | สร้างโปรไฟล์และแสดงผลสำเร็จพร้อม ID |
 
 ไม่มี scheduler, runtime ภายใน หรือระบบภายนอกเรียก endpoint นี้ในขอบเขต Test 1 ข้อ 4
 
 ## Security
 
-Endpoint เป็น public เฉพาะสภาพแวดล้อมทดสอบในเครื่องตาม `DNEW-SV-CP-01` จึงไม่รับ access token และไม่มี permission guard การนำไปใช้ภายนอกเครื่องหรือ production ต้องเพิ่ม authentication, authorization, HTTPS และการจัดการข้อมูลส่วนบุคคลก่อน
+Endpoint เป็น public เฉพาะสภาพแวดล้อมทดสอบในเครื่องตาม `SV-CP-01` จึงไม่รับ access token และไม่มี permission guard การนำไปใช้ภายนอกเครื่องหรือ production ต้องเพิ่ม authentication, authorization, HTTPS และการจัดการข้อมูลส่วนบุคคลก่อน
 
 ## Request Headers
 
@@ -65,26 +66,20 @@ Endpoint เป็น public เฉพาะสภาพแวดล้อมท
 
 `CreateCandidateProfileRequest`
 
-| field           | type   | required | source        | persistence mapping                                | description                   | rule                                                                                              |
-| --------------- | ------ | -------- | ------------- | -------------------------------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------- |
-| `firstName`     | string | yes      | command input | `CandidateProfile.first_name`                      | ชื่อผู้สมัคร                  | trim ก่อนบันทึก; ความยาว 1–100 ตัวอักษร                                                           |
-| `lastName`      | string | yes      | command input | `CandidateProfile.last_name`                       | นามสกุลผู้สมัคร               | trim ก่อนบันทึก; ความยาว 1–100 ตัวอักษร                                                           |
-| `email`         | string | yes      | command input | `CandidateProfile.email`                           | อีเมลติดต่อ                   | ต้องผ่านรูปแบบอีเมล ยาวไม่เกิน 254 ตัวอักษร; trim และแปลงเป็นอักษรเล็กก่อนบันทึก                  |
-| `phone`         | string | yes      | command input | `CandidateProfile.phone`                           | หมายเลขโทรศัพท์               | trim ก่อนบันทึก; ยาวไม่เกิน 30 ตัวอักษรและต้องตรงรูปแบบโทรศัพท์จาก `BR-CP-01`                     |
-| `profileBase64` | string | yes      | command input | `CandidateProfile.profile_base64`                  | รูปโปรไฟล์แบบ Base64 data URL | MIME ต้องเป็น PNG, JPEG, GIF หรือ WebP; ส่วนข้อมูล Base64 ต้องถอดรหัสได้และมีขนาด 1 byte ถึง 2 MB |
-| `birthDate`     | string | yes      | command input | แปลงเป็น `CandidateProfile.birth_date` ชนิด `date` | วันเกิด                       | ต้องเป็นวันที่อดีตในรูปแบบ `DD/MM/YYYY`                                                           |
-| `occupation`    | string | yes      | command input | `CandidateProfile.occupation`                      | อาชีพ                         | ต้องเป็นค่าหนึ่งในรายการอนุญาตด้านล่าง                                                            |
-| `sex`           | string | yes      | command input | `CandidateProfile.sex`                             | เพศ                           | รับเฉพาะ `Male` หรือ `Female`                                                                     |
+| field            | type   | required | source        | persistence mapping                                               | description                   | rule                                                                                              |
+| ---------------- | ------ | -------- | ------------- | ----------------------------------------------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------- |
+| `firstName`      | string | yes      | command input | `CandidateProfile.first_name`                                     | ชื่อผู้สมัคร                  | trim ก่อนบันทึก; ความยาว 1–100 ตัวอักษร                                                           |
+| `lastName`       | string | yes      | command input | `CandidateProfile.last_name`                                      | นามสกุลผู้สมัคร               | trim ก่อนบันทึก; ความยาว 1–100 ตัวอักษร                                                           |
+| `email`          | string | yes      | command input | `CandidateProfile.email`                                          | อีเมลติดต่อ                   | ต้องผ่านรูปแบบอีเมล ยาวไม่เกิน 254 ตัวอักษร; trim และแปลงเป็นอักษรเล็กก่อนบันทึก                  |
+| `phone`          | string | yes      | command input | `CandidateProfile.phone`                                          | หมายเลขโทรศัพท์               | trim ก่อนบันทึก; ยาวไม่เกิน 30 ตัวอักษรและต้องตรงรูปแบบโทรศัพท์จาก `BR-CP-01`                     |
+| `profileBase64`  | string | yes      | command input | `CandidateProfile.profile_base64`                                 | รูปโปรไฟล์แบบ Base64 data URL | MIME ต้องเป็น PNG, JPEG, GIF หรือ WebP; ส่วนข้อมูล Base64 ต้องถอดรหัสได้และมีขนาด 1 byte ถึง 2 MB |
+| `birthDate`      | string | yes      | command input | แปลงเป็น `CandidateProfile.birth_date` ชนิด `date`                | วันเกิด                       | ต้องเป็นวันที่อดีตในรูปแบบ `DD/MM/YYYY`                                                           |
+| `occupationCode` | string | yes      | command input | ค้น `Occupation.code` แล้วบันทึก `CandidateProfile.occupation_id` | รหัสอาชีพจากข้อมูลหลัก        | trim และแปลงเป็นอักษรเล็ก; ยาวไม่เกิน 50 ตัวอักษร; ต้องตรงกับรายการที่ `is_active = true`         |
+| `sex`            | string | yes      | command input | `CandidateProfile.sex`                                            | เพศ                           | รับเฉพาะ `Male` หรือ `Female`                                                                     |
 
-### Allowed Occupation Values
+### Master Data Dependency
 
-| value               |
-| ------------------- |
-| `Software Engineer` |
-| `Business Analyst`  |
-| `Quality Assurance` |
-| `UX/UI Designer`    |
-| `Project Manager`   |
+Client ต้องอ่าน `code` และ `name` จาก `GET /api/occupations` ตาม `API-CP-02` โดยแสดง `name` ต่อผู้ใช้และส่ง `code` ใน `occupationCode` ห้ามเขียนรายการอาชีพตายตัวไว้ใน Client
 
 ### Server-derived Fields
 
@@ -99,13 +94,14 @@ Endpoint เป็น public เฉพาะสภาพแวดล้อมท
 
 ## Processing Contract
 
-| ลำดับ | contract behavior                                                            | owner           |
-| ----: | ---------------------------------------------------------------------------- | --------------- |
-|     1 | ASP.NET Core binding และ DataAnnotations ตรวจ required, length และ email     | API contract    |
-|     2 | `IValidatableObject` ตรวจ phone, birthDate, occupation, sex และ Base64 image | API contract    |
-|     3 | API trim ชื่อ นามสกุล อีเมล โทรศัพท์ และแปลงอีเมลเป็นอักษรเล็ก               | API contract    |
-|     4 | EF Core เพิ่ม `CandidateProfile` และบันทึกหนึ่ง transaction                  | `DNEW-RV-CP-01` |
-|     5 | PostgreSQL สร้าง `id`; API คืน `201 Created`                                 | API contract    |
+| ลำดับ | contract behavior                                                                 | owner        |
+| ----: | --------------------------------------------------------------------------------- | ------------ |
+|     1 | ASP.NET Core binding และ DataAnnotations ตรวจ required, length และ email          | API contract |
+|     2 | API ค้น `Occupation` ที่ `code` ตรงกับ `occupationCode` และ `is_active = true`    | `DDC-CP-02`  |
+|     3 | `IValidatableObject` ตรวจ phone, birthDate, sex และ Base64 image                  | API contract |
+|     4 | API trim ชื่อ นามสกุล อีเมล โทรศัพท์ และแปลงอีเมลเป็นอักษรเล็ก                    | API contract |
+|     5 | EF Core เพิ่ม `CandidateProfile` พร้อม `occupation_id` และบันทึกหนึ่ง transaction | `RV-CP-01`   |
+|     6 | PostgreSQL สร้าง `id`; API คืน `201 Created`                                      | API contract |
 
 ## Idempotency
 
@@ -128,10 +124,10 @@ Endpoint นี้ไม่มี idempotency key การส่ง payload เ
 
 ## Error Responses
 
-| status                      | meaning                                  | error_code                    | body                       | description                                                                      |
-| --------------------------- | ---------------------------------------- | ----------------------------- | -------------------------- | -------------------------------------------------------------------------------- |
-| `400 Bad Request`           | JSON binding หรือข้อมูลไม่ผ่านกฎ         | ไม่มีใน payload ปัจจุบัน      | `ValidationProblemDetails` | ไม่เขียนระเบียนและคืนรายการข้อความแยกตามฟิลด์                                    |
-| `500 Internal Server Error` | API หรือ PostgreSQL ล้มเหลวโดยไม่คาดหมาย | ไม่มีสัญญาแบบตายตัวในปัจจุบัน | server error response      | ไม่รับรองว่าบันทึกสำเร็จ; Client แสดงข้อความทั่วไปและห้ามแสดงรายละเอียดฐานข้อมูล |
+| status                      | meaning                                                                          | error_code                    | body                       | description                                                                      |
+| --------------------------- | -------------------------------------------------------------------------------- | ----------------------------- | -------------------------- | -------------------------------------------------------------------------------- |
+| `400 Bad Request`           | JSON binding, ข้อมูลไม่ผ่านกฎ หรือ `occupationCode` ไม่ตรงกับข้อมูลหลักที่ใช้งาน | ไม่มีใน payload ปัจจุบัน      | `ValidationProblemDetails` | ไม่เขียนระเบียนและคืนรายการข้อความแยกตามฟิลด์                                    |
+| `500 Internal Server Error` | API หรือ PostgreSQL ล้มเหลวโดยไม่คาดหมาย                                         | ไม่มีสัญญาแบบตายตัวในปัจจุบัน | server error response      | ไม่รับรองว่าบันทึกสำเร็จ; Client แสดงข้อความทั่วไปและห้ามแสดงรายละเอียดฐานข้อมูล |
 
 Endpoint public นี้ไม่มี `401` และ `403`; ไม่มี uniqueness rule จึงไม่มี `409` ในขอบเขตปัจจุบัน
 
@@ -161,10 +157,13 @@ Endpoint public นี้ไม่มี `401` และ `403`; ไม่มี 
 | --------------- | --------------------------------------------------- |
 | `TC-CP-E2E-005` | payload ถูกต้องตอบ `201`, คืน `id` และข้อความสำเร็จ |
 | `TC-CP-E2E-006` | payload ผิดตอบ `400 ValidationProblemDetails`       |
+| `UT-API-CP-010` | code อาชีพไม่ถูกต้องถูกปฏิเสธและไม่สร้างโปรไฟล์     |
+| `UT-API-CP-011` | code อาชีพถูกจับคู่เป็น foreign key ก่อนบันทึก      |
 
 ## Changelog
 
-| version | date       | change                                                                                                                                                                  |
-| ------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2.0.0   | 2026-08-18 | ปรับเป็นรูปแบบ PEA endpoint-per-file เพิ่ม frontmatter, caller, security, schema tables, validation, persistence mapping, idempotency, error contract และ YAML examples |
-| 1.0.0   | 2026-08-18 | สร้าง contract ฉบับย่อเริ่มต้น                                                                                                                                          |
+| version | date       | change                                                                                                                                                              |
+| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.1.0   | 2026-08-18 | เปลี่ยน `occupation` เป็น `occupationCode` และอ้างข้อมูลหลักจาก `API-CP-02`                                                                                         |
+| 2.0.0   | 2026-08-18 | ปรับเป็นรูปแบบ endpoint-per-file เพิ่ม frontmatter, caller, security, schema tables, validation, persistence mapping, idempotency, error contract และ YAML examples |
+| 1.0.0   | 2026-08-18 | สร้าง contract ฉบับย่อเริ่มต้น                                                                                                                                      |

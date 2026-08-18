@@ -1,5 +1,5 @@
 ---
-doc_id: DNEW-QAT-CP-05
+doc_id: QAT-CP-05
 module: CANDIDATE_PROFILE
 type: playwright-test-cases
 test_source: src/client/e2e/candidate-profile.spec.ts
@@ -20,16 +20,17 @@ test_source: src/client/e2e/candidate-profile.spec.ts
 
 ## ชุดข้อมูลมาตรฐาน
 
-| ฟิลด์      | ค่า                                                   |
-| ---------- | ----------------------------------------------------- |
-| First name | `Grace`                                               |
-| Last name  | `Hopper`                                              |
-| Email      | `grace.hopper.{unique}@example.com`                   |
-| Phone      | `+66 89 456 7890`                                     |
-| Profile    | ไฟล์ PNG ขนาด 1x1 พิกเซลที่ชุดทดสอบสร้างในหน่วยความจำ |
-| Birth date | `09/12/1906`                                          |
-| Occupation | `Software Engineer`                                   |
-| Sex        | `Female`                                              |
+| ฟิลด์           | ค่า                                                   |
+| --------------- | ----------------------------------------------------- |
+| First name      | `Grace`                                               |
+| Last name       | `Hopper`                                              |
+| Email           | `grace.hopper.{unique}@example.com`                   |
+| Phone           | `+66 89 456 7890`                                     |
+| Profile         | ไฟล์ PNG ขนาด 1x1 พิกเซลที่ชุดทดสอบสร้างในหน่วยความจำ |
+| Birth date      | `09/12/1906`                                          |
+| Occupation name | `Software Engineer`                                   |
+| Occupation code | `software-engineer`                                   |
+| Sex             | `Female`                                              |
 
 ## กรณีทดสอบ
 
@@ -65,13 +66,13 @@ test_source: src/client/e2e/candidate-profile.spec.ts
 
 - **เป้าหมาย:** พิสูจน์เส้นทาง Angular → Nginx → API → PostgreSQL
 - **ขั้นตอน:** กรอกชุดข้อมูลมาตรฐานโดยใช้อีเมลไม่ซ้ำ กด Save รอคำตอบ API และอ่าน payload
-- **ผลที่คาดหวัง:** ได้ `201 Created`, `id > 0`, `message = save data success`, แสดงข้อความพร้อม ID และฟอร์มกลับสู่สถานะว่างที่ไม่มี invalid field
+- **ผลที่คาดหวัง:** ได้ `201 Created`, payload ส่ง `occupationCode = software-engineer`, `id > 0`, `message = save data success`, แสดงข้อความพร้อม ID และฟอร์มกลับสู่สถานะว่างที่ไม่มี invalid field
 - **สืบย้อน:** `FR-CP-01`, `AC-CP-01`, `API-CP-01`, `RV-CP-01`
 
 ### TC-CP-E2E-006 — API ปฏิเสธ payload ไม่ถูกต้อง
 
 - **เป้าหมาย:** พิสูจน์การตรวจฝั่ง Server และสัญญา `ValidationProblemDetails`
-- **ขั้นตอน:** ส่ง `POST /api/candidate-profiles` ด้วยข้อมูลว่างและค่าที่อยู่นอกรายการอนุญาตผ่าน Playwright request context
+- **ขั้นตอน:** ส่ง `POST /api/candidate-profiles` ด้วยข้อมูลว่างและ `occupationCode` ที่ไม่อยู่ในข้อมูลหลักผ่าน Playwright request context
 - **ผลที่คาดหวัง:** ได้สถานะ `400`; body มี `title`, `status = 400`, `errors` อย่างน้อยหนึ่งรายการ และ `traceId`
 - **สืบย้อน:** `BR-CP-01`, `API-CP-01`
 
@@ -81,6 +82,13 @@ test_source: src/client/e2e/candidate-profile.spec.ts
 - **ขั้นตอน:** ตั้ง viewport เป็น 390x844 โหลดหน้าใหม่ เปรียบเทียบ `scrollWidth` ของเอกสารและ body กับความกว้าง viewport
 - **ผลที่คาดหวัง:** ความกว้างทั้งสองเท่ากับ viewport และฟอร์มยังมองเห็น
 - **สืบย้อน:** `AC-CP-01`, `UIS-CP-01`, `A11Y-CP-01`
+
+### TC-CP-E2E-008 — แสดงข้อมูลหลักอาชีพจาก API ตามลำดับ
+
+- **เป้าหมาย:** พิสูจน์ว่ารายการอาชีพมาจาก API และหน้าเว็บแสดงชื่อครบตามลำดับข้อมูลหลัก
+- **ขั้นตอน:** เรียก `GET /api/occupations` ตรวจ `code`/`name` แล้วเปิด combo box อาชีพบนหน้าเว็บ
+- **ผลที่คาดหวัง:** API ตอบ `200` พร้อม 5 รายการตาม `displayOrder`; ตัวเลือกบนหน้าแสดง `name` ตรงกับ response
+- **สืบย้อน:** `FR-CP-02`, `DDC-CP-02`, `API-CP-02`, `UIX-CP-01`
 
 ## การรันและหลักฐาน
 

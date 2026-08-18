@@ -88,10 +88,12 @@ test('TC-CP-E2E-005 บันทึกโปรไฟล์ผ่าน API แ�
   await page.getByTestId('save-button').click();
   const response = await responsePromise;
   const body = (await response.json()) as { id: number; message: string };
+  const requestBody = response.request().postDataJSON() as { occupationCode: string };
 
   expect(response.status()).toBe(201);
   expect(body.id).toBeGreaterThan(0);
   expect(body.message).toBe('save data success');
+  expect(requestBody.occupationCode).toBe('software-engineer');
   await expect(page.getByTestId('save-notification')).toContainText(
     `save data success · ID: ${body.id}`,
   );
@@ -110,7 +112,7 @@ test('TC-CP-E2E-006 API ตอบ ValidationProblemDetails เมื่อ paylo
       phone: '12345',
       profileBase64: 'invalid',
       birthDate: '2099-01-01',
-      occupation: 'Unknown',
+      occupationCode: 'unknown',
       sex: 'Other',
     },
   });
@@ -141,6 +143,23 @@ test('TC-CP-E2E-007 หน้าจอมือถือไม่มีการ
   expect(dimensions.documentWidth).toBe(dimensions.viewport);
   expect(dimensions.bodyWidth).toBe(dimensions.viewport);
   await expect(page.getByTestId('candidate-profile-form')).toBeVisible();
+});
+
+test('TC-CP-E2E-008 แสดงข้อมูลหลักอาชีพจาก API ตามลำดับ', async ({ page, request }) => {
+  const response = await request.get('/api/occupations');
+  const occupations = (await response.json()) as Array<{ code: string; name: string }>;
+
+  expect(response.status()).toBe(200);
+  expect(occupations).toEqual([
+    { code: 'software-engineer', name: 'Software Engineer' },
+    { code: 'business-analyst', name: 'Business Analyst' },
+    { code: 'quality-assurance', name: 'Quality Assurance' },
+    { code: 'ux-ui-designer', name: 'UX/UI Designer' },
+    { code: 'project-manager', name: 'Project Manager' },
+  ]);
+
+  await page.getByTestId('occupation-select').click();
+  await expect(page.getByRole('option')).toHaveText(occupations.map((item) => item.name));
 });
 
 async function fillValidForm(page: Page, suffix: string): Promise<void> {

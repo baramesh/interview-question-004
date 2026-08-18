@@ -15,7 +15,8 @@ Full-stack implementation of Test 1, Question 4 for `example.com`.
 - Required validation for every field
 - Email and phone format validation
 - Birth date validation in `DD/MM/YYYY` format
-- Mock occupation combo box
+- PostgreSQL-backed occupation master data loaded through `GET /api/occupations`
+- Candidate submission sends `occupationCode`; the API resolves it to an internal foreign key
 - Image profile stored as a Base64 data URL
 - PostgreSQL-generated record ID and success notification
 - Form reset after save and a dedicated Clear action

@@ -1,9 +1,9 @@
 ---
-doc_id: DNEW-A11Y-CP-01
+doc_id: A11Y-CP-01
 module: CANDIDATE_PROFILE
 type: accessibility
 relates_to:
-  - DNEW-UIS-CP-01
+  - UIS-CP-01
 ---
 
 # A11Y-CP-01 — การเข้าถึงหน้าสร้างโปรไฟล์

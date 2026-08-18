@@ -52,7 +52,7 @@ export default class MarkdownReporter implements Reporter {
     const failed = this.results.length - passed;
     const lines = [
       '---',
-      'doc_id: DNEW-QAT-CP-04',
+      'doc_id: QAT-CP-04',
       'module: CANDIDATE_PROFILE',
       'type: playwright-test-result',
       `generated_at: ${new Date().toISOString()}`,

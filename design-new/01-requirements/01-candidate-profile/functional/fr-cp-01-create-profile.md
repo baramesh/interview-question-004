@@ -1,5 +1,5 @@
 ---
-doc_id: DNEW-FR-CP-01
+doc_id: FR-CP-01
 module: CANDIDATE_PROFILE
 source_refs:
   - design-new/00-intake/source-register.md
@@ -13,4 +13,6 @@ source_refs:
 
 ## ข้อมูลที่รับ
 
-`firstName`, `lastName`, `email`, `phone`, `profileBase64`, `birthDate`, `occupation` และ `sex`
+`firstName`, `lastName`, `email`, `phone`, `profileBase64`, `birthDate`, `occupationCode` และ `sex`
+
+ค่า `occupationCode` ต้องมาจากข้อมูลหลักที่ API ส่งให้หน้าเว็บตาม `FR-CP-02`

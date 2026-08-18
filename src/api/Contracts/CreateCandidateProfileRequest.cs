@@ -8,10 +8,6 @@ public sealed partial class CreateCandidateProfileRequest : IValidatableObject
 {
     public const int MaximumImageBytes = 2 * 1024 * 1024;
 
-    public static readonly IReadOnlySet<string> AllowedOccupations = new HashSet<string>(
-        ["Software Engineer", "Business Analyst", "Quality Assurance", "UX/UI Designer", "Project Manager"],
-        StringComparer.Ordinal);
-
     [Required, MaxLength(100)]
     public string FirstName { get; init; } = string.Empty;
 
@@ -30,8 +26,8 @@ public sealed partial class CreateCandidateProfileRequest : IValidatableObject
     [Required]
     public string BirthDate { get; init; } = string.Empty;
 
-    [Required]
-    public string Occupation { get; init; } = string.Empty;
+    [Required, MaxLength(50)]
+    public string OccupationCode { get; init; } = string.Empty;
 
     [Required]
     public string Sex { get; init; } = string.Empty;
@@ -48,11 +44,6 @@ public sealed partial class CreateCandidateProfileRequest : IValidatableObject
         {
             yield return new ValidationResult("Birth date must be a past date in DD/MM/YYYY format.",
                 [nameof(BirthDate)]);
-        }
-
-        if (!AllowedOccupations.Contains(Occupation))
-        {
-            yield return new ValidationResult("Please select a valid occupation.", [nameof(Occupation)]);
         }
 
         if (Sex is not ("Male" or "Female"))

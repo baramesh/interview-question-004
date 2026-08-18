@@ -1,0 +1,14 @@
+status: 200
+headers:
+  Content-Type: application/json
+body:
+  - code: software-engineer
+    name: Software Engineer
+  - code: business-analyst
+    name: Business Analyst
+  - code: quality-assurance
+    name: Quality Assurance
+  - code: ux-ui-designer
+    name: UX/UI Designer
+  - code: project-manager
+    name: Project Manager

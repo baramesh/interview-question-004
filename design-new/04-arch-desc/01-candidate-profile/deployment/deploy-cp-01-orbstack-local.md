@@ -1,18 +1,18 @@
 ---
-doc_id: DNEW-DEP-CP-01
+doc_id: DEP-CP-01
 module: CANDIDATE_PROFILE
 type: deployment-view
 relates_to:
-  - DNEW-AD-CP-01
+  - AD-CP-01
 ---
 
 # DEP-CP-01 — การ deploy ทดสอบบน OrbStack
 
-| บริการ | image/build | พอร์ตเครื่อง | พอร์ต container | ที่เก็บถาวร |
-|---|---|---:|---:|---|
-| client | Angular build + Nginx 1.29 Alpine | 4204 | 80 | ไม่มี |
-| api | .NET 10 Alpine | 5004 | 8080 | ไม่มี |
-| postgres | PostgreSQL 18.6 Alpine | 5434 | 5432 | `postgres_data:/var/lib/postgresql` |
+| บริการ   | image/build                       | พอร์ตเครื่อง | พอร์ต container | ที่เก็บถาวร                         |
+| -------- | --------------------------------- | -----------: | --------------: | ----------------------------------- |
+| client   | Angular build + Nginx 1.29 Alpine |         4204 |              80 | ไม่มี                               |
+| api      | .NET 10 Alpine                    |         5004 |            8080 | ไม่มี                               |
+| postgres | PostgreSQL 18.6 Alpine            |         5434 |            5432 | `postgres_data:/var/lib/postgresql` |
 
 ## การเริ่มและตรวจ
 

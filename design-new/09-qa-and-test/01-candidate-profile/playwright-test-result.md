@@ -1,8 +1,8 @@
 ---
-doc_id: DNEW-QAT-CP-04
+doc_id: QAT-CP-04
 module: CANDIDATE_PROFILE
 type: playwright-test-result
-generated_at: 2026-08-18T06:55:31.887Z
+generated_at: 2026-08-18T07:12:15.060Z
 ---
 
 # QAT-CP-04 — ผลทดสอบ Playwright
@@ -21,19 +21,20 @@ generated_at: 2026-08-18T06:55:31.887Z
 
 | ทั้งหมด | ผ่าน | ไม่ผ่าน | สถานะชุดทดสอบ |
 | ------: | ---: | ------: | ------------- |
-|       7 |    7 |       0 | PASS          |
+|       8 |    8 |       0 | PASS          |
 
 ## ผลรายกรณี
 
 | Test Case ID  | ชื่อกรณีทดสอบ                                             | Project  | ผล   | เวลา (ms) |
 | ------------- | --------------------------------------------------------- | -------- | ---- | --------: |
-| TC-CP-E2E-001 | แสดงฟิลด์และปุ่มตามข้อกำหนด                               | chromium | PASS |       229 |
-| TC-CP-E2E-002 | ปฏิเสธการส่งแบบฟอร์มว่างโดยไม่เรียก API                   | chromium | PASS |       266 |
-| TC-CP-E2E-003 | แสดงข้อผิดพลาดของอีเมล โทรศัพท์ และวันเกิด                | chromium | PASS |       272 |
-| TC-CP-E2E-004 | ปุ่ม Clear ล้างข้อมูลและรูปตัวอย่าง                       | chromium | PASS |       643 |
-| TC-CP-E2E-005 | บันทึกโปรไฟล์ผ่าน API และล้างสถานะแบบฟอร์ม                | chromium | PASS |       514 |
-| TC-CP-E2E-006 | API ตอบ ValidationProblemDetails เมื่อ payload ไม่ถูกต้อง | chromium | PASS |       211 |
-| TC-CP-E2E-007 | หน้าจอมือถือไม่มีการล้นแนวนอน                             | chromium | PASS |       209 |
+| TC-CP-E2E-001 | แสดงฟิลด์และปุ่มตามข้อกำหนด                               | chromium | PASS |       324 |
+| TC-CP-E2E-002 | ปฏิเสธการส่งแบบฟอร์มว่างโดยไม่เรียก API                   | chromium | PASS |       272 |
+| TC-CP-E2E-003 | แสดงข้อผิดพลาดของอีเมล โทรศัพท์ และวันเกิด                | chromium | PASS |       279 |
+| TC-CP-E2E-004 | ปุ่ม Clear ล้างข้อมูลและรูปตัวอย่าง                       | chromium | PASS |       671 |
+| TC-CP-E2E-005 | บันทึกโปรไฟล์ผ่าน API และล้างสถานะแบบฟอร์ม                | chromium | PASS |       684 |
+| TC-CP-E2E-006 | API ตอบ ValidationProblemDetails เมื่อ payload ไม่ถูกต้อง | chromium | PASS |       214 |
+| TC-CP-E2E-007 | หน้าจอมือถือไม่มีการล้นแนวนอน                             | chromium | PASS |       214 |
+| TC-CP-E2E-008 | แสดงข้อมูลหลักอาชีพจาก API ตามลำดับ                       | chromium | PASS |       252 |
 
 ## การสืบย้อน
 

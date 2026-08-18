@@ -1,5 +1,5 @@
 ---
-doc_id: DNEW-QAT-CP-01
+doc_id: QAT-CP-01
 module: CANDIDATE_PROFILE
 type: test-strategy
 ---
@@ -8,8 +8,8 @@ type: test-strategy
 
 | ระดับ            | สิ่งที่พิสูจน์                                                                                     |
 | ---------------- | -------------------------------------------------------------------------------------------------- |
-| Unit ฝั่ง API    | วันเกิด โทรศัพท์ รูป Base64 อาชีพและเพศผ่านกฎ                                                      |
-| Unit ฝั่ง Client | หน้าแสดงแบบฟอร์มและไม่ส่งเมื่อข้อมูลว่าง                                                           |
+| Unit ฝั่ง API    | กฎ payload การกรองข้อมูลหลักอาชีพ การปฏิเสธ code ผิด และการจับคู่เป็น foreign key                  |
+| Unit ฝั่ง Client | หน้าแสดงแบบฟอร์ม ไม่ส่งเมื่อข้อมูลว่าง ล้างสถานะผิด และอ่านข้อมูลหลักผ่าน API                      |
 | Playwright       | ตรวจการแสดงฟอร์ม กฎตรวจข้อมูล Clear การบันทึกจริงผ่าน API สัญญา `400` และหน้าจอมือถือด้วย Chromium |
 | build            | .NET และ Angular สร้างชิ้นงาน Release สำเร็จ                                                       |
 | Container        | PostgreSQL healthy, API migration สำเร็จ, Nginx ส่งคำขอ `/api` ได้                                 |
@@ -33,3 +33,8 @@ npm run test:e2e
 
 - นิยามกรณีทดสอบ: `playwright-test-cases.md`
 - ผลรันล่าสุด: `playwright-test-result.md`
+
+## เอกสาร Unit Test
+
+- นิยามกรณีทดสอบ: `unit-test-cases.md`
+- ผลรันล่าสุด: `unit-test-result.md`

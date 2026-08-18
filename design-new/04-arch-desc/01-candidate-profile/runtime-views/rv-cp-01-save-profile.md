@@ -1,10 +1,10 @@
 ---
-doc_id: DNEW-RV-CP-01
+doc_id: RV-CP-01
 module: CANDIDATE_PROFILE
 type: runtime-view
 relates_to:
-  - DNEW-FLW-CP-01
-  - DNEW-API-CP-01
+  - FLW-CP-01
+  - API-CP-01
 ---
 
 # RV-CP-01 — Runtime การบันทึกโปรไฟล์
@@ -15,11 +15,16 @@ sequenceDiagram
   participant Client as Angular Client
   participant Api as ASP.NET Core API
   participant Db as PostgreSQL
+  Client->>Api: GET /api/occupations
+  Api->>Db: SELECT active occupations ORDER BY display_order
+  Db-->>Api: code, name
+  Api-->>Client: 200 occupation options
   Applicant->>Client: กรอกข้อมูลและกด Save profile
   Client->>Client: ตรวจฟิลด์และรูป
-  Client->>Api: POST /api/candidate-profiles
+  Client->>Api: POST /api/candidate-profiles { occupationCode }
+  Api->>Db: resolve active occupation by code
   Api->>Api: ตรวจ payload และแปลง birthDate
-  Api->>Db: INSERT candidate_profiles
+  Api->>Db: INSERT candidate_profiles { occupation_id }
   Db-->>Api: generated id
   Api-->>Client: 201 { id, message }
   Client-->>Applicant: save data success และล้างแบบฟอร์ม

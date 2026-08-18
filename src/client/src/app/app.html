@@ -147,15 +147,29 @@
         </mat-form-field>
         <mat-form-field appearance="outline"
           ><mat-label>Occupation</mat-label
-          ><mat-select formControlName="occupation" data-testid="occupation-select">
-            @for (occupation of occupations; track occupation) {
-              <mat-option [value]="occupation">{{ occupation }}</mat-option>
+          ><mat-select
+            formControlName="occupationCode"
+            data-testid="occupation-select"
+            [disabled]="isLoadingOccupations()"
+          >
+            @if (isLoadingOccupations()) {
+              <mat-option disabled>Loading occupations...</mat-option>
+            }
+            @for (occupation of occupations(); track occupation.code) {
+              <mat-option [value]="occupation.code">{{ occupation.name }}</mat-option>
             }
           </mat-select>
-          @if (showError('occupation')) {
-            <mat-error data-testid="occupation-error">{{ errorMessage('occupation') }}</mat-error>
+          @if (showError('occupationCode')) {
+            <mat-error data-testid="occupation-error">{{
+              errorMessage('occupationCode')
+            }}</mat-error>
           }
         </mat-form-field>
+        @if (occupationLoadError()) {
+          <p class="-mt-3 text-xs text-red-600" data-testid="occupation-load-error">
+            {{ occupationLoadError() }}
+          </p>
+        }
       </div>
 
       <fieldset class="mb-6 border-0 p-0" data-testid="sex-fieldset">

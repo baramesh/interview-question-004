@@ -41,10 +41,19 @@ public sealed class CreateCandidateProfileRequestTests
         Assert.Contains(results, result => result.MemberNames.Contains(nameof(request.ProfileBase64)));
     }
 
+    [Fact]
+    public void Missing_occupation_code_fails_validation()
+    {
+        var request = CreateValidRequest(occupationCode: string.Empty);
+        var results = Validate(request);
+        Assert.Contains(results, result => result.MemberNames.Contains(nameof(request.OccupationCode)));
+    }
+
     private static CreateCandidateProfileRequest CreateValidRequest(
         string birthDate = "18/08/1990",
         string phone = "+66 81 234 5678",
-        string profileBase64 = "data:image/png;base64,iVBORw0KGgo=") => new()
+        string profileBase64 = "data:image/png;base64,iVBORw0KGgo=",
+        string occupationCode = "software-engineer") => new()
         {
             FirstName = "Ada",
             LastName = "Lovelace",
@@ -52,7 +61,7 @@ public sealed class CreateCandidateProfileRequestTests
             Phone = phone,
             ProfileBase64 = profileBase64,
             BirthDate = birthDate,
-            Occupation = "Software Engineer",
+            OccupationCode = occupationCode,
             Sex = "Female"
         };
 

@@ -9,7 +9,8 @@ public sealed class CandidateProfile
     public required string Phone { get; set; }
     public required string ProfileBase64 { get; set; }
     public DateOnly BirthDate { get; set; }
-    public required string Occupation { get; set; }
+    public int OccupationId { get; set; }
+    public Occupation? Occupation { get; set; }
     public required string Sex { get; set; }
     public DateTime CreatedAtUtc { get; set; }
 }

@@ -2,6 +2,7 @@ using Example.InterviewQuestion004.Api.Contracts;
 using Example.InterviewQuestion004.Api.Data;
 using Example.InterviewQuestion004.Api.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Example.InterviewQuestion004.Api.Controllers;
 
@@ -16,6 +17,15 @@ public sealed class CandidateProfilesController(ApplicationDbContext dbContext) 
         CreateCandidateProfileRequest request,
         CancellationToken cancellationToken)
     {
+        var occupationCode = request.OccupationCode.Trim().ToLowerInvariant();
+        var occupation = await dbContext.Occupations
+            .SingleOrDefaultAsync(item => item.Code == occupationCode && item.IsActive, cancellationToken);
+        if (occupation is null)
+        {
+            ModelState.AddModelError(nameof(request.OccupationCode), "Please select a valid occupation.");
+            return ValidationProblem(ModelState);
+        }
+
         if (!CreateCandidateProfileRequest.TryParseBirthDate(request.BirthDate, out var birthDate))
         {
             return ValidationProblem();
@@ -29,7 +39,7 @@ public sealed class CandidateProfilesController(ApplicationDbContext dbContext) 
             Phone = request.Phone.Trim(),
             ProfileBase64 = request.ProfileBase64,
             BirthDate = birthDate,
-            Occupation = request.Occupation,
+            OccupationId = occupation.Id,
             Sex = request.Sex,
             CreatedAtUtc = DateTime.UtcNow
         };
