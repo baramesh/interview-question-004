@@ -8,7 +8,9 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-interview_user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-local_only_change_me}
     ports:
-      - "${POSTGRES_PORT:-5434}:5432"
+      - "127.0.0.1:${POSTGRES_PORT:-5434}:5432"
+    mem_limit: 512m
+    cpus: 1.0
     volumes:
       - postgres_data:/var/lib/postgresql
     healthcheck:
@@ -27,7 +29,9 @@ services:
       ASPNETCORE_URLS: http://+:8080
       ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=${POSTGRES_DB:-interview_question_004};Username=${POSTGRES_USER:-interview_user};Password=${POSTGRES_PASSWORD:-local_only_change_me}
     ports:
-      - "${API_PORT:-5004}:8080"
+      - "127.0.0.1:${API_PORT:-5004}:8080"
+    mem_limit: 512m
+    cpus: 1.0
     depends_on:
       postgres:
         condition: service_healthy
@@ -38,7 +42,9 @@ services:
       context: .
       dockerfile: src/client/Dockerfile
     ports:
-      - "${WEB_PORT:-4204}:80"
+      - "127.0.0.1:${WEB_PORT:-4204}:80"
+    mem_limit: 128m
+    cpus: 0.5
     depends_on:
       - api
     restart: unless-stopped

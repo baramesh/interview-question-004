@@ -42,6 +42,32 @@ public sealed class CreateCandidateProfileRequestTests
     }
 
     [Fact]
+    public void Mismatched_image_signature_fails_validation()
+    {
+        var jpegBytes = Convert.ToBase64String([0xFF, 0xD8, 0xFF, 0x00]);
+        var request = CreateValidRequest(profileBase64: $"data:image/png;base64,{jpegBytes}");
+
+        var results = Validate(request);
+
+        Assert.Contains(results, result => result.MemberNames.Contains(nameof(request.ProfileBase64)));
+    }
+
+    [Theory]
+    [InlineData("image/png", "iVBORw0KGgo=")]
+    [InlineData("image/jpeg", "/9j/AA==")]
+    [InlineData("image/gif", "R0lGODlh")]
+    [InlineData("image/webp", "UklGRgAAAABXRUJQ")]
+    public void Supported_image_signatures_pass_validation(string mime, string base64)
+    {
+        var request = CreateValidRequest(profileBase64: $"data:{mime};base64,{base64}");
+
+        var results = Validate(request);
+
+        Assert.DoesNotContain(results,
+            result => result.MemberNames.Contains(nameof(request.ProfileBase64)));
+    }
+
+    [Fact]
     public void Missing_occupation_code_fails_validation()
     {
         var request = CreateValidRequest(occupationCode: string.Empty);

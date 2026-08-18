@@ -37,7 +37,7 @@ export default class MarkdownReporter implements Reporter {
   }
 
   onTestEnd(test: TestCase, result: TestResult): void {
-    const match = /^(TC-[A-Z0-9-]+)\s+(.+)$/.exec(test.title);
+    const match = /^((?:TC|SEC)-[A-Z0-9-]+)\s+(.+)$/.exec(test.title);
     const passed = result.status === test.expectedStatus;
     const id = match?.[1] ?? 'UNMAPPED';
     const screenshotAttachment = result.attachments.find(
@@ -129,7 +129,7 @@ export default class MarkdownReporter implements Reporter {
       '## การสืบย้อน',
       '',
       '- รายละเอียดขั้นตอนและผลที่คาดหวัง: `playwright-test-cases.md`',
-      '- รหัสทดสอบในรายงานตรงกับชื่อ `test()` ใน `src/client/e2e/candidate-profile.spec.ts`',
+      '- รหัสทดสอบในรายงานตรงกับชื่อ `test()` ใน `src/client/e2e/candidate-profile.spec.ts` และ `src/client/e2e/security.spec.ts`',
       '',
     );
 

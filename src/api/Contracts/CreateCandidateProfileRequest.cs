@@ -79,6 +79,13 @@ public sealed partial class CreateCandidateProfileRequest : IValidatableObject
                 error = "Profile image must be no larger than 2 MB.";
                 return false;
             }
+
+            var declaredMime = value[5..value.IndexOf(';')].ToLowerInvariant();
+            if (!HasMatchingImageSignature(declaredMime, bytes))
+            {
+                error = "Profile image content does not match its declared MIME type.";
+                return false;
+            }
         }
         catch (FormatException)
         {
@@ -88,6 +95,16 @@ public sealed partial class CreateCandidateProfileRequest : IValidatableObject
 
         return true;
     }
+
+    private static bool HasMatchingImageSignature(string mime, ReadOnlySpan<byte> bytes) => mime switch
+    {
+        "image/png" => bytes.StartsWith(new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A }),
+        "image/jpeg" => bytes.StartsWith(new byte[] { 0xFF, 0xD8, 0xFF }),
+        "image/gif" => bytes.StartsWith("GIF87a"u8) || bytes.StartsWith("GIF89a"u8),
+        "image/webp" => bytes.Length >= 12 && bytes[..4].SequenceEqual("RIFF"u8) &&
+                        bytes.Slice(8, 4).SequenceEqual("WEBP"u8),
+        _ => false
+    };
 
     [GeneratedRegex(@"^\+?[0-9](?:[0-9 .()-]{7,18}[0-9])$")]
     private static partial Regex PhoneRegex();

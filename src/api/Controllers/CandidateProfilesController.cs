@@ -2,6 +2,7 @@ using Example.InterviewQuestion004.Api.Contracts;
 using Example.InterviewQuestion004.Api.Data;
 using Example.InterviewQuestion004.Api.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 
 namespace Example.InterviewQuestion004.Api.Controllers;
@@ -11,6 +12,7 @@ namespace Example.InterviewQuestion004.Api.Controllers;
 public sealed class CandidateProfilesController(ApplicationDbContext dbContext) : ControllerBase
 {
     [HttpPost]
+    [EnableRateLimiting("candidate-write")]
     [ProducesResponseType<CreateCandidateProfileResponse>(StatusCodes.Status201Created)]
     [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<CreateCandidateProfileResponse>> Create(
