@@ -14,7 +14,19 @@ relates_to:
 
 ## คำตัดสิน
 
-ระบบปัจจุบัน **ยังไม่พร้อม production ตาม OWASP** เอกสารนี้ใช้ OWASP ASVS 5.0.0 เป็นกรอบตรวจยืนยัน ใช้ OWASP Top 10:2025 และ OWASP API Security Top 10:2023 สำหรับความเสี่ยง และใช้ OWASP File Upload Cheat Sheet สำหรับรูปโปรไฟล์
+ระบบปัจจุบัน **ผ่านขอบเขตข้อสอบแบบไม่ระบุตัวตน แต่ยังไม่พร้อม production ตาม OWASP** การยืนยันตัวตนและการกำหนดสิทธิ์ไม่อยู่ในข้อกำหนดต้นทาง จึงเป็น `OUT OF SCOPE` สำหรับผลข้อสอบ ไม่ใช่ข้อทดสอบที่ล้มเหลว ส่วนข้อควบคุม OWASP อื่นยังใช้ตามความเสี่ยงของระบบตามปกติ
+
+เอกสารนี้ใช้ OWASP ASVS 5.0.0 เป็นกรอบตรวจยืนยัน ใช้ OWASP Top 10:2025 และ OWASP API Security Top 10:2023 สำหรับความเสี่ยง และใช้ OWASP File Upload Cheat Sheet สำหรับรูปโปรไฟล์
+
+## การจำแนกขอบเขตการควบคุม
+
+| หัวข้อ                                  | ขอบเขตข้อสอบ | คำตัดสินสำหรับ production                                                                                                        |
+| --------------------------------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| การยืนยันตัวตน (Authentication)         | OUT OF SCOPE | ต้องยืนยันรูปแบบการเข้าถึงก่อน: ถ้าเป็นฟอร์มสาธารณะให้ใช้มาตรการป้องกันการใช้งานผิดวัตถุประสงค์; ถ้าต้องผูกผู้ใช้ให้เพิ่มกลไกนี้ |
+| การกำหนดสิทธิ์ (Authorization)          | OUT OF SCOPE | ยังไม่มี endpoint อ่าน แก้ไข หรือลบที่ต้องตรวจเจ้าของข้อมูล; ถ้าเพิ่มความสามารถดังกล่าวต้องกำหนดและบังคับสิทธิ์ที่ API           |
+| การตรวจข้อมูลนำเข้าและป้องกัน Injection | IN SCOPE     | ต้องบังคับที่ API และคงการใช้คำสั่งฐานข้อมูลแบบใส่พารามิเตอร์                                                                    |
+| ไฟล์ รูปภาพ และการใช้ทรัพยากร           | IN SCOPE     | ต้องจำกัดขนาด ตรวจชนิดไฟล์จริง จำกัดอัตราคำขอ และป้องกันการส่งคำขอจำนวนมาก                                                       |
+| ข้อมูลส่วนบุคคล การตั้งค่า และบันทึก    | IN SCOPE     | ต้องป้องกันข้อมูลลับ ลดการเปิดพอร์ต ปิดรายละเอียดข้อผิดพลาด และไม่บันทึกข้อมูลส่วนบุคคลหรือ Base64                               |
 
 ## มาตรฐานอ้างอิง
 
@@ -55,8 +67,8 @@ Browser และ payload เป็น untrusted เสมอ การตรว
 | ---------------------------- | ---------------- | ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | Server-side input validation | ทำแล้วบางส่วน    | DataAnnotations, `IValidatableObject`, code lookup, field length | เพิ่ม request-body limit ก่อนอ่าน Base64 และ security negative tests                                     |
 | Injection prevention         | ทำแล้ว           | EF Core ใช้ query parameter และไม่มี SQL จากผู้ใช้               | คง dependency scan และห้ามต่อ SQL จาก payload                                                            |
-| Authentication               | ยังไม่มี         | โจทย์ทดสอบเปิด public                                            | production ต้องใช้ OIDC/OAuth 2.0 หรือกลไกที่องค์กรอนุมัติ                                               |
-| Authorization                | ยังไม่มี         | ไม่มี role หรือ ownership                                        | production ต้องกำหนดสิทธิสร้าง/อ่าน/ลบโปรไฟล์และบังคับที่ API                                            |
+| Authentication               | OUT OF SCOPE     | ข้อสอบกำหนดเพียงฟอร์มสร้างข้อมูลแบบไม่ระบุตัวตน                  | production ต้องยืนยันว่าจะคงแบบสาธารณะพร้อม anti-abuse หรือเพิ่มกลไกยืนยันตัวตนตามความต้องการจริง        |
+| Authorization                | OUT OF SCOPE     | ไม่มี endpoint อ่าน แก้ไข หรือลบ และไม่มีข้อกำหนด role/ownership | เพิ่มและทดสอบเมื่อมีข้อมูลหรือการกระทำที่ต้องจำกัดสิทธิ์                                                 |
 | File upload validation       | ทำแล้วบางส่วน    | allowlist MIME ใน data URL, Base64 decode, decoded size 2 MB     | ตรวจ magic bytes/file signature; MIME จากผู้ใช้เชื่อถือไม่ได้; พิจารณา decode/re-encode และ malware scan |
 | Resource consumption         | ทำแล้วบางส่วน    | จำกัด decoded image 2 MB                                         | เพิ่ม Nginx/ASP.NET request limit, rate limit, timeout และ container resource limit                      |
 | Data protection              | ยังไม่ครบ        | PostgreSQL volume และ `.env` ไม่เข้า git                         | เพิ่ม TLS, encryption at rest, retention/deletion, backup protection และ masking ใน non-production       |
@@ -77,7 +89,7 @@ Browser และ payload เป็น untrusted เสมอ การตรว
 
 ห้าม deploy ภายนอกเครื่องจนกว่าจะผ่านทุกข้อ:
 
-1. เพิ่ม authentication และ authorization ที่ API พร้อม security test
+1. ยืนยัน access model: ฟอร์มสาธารณะต้องมี anti-abuse, consent และ privacy control; หากต้องผูกตัวตนหรือเจ้าของข้อมูลให้เพิ่ม authentication และ authorization พร้อม security test
 2. เปิด HTTPS เท่านั้น กำหนด security headers และ CORS เฉพาะ origin จริง
 3. ปิดพอร์ต PostgreSQL จากภายนอกและไม่เปิด API ตรงข้าม Nginx
 4. เพิ่ม request-body limit, rate limit, timeout และ container resource limit
@@ -91,6 +103,6 @@ Browser และ payload เป็น untrusted เสมอ การตรว
 ## Residual Risk for Local Test
 
 - ผู้ใช้เครื่องหรือเครือข่ายที่เข้าถึงพอร์ตที่ publish อาจเรียก API หรือ PostgreSQL ได้
-- ผู้โจมตีสามารถส่งคำขอซ้ำเพื่อใช้พื้นที่ฐานข้อมูล เพราะไม่มี rate limit และ authentication
+- ผู้โจมตีสามารถส่งคำขอซ้ำเพื่อใช้พื้นที่ฐานข้อมูล เพราะฟอร์มเปิดสาธารณะและยังไม่มี rate limit หรือกลไกป้องกัน bot
 - byte ของรูปอาจไม่ตรง MIME prefix เพราะยังไม่มี file-signature validation
 - ข้อมูลส่วนบุคคลและรูปถูกเก็บในฐานข้อมูลโดยไม่มี retention workflow
