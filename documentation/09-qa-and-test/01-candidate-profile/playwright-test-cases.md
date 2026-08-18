@@ -36,7 +36,7 @@ test_source: src/client/e2e/candidate-profile.spec.ts
 
 | Test Case ID    | ประเภทหลัก  | ประเภทรอง                   |
 | --------------- | ----------- | --------------------------- |
-| `TC-CP-E2E-001` | Functional  | UI                          |
+| `TC-CP-E2E-001` | Functional  | UI / Information hierarchy  |
 | `TC-CP-E2E-002` | Negative    | Validation                  |
 | `TC-CP-E2E-003` | Negative    | Validation                  |
 | `TC-CP-E2E-004` | Functional  | State management            |
@@ -50,12 +50,12 @@ test_source: src/client/e2e/candidate-profile.spec.ts
 | `SEC-CP-004`    | Security    | Abuse / Rate limit          |
 | `SEC-CP-008`    | Security    | Configuration / Headers     |
 
-### TC-CP-E2E-001 — แสดงฟิลด์และปุ่มตามข้อกำหนด
+### TC-CP-E2E-001 — แสดงหมวดข้อมูล ฟิลด์ และปุ่มตามข้อกำหนด
 
-- **ประเภท:** Functional / UI
-- **เป้าหมาย:** พิสูจน์ว่าฟอร์มมีตัวควบคุมครบตาม `UIS-CP-01`
-- **ขั้นตอน:** เปิดหน้า `/` ตรวจว่า stylesheet loader เปลี่ยน `media` เป็น `all` แล้วตรวจฟอร์ม 8 ฟิลด์ ปุ่มเลือกรูป ปุ่ม Clear และปุ่ม Save
-- **ผลที่คาดหวัง:** stylesheet ทำงานและองค์ประกอบทั้งหมดมองเห็นและระบุตัวได้ด้วย `data-testid`
+- **ประเภท:** Functional / UI / Information hierarchy
+- **เป้าหมาย:** พิสูจน์ว่าฟอร์มแบ่งหมวดและมีตัวควบคุมครบตาม `UIS-CP-01`
+- **ขั้นตอน:** เปิดหน้า `/` ตรวจว่า stylesheet loader เปลี่ยน `media` เป็น `all` ตรวจข้อความ `Fields marked * are required` ตรวจ 4 หมวดข้อมูล ฟอร์ม 8 ฟิลด์ ปุ่ม Upload photo, Clear form และ Save profile
+- **ผลที่คาดหวัง:** stylesheet ทำงาน ข้อความใช้ดอกจันตรงกับ label และทุกหมวด/องค์ประกอบมองเห็นได้ด้วย `data-testid`
 - **สืบย้อน:** `FR-CP-01`, `UIS-CP-01`, `UIX-CP-01`
 
 ### TC-CP-E2E-002 — ปฏิเสธฟอร์มว่างโดยไม่เรียก API

@@ -78,8 +78,27 @@ npm run test:e2e
 npm audit
 ```
 
-## Design documentation
+## วิธีอ่าน documentation
 
-Start with [`documentation/README.md`](documentation/README.md). It traces the attached requirements through business flow, PostgreSQL data design, runtime architecture, UI behavior, API contract, security boundary, and test evidence.
+เริ่มที่ [`documentation/README.md`](documentation/README.md) แล้วอ่านตามลำดับเจ้าของข้อมูล ห้ามเริ่มจากหน้าจอหรือรหัสโปรแกรมเมื่อจะตรวจความถูกต้องของระบบ
 
-Playwright and unit test cases, steps, generated results, and screenshots are stored in [`documentation/09-qa-and-test/01-candidate-profile`](documentation/09-qa-and-test/01-candidate-profile).
+| ลำดับ | พื้นที่เอกสาร      | ใช้ตอบคำถาม                                               |
+| ----: | ------------------ | --------------------------------------------------------- |
+|     1 | `00-intake`        | โจทย์ต้นทางกำหนดอะไรและมีขอบเขตเท่าใด                     |
+|     2 | `01-requirements`  | ระบบต้องทำอะไร กฎข้อมูลและคุณภาพที่ต้องผ่านคืออะไร        |
+|     3 | `02-bu-process`    | ผู้สมัครทำอะไรตามลำดับ                                    |
+|     4 | `03-domain-data`   | ข้อมูลใดถูกเก็บ ความสัมพันธ์และข้อมูลหลักเป็นอย่างไร      |
+|     5 | `04-arch-desc`     | Angular, Nginx, API และ PostgreSQL ทำงานร่วมกันอย่างไร    |
+|     6 | `08-security-arch` | ขอบเขต OWASP และข้อจำกัดของ local/production คืออะไร      |
+|     7 | `06-api-contract`  | request, response, validation และ error มีสัญญาอย่างไร    |
+|     8 | `05-ui-desc`       | หน้าจอแบ่งหมวด แสดงผล โต้ตอบ และรองรับการเข้าถึงอย่างไร   |
+|     9 | `09-qa-and-test`   | Test Case, Test Step, ผลทดสอบ และ screenshot พิสูจน์ข้อใด |
+
+ทางลัดตามบทบาท:
+
+- ผู้ตรวจโจทย์: `00-intake → 01-requirements → 09-qa-and-test`
+- ผู้ตรวจ API/ฐานข้อมูล: `03-domain-data → 04-arch-desc → 06-api-contract → 09-qa-and-test`
+- ผู้ตรวจหน้าเว็บ: `05-ui-desc → 06-api-contract → 09-qa-and-test`
+- ผู้ตรวจความมั่นคงปลอดภัย: `01-requirements/quality-attributes → 08-security-arch → 09-qa-and-test/security-test-plan.md`
+
+ผล Playwright และภาพล่าสุดอยู่ที่ [`documentation/09-qa-and-test/01-candidate-profile/playwright-test-result.md`](documentation/09-qa-and-test/01-candidate-profile/playwright-test-result.md) ส่วนผล Unit Test อยู่ที่ [`unit-test-result.md`](documentation/09-qa-and-test/01-candidate-profile/unit-test-result.md)
