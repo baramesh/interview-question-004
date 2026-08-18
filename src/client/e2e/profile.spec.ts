@@ -45,6 +45,27 @@ test('TC-PF-E2E-001 แสดงหมวดข้อมูล ฟิลด์ �
   await expect(page.getByTestId('save-button')).toBeVisible();
 });
 
+test('TC-PF-CONTENT-001 ไม่แสดงรหัสข้อสอบ ข้อมูลทดสอบ หรือข้อความซ้ำบน production', async ({
+  page,
+}) => {
+  const visibleText = await page.locator('body').innerText();
+  const forbiddenText = [
+    'Interview Question 004',
+    'Profile management',
+    'PERSONAL PROFILE',
+    'Identity and demographic information.',
+    'Contact information associated with this profile.',
+    'Your current professional discipline.',
+    'e.g. Baramesh',
+    'PF',
+  ];
+
+  for (const value of forbiddenText) expect(visibleText).not.toContain(value);
+  await expect(page.locator('header').getByText('Example.com', { exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Profile', exact: true })).toBeVisible();
+  await expect(page.getByTestId('profile-placeholder-icon')).toBeVisible();
+});
+
 test('TC-PF-E2E-002 ปฏิเสธการส่งแบบฟอร์มว่างโดยไม่เรียก API', async ({ page }) => {
   let createRequests = 0;
   page.on('request', (request) => {

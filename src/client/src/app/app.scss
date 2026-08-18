@@ -85,6 +85,15 @@
   box-shadow: 0 0 0 2px #34d399;
 }
 
+.avatar-preview mat-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  font-family: 'Material Icons';
+  font-size: 2.5rem;
+  font-feature-settings: 'liga';
+  line-height: 1;
+}
+
 mat-form-field {
   width: 100%;
 }

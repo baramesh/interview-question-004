@@ -34,25 +34,26 @@ test_source: src/client/e2e/profile.spec.ts
 
 ## กรณีทดสอบ
 
-| Test Case ID    | ประเภทหลัก  | ประเภทรอง                    |
-| --------------- | ----------- | ---------------------------- |
-| `TC-PF-E2E-001` | Functional  | UI / Information hierarchy   |
-| `TC-PF-E2E-002` | Negative    | Validation                   |
-| `TC-PF-E2E-003` | Negative    | Validation                   |
-| `TC-PF-E2E-004` | Functional  | State management             |
-| `TC-PF-E2E-005` | Positive    | End-to-end / Persistence     |
-| `TC-PF-E2E-006` | Negative    | API contract                 |
-| `TC-PF-E2E-007` | Responsive  | Visual                       |
-| `TC-PF-E2E-008` | Master data | Integration / Display order  |
-| `TC-PF-E2E-009` | Functional  | Profile image / Visual       |
-| `TC-PF-E2E-010` | Functional  | Datepicker / Library control |
-| `TC-PF-E2E-011` | Negative    | UI / Error recovery          |
-| `SEC-PF-001`    | Security    | Negative / File size         |
-| `SEC-PF-002`    | Security    | Negative / File signature    |
-| `SEC-PF-003`    | Security    | Negative / Request limit     |
-| `SEC-PF-004`    | Security    | Abuse / Rate limit           |
-| `SEC-PF-008`    | Security    | Configuration / Headers      |
-| `SEC-PF-011`    | Security    | Negative / File type         |
+| Test Case ID        | ประเภทหลัก  | ประเภทรอง                    |
+| ------------------- | ----------- | ---------------------------- |
+| `TC-PF-E2E-001`     | Functional  | UI / Information hierarchy   |
+| `TC-PF-E2E-002`     | Negative    | Validation                   |
+| `TC-PF-E2E-003`     | Negative    | Validation                   |
+| `TC-PF-E2E-004`     | Functional  | State management             |
+| `TC-PF-E2E-005`     | Positive    | End-to-end / Persistence     |
+| `TC-PF-E2E-006`     | Negative    | API contract                 |
+| `TC-PF-E2E-007`     | Responsive  | Visual                       |
+| `TC-PF-E2E-008`     | Master data | Integration / Display order  |
+| `TC-PF-E2E-009`     | Functional  | Profile image / Visual       |
+| `TC-PF-E2E-010`     | Functional  | Datepicker / Library control |
+| `TC-PF-E2E-011`     | Negative    | UI / Error recovery          |
+| `TC-PF-CONTENT-001` | Content     | Production copy              |
+| `SEC-PF-001`        | Security    | Negative / File size         |
+| `SEC-PF-002`        | Security    | Negative / File signature    |
+| `SEC-PF-003`        | Security    | Negative / Request limit     |
+| `SEC-PF-004`        | Security    | Abuse / Rate limit           |
+| `SEC-PF-008`        | Security    | Configuration / Headers      |
+| `SEC-PF-011`        | Security    | Negative / File type         |
 
 ### TC-PF-E2E-001 — แสดงหมวดข้อมูล ฟิลด์ และปุ่มตามข้อกำหนด
 
@@ -141,6 +142,14 @@ test_source: src/client/e2e/profile.spec.ts
 - **ขั้นตอน:** จำลอง `POST /api/profiles` ให้ตอบ `500` แบบ Problem Details กรอกชุดข้อมูลมาตรฐาน กด Save แล้วตรวจ Toast, ค่าในฟอร์ม และปุ่ม Save
 - **ผลที่คาดหวัง:** Toast แสดง `Unable to save profile.` พร้อมปุ่ม `Close`, คงข้อมูลทุกฟิลด์ และปุ่ม Save กลับมาใช้ได้
 - **สืบย้อน:** `AC-PF-01`, `UIX-PF-01`
+
+### TC-PF-CONTENT-001 — ไม่แสดงรหัสข้อสอบ ข้อมูลทดสอบ หรือข้อความซ้ำบน production
+
+- **ประเภท:** Content / Production copy
+- **เป้าหมาย:** พิสูจน์ว่าหน้าจอแสดงเฉพาะข้อความที่ช่วยให้ผู้ใช้เข้าใจหรือทำงานต่อได้
+- **ขั้นตอน:** เปิดหน้า `/` อ่านข้อความที่มองเห็นทั้งหมด ตรวจชื่อระบบ หัวข้อหน้า และไอคอนรูปโปรไฟล์เริ่มต้น
+- **ผลที่คาดหวัง:** แสดง `Example.com`, `Profile` และไอคอน `person_outline`; ไม่แสดง `Interview Question 004`, `Profile management`, `PERSONAL PROFILE`, `e.g. Baramesh`, `PF` หรือคำอธิบายที่เพียงทวนชื่อหมวด
+- **สืบย้อน:** `AC-PF-01`, `UIS-PF-01`
 
 ### SEC-PF-001 — ปฏิเสธรูปที่ถอดรหัสแล้วเกิน 2 MiB
 

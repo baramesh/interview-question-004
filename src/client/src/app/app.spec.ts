@@ -46,6 +46,10 @@ describe('App', () => {
     expect(element.querySelector('[data-testid="required-fields-note"]')?.textContent).toContain(
       'Fields marked * are required',
     );
+    expect(element.textContent).not.toContain('Interview Question 004');
+    expect(element.textContent).not.toContain('Profile management');
+    expect(element.textContent).not.toContain('e.g. Baramesh');
+    expect(element.querySelector('[data-testid="profile-placeholder-icon"]')).not.toBeNull();
     expect(element.querySelectorAll('input').length).toBeGreaterThanOrEqual(6);
   });
 

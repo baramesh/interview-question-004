@@ -17,7 +17,7 @@ relates_to:
 
 | ลำดับ | ส่วน                 | เนื้อหา                                                                     | Test ID                        |
 | ----: | -------------------- | --------------------------------------------------------------------------- | ------------------------------ |
-|     1 | Page header          | ชื่อระบบ ชื่อหน้า คำอธิบาย และคำชี้แจง `Fields marked * are required`       | `profile-page`                 |
+|     1 | Page header          | ชื่อระบบ ชื่อหน้า และคำชี้แจง `Fields marked * are required`                | `profile-page`                 |
 |     2 | Profile photo        | avatar วงกลม รูปตัวอย่าง ชื่อไฟล์ ข้อกำหนดไฟล์ ปุ่ม Upload photo และ Remove | `profile-photo-section`        |
 |     3 | Personal details     | ชื่อ นามสกุล วันเกิดผ่าน Angular Material Datepicker และเพศ                 | `personal-details-section`     |
 |     4 | Contact details      | อีเมลและโทรศัพท์                                                            | `contact-details-section`      |
@@ -29,9 +29,10 @@ relates_to:
 
 - ใช้ Google Sans น้ำหนัก 400, 500, 600 และ 700 โดยรวมไฟล์ฟอนต์ไว้ใน Angular build ผ่าน Fontsource
 - พื้นหลังใช้สีเทาอมเขียวอ่อน เนื้อหาอยู่ใน card สีขาว เส้นแบ่งหมวดและพื้นที่ว่างทำหน้าที่สร้างลำดับชั้น
-- avatar ขนาดไม่น้อยกว่า 88px แสดงรูปแบบ `object-cover`; เมื่อยังไม่มีรูปใช้ตัวอักษรย่อ `PF`
+- avatar ขนาดไม่น้อยกว่า 88px แสดงรูปแบบ `object-cover`; เมื่อยังไม่มีรูปใช้ไอคอน `person_outline` จาก Angular Material และไม่ใช้ตัวอักษรย่อภายใน
 - ช่องอัปโหลดรูปอนุญาตเฉพาะ `image/png` และ `image/jpeg`; แสดงข้อความ `PNG or JPEG. Maximum file size 2 MB.`
-- แต่ละหมวดมีหมายเลข ชื่อหมวด และคำอธิบายสั้น โดย field อยู่ด้านขวาบน desktop และเรียงลงบน mobile
+- แต่ละหมวดมีหมายเลขและชื่อหมวด; แสดงคำอธิบายเฉพาะเมื่อช่วยให้ผู้ใช้กรอกได้ถูกต้อง โดย field อยู่ด้านขวาบน desktop และเรียงลงบน mobile
+- หน้า production แสดง `Example.com` และ `Profile` เพียงระดับละหนึ่งตำแหน่ง ไม่แสดง `Interview Question 004`, ชื่อบุคคลจากข้อมูลทดสอบ, ป้าย `Profile management`, ป้าย `Personal profile` หรือคำอธิบายที่เพียงทวนชื่อหมวด
 - ใช้สีเขียวกับสิ่งที่กดได้หรือสถานะสำเร็จ สีแดงใช้เฉพาะข้อผิดพลาดและเครื่องหมายฟิลด์บังคับ
 
 ## Toast ผลการบันทึก

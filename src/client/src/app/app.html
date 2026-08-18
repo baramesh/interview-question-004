@@ -8,14 +8,9 @@
         E
       </div>
       <div>
-        <p class="m-0 text-sm font-semibold text-slate-950">Example.com Profile</p>
-        <p class="m-0 text-xs text-slate-500">Profile management</p>
+        <p class="m-0 text-sm font-semibold text-slate-950">Example.com</p>
       </div>
     </div>
-    <span
-      class="hidden rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800 sm:block"
-      >Interview Question 004</span
-    >
   </div>
 </header>
 
@@ -24,10 +19,7 @@
     class="form-shell overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl"
   >
     <header class="border-b border-slate-200 px-6 py-7 md:px-10 md:py-9">
-      <p class="m-0 text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">
-        Personal profile
-      </p>
-      <div class="mt-2 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+      <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
           <h1
             id="page-title"
@@ -35,9 +27,6 @@
           >
             Profile
           </h1>
-          <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
-            Provide accurate information for your profile. Review each section before saving.
-          </p>
         </div>
         <p class="m-0 shrink-0 text-sm text-slate-600" data-testid="required-fields-note">
           Fields marked <span class="required-marker" aria-hidden="true">*</span> are required
@@ -73,7 +62,9 @@
             @if (imagePreview(); as preview) {
               <img class="size-full object-cover" [src]="preview" alt="Selected profile preview" />
             } @else {
-              <span aria-hidden="true">PF</span>
+              <mat-icon aria-hidden="true" data-testid="profile-placeholder-icon"
+                >person_outline</mat-icon
+              >
             }
           </div>
           <div class="min-w-0 flex-1">
@@ -128,7 +119,6 @@
           <span class="section-index">02</span>
           <div>
             <h2 id="personal-details-heading">Personal details</h2>
-            <p>Identity and demographic information.</p>
           </div>
         </div>
         <div class="section-fields grid gap-x-5 sm:grid-cols-2">
@@ -140,7 +130,6 @@
               type="text"
               formControlName="firstName"
               autocomplete="given-name"
-              placeholder="e.g. Baramesh"
               data-testid="first-name-input"
             />
             @if (showError('firstName')) {
@@ -215,7 +204,6 @@
           <span class="section-index">03</span>
           <div>
             <h2 id="contact-details-heading">Contact details</h2>
-            <p>Contact information associated with this profile.</p>
           </div>
         </div>
         <div class="section-fields grid gap-x-5 sm:grid-cols-2">
@@ -261,7 +249,6 @@
           <span class="section-index">04</span>
           <div>
             <h2 id="professional-details-heading">Professional details</h2>
-            <p>Your current professional discipline.</p>
           </div>
         </div>
         <div class="section-fields">
@@ -318,6 +305,4 @@
   </article>
 </main>
 
-<footer class="pb-8 text-center text-xs text-slate-500">
-  © {{ currentYear }} Example.com · Profile management
-</footer>
+<footer class="pb-8 text-center text-xs text-slate-500">© {{ currentYear }} Example.com</footer>
