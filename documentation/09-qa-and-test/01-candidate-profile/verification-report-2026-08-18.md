@@ -7,22 +7,23 @@ verified_at: 2026-08-18
 
 # QAT-CP-03 — รายงานผลตรวจวันที่ 18 สิงหาคม 2026
 
-| รายการ                     | ผล                                                                                 |
-| -------------------------- | ---------------------------------------------------------------------------------- |
-| xUnit                      | ผ่าน 11 รายการ; ผลรายกรณีอยู่ใน `unit-test-result.md`                              |
-| Angular Vitest             | ผ่าน 5 รายการ; ผลรายกรณีอยู่ใน `unit-test-result.md`                               |
-| Playwright Chromium        | ผ่าน 8 รายการ; ผลรายกรณีอยู่ใน `playwright-test-result.md`                         |
-| Angular production build   | ผ่าน ขนาดเริ่มต้น 613.11 kB                                                        |
-| NuGet vulnerability scan   | ไม่พบแพ็กเกจที่มีช่องโหว่จากแหล่งปัจจุบัน                                          |
-| npm audit                  | ไม่พบช่องโหว่                                                                      |
-| Docker Compose บน OrbStack | client, api, postgres ทำงานครบ; postgres healthy                                   |
-| API health                 | `GET http://localhost:5004/health` ตอบ `healthy`                                   |
-| End-to-end ผ่าน Nginx      | `POST http://localhost:4204/api/candidate-profiles` ตอบ `201` และข้อความสำเร็จ     |
-| PostgreSQL                 | migration ข้อมูลหลักสำเร็จ ข้อมูลเดิมถูกจับคู่ `occupation_id` และมีอาชีพ 5 รายการ |
-| Desktop visual             | แบบฟอร์มสองคอลัมน์ การแจ้งสำเร็จ และการล้างสถานะถูกต้อง                            |
-| Mobile visual              | viewport 390px ไม่มี horizontal overflow (`scrollWidth = 390`)                     |
-| Browser console            | ไม่มี error หรือ warning หลังบันทึก                                                |
-| OWASP security design      | จัดทำ `SV-CP-02` และ `QAT-CP-08`; ยังไม่ผ่าน production security gate              |
+| รายการ                        | ผล                                                                                                   |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------- |
+| xUnit                         | ผ่าน 16 รายการ; ผลรายกรณีอยู่ใน `unit-test-result.md`                                                |
+| Angular Vitest                | ผ่าน 5 รายการ; ผลรายกรณีอยู่ใน `unit-test-result.md`                                                 |
+| Playwright Chromium           | ผ่าน 13 รายการ รวม security 5 รายการ; มี screenshot ครบใน `playwright-test-result.md`                |
+| Angular production build      | ผ่าน ขนาดเริ่มต้น 613.11 kB                                                                          |
+| NuGet vulnerability scan      | ไม่พบแพ็กเกจที่มีช่องโหว่จากแหล่งปัจจุบัน                                                            |
+| npm audit                     | ไม่พบช่องโหว่                                                                                        |
+| Docker Compose บน OrbStack    | client, api, postgres ทำงานครบ; postgres healthy                                                     |
+| API health                    | `GET http://localhost:5004/health` ตอบ `healthy`                                                     |
+| End-to-end ผ่าน Nginx         | `POST http://localhost:4204/api/candidate-profiles` ตอบ `201` และข้อความสำเร็จ                       |
+| PostgreSQL                    | migration ข้อมูลหลักสำเร็จ ข้อมูลเดิมถูกจับคู่ `occupation_id` และมีอาชีพ 5 รายการ                   |
+| Desktop visual                | แบบฟอร์มสองคอลัมน์ การแจ้งสำเร็จ และการล้างสถานะถูกต้อง                                              |
+| Mobile visual                 | viewport 390px ไม่มี horizontal overflow (`scrollWidth = 390`)                                       |
+| Browser console               | ไม่มี error หรือ warning หลังบันทึก                                                                  |
+| OWASP security implementation | file signature, request limit, rate limit, security headers และ loopback ผ่านการตรวจ                 |
+| OWASP production gate         | ยังไม่ผ่าน เพราะ TLS, การจัดเก็บรูป, retention, secret manager และ automated scan อยู่นอก local test |
 
 ## หลักฐาน runtime ล่าสุด
 

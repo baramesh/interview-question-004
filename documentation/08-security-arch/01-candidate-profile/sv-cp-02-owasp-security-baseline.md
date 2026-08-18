@@ -64,27 +64,27 @@ Browser และ payload เป็น untrusted เสมอ การตรว
 
 ## OWASP Control Matrix
 
-| Control area                 | สถานะ                | หลักฐานปัจจุบัน                                                  | ช่องว่าง/สิ่งที่ต้องทำ                                                                                                     |
-| ---------------------------- | -------------------- | ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| Server-side input validation | รอเขียนรหัสตามเอกสาร | DataAnnotations, `IValidatableObject`, code lookup, field length | เพิ่ม request-body limit ก่อนอ่าน Base64 และ security negative tests                                                       |
-| Injection prevention         | ทำแล้ว               | EF Core ใช้ query parameter และไม่มี SQL จากผู้ใช้               | คง dependency scan และห้ามต่อ SQL จาก payload                                                                              |
-| Authentication               | OUT OF SCOPE         | ข้อสอบกำหนดเพียงฟอร์มสร้างข้อมูลแบบไม่ระบุตัวตน                  | production ต้องยืนยันว่าจะคงแบบสาธารณะพร้อม anti-abuse หรือเพิ่มกลไกยืนยันตัวตนตามความต้องการจริง                          |
-| Authorization                | OUT OF SCOPE         | ไม่มี endpoint อ่าน แก้ไข หรือลบ และไม่มีข้อกำหนด role/ownership | เพิ่มและทดสอบเมื่อมีข้อมูลหรือการกระทำที่ต้องจำกัดสิทธิ์                                                                   |
-| File upload validation       | รอเขียนรหัสตามเอกสาร | allowlist MIME ใน data URL, Base64 decode, decoded size 2 MB     | เพิ่ม file signature ตาม `QAR-CP-01`; production ยังต้องพิจารณา decode/re-encode และ malware scan                          |
-| Resource consumption         | รอเขียนรหัสตามเอกสาร | จำกัด decoded image 2 MB                                         | เพิ่มเพดาน request 3 MiB และ rate limit 20 คำขอต่อ IP ต่อนาทีตาม `QAR-CP-01`                                               |
-| Data protection              | ยังไม่ครบ            | PostgreSQL volume และ `.env` ไม่เข้า git                         | เพิ่ม TLS, encryption at rest, retention/deletion, backup protection และ masking ใน non-production                         |
-| Secret management            | local only           | `.env` ถูก ignore; มีค่าทดสอบใน compose                          | production ใช้ secret manager และหมุน credential; ห้ามค่าตั้งต้นที่เดาได้                                                  |
-| Error handling               | รอเขียนรหัสตามเอกสาร | validation ใช้ ProblemDetails; Client ไม่แสดง SQL                | เพิ่ม Problem Details ของ `500` พร้อม `traceId` และไม่ส่ง stack trace                                                      |
-| Security logging             | ยังไม่ครบ            | ไม่บันทึก request body โดยตั้งใจ                                 | บันทึกเหตุการณ์ปฏิเสธ, rate-limit และ access-control โดยไม่เก็บ PII/Base64                                                 |
-| Browser security             | รอเขียนรหัสตามเอกสาร | same-origin ผ่าน Nginx และ CORS ระบุ local origins               | เพิ่ม CSP, `X-Content-Type-Options`, frame protection, Referrer Policy และ Permissions Policy; production ยังต้องใช้ HTTPS |
-| Network exposure             | รอเขียนรหัสตามเอกสาร | Docker network แยก service                                       | ผูกพอร์ตทดสอบกับ loopback; production ห้าม publish PostgreSQL และห้ามเปิด API โดยตรง                                       |
-| Dependency assurance         | ทำแล้วแบบ manual     | `npm audit` และ NuGet vulnerability scan ผ่าน                    | ย้ายเป็น CI/CD gate พร้อม lockfile และรอบอัปเดต dependency                                                                 |
+| Control area                 | สถานะ                 | หลักฐานปัจจุบัน                                                    | ช่องว่าง/สิ่งที่ต้องทำ                                                                             |
+| ---------------------------- | --------------------- | ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| Server-side input validation | ทำแล้วและทดสอบผ่าน    | DataAnnotations, `IValidatableObject`, code lookup, request limit  | คง negative tests และทบทวนเพดานตามปริมาณใช้งานจริง                                                 |
+| Injection prevention         | ทำแล้ว                | EF Core ใช้ query parameter และไม่มี SQL จากผู้ใช้                 | คง dependency scan และห้ามต่อ SQL จาก payload                                                      |
+| Authentication               | OUT OF SCOPE          | ข้อสอบกำหนดเพียงฟอร์มสร้างข้อมูลแบบไม่ระบุตัวตน                    | production ต้องยืนยันว่าจะคงแบบสาธารณะพร้อม anti-abuse หรือเพิ่มกลไกยืนยันตัวตนตามความต้องการจริง  |
+| Authorization                | OUT OF SCOPE          | ไม่มี endpoint อ่าน แก้ไข หรือลบ และไม่มีข้อกำหนด role/ownership   | เพิ่มและทดสอบเมื่อมีข้อมูลหรือการกระทำที่ต้องจำกัดสิทธิ์                                           |
+| File upload validation       | ทำแล้วตามขอบเขตข้อสอบ | allowlist MIME, Base64 decode, decoded size 2 MiB, file signature  | production ยังต้องพิจารณา decode/re-encode, object storage และ malware scan                        |
+| Resource consumption         | ทำแล้วตามขอบเขตข้อสอบ | Nginx/Kestrel 3 MiB, 20 POST/IP/minute, container CPU/memory limit | production ต้องปรับ limit, timeout และขนาดทรัพยากรจากข้อมูลใช้งานจริง                              |
+| Data protection              | ยังไม่ครบ             | PostgreSQL volume และ `.env` ไม่เข้า git                           | เพิ่ม TLS, encryption at rest, retention/deletion, backup protection และ masking ใน non-production |
+| Secret management            | local only            | `.env` ถูก ignore; มีค่าทดสอบใน compose                            | production ใช้ secret manager และหมุน credential; ห้ามค่าตั้งต้นที่เดาได้                          |
+| Error handling               | ทำแล้ว; รอทดสอบ 500   | Problem Details พร้อม `traceId`; Client ไม่แสดง SQL                | เพิ่ม controlled failure test ใน non-Development profile                                           |
+| Security logging             | ทำแล้วบางส่วน         | ไม่บันทึก request body; rate-limit log มี method, path, traceId    | เพิ่มเหตุการณ์ปฏิเสธอื่นโดยไม่เก็บ PII/Base64                                                      |
+| Browser security             | ทำแล้วสำหรับ local    | CSP, MIME sniffing, frame, referrer และ permissions headers ผ่าน   | production ต้องใช้ HTTPS และทบทวน CSP ตามปลายทางจริง                                               |
+| Network exposure             | ทำแล้วสำหรับ local    | ทุกพอร์ต compose ผูก `127.0.0.1`; Docker network แยก service       | production ห้าม publish PostgreSQL และห้ามเปิด API ตรงข้าม Nginx                                   |
+| Dependency assurance         | ทำแล้วแบบ manual      | `npm audit` และ NuGet vulnerability scan ผ่าน                      | ย้ายเป็น CI/CD gate พร้อม lockfile และรอบอัปเดต dependency                                         |
 
 ## File Upload Decision
 
 รุ่นทดสอบเก็บรูปเป็น Base64 ใน PostgreSQL เพราะโจทย์กำหนด แต่ production ต้องแยก binary ออกจาก business row เป็น object storage ส่วนตัว ใช้ชื่อที่ระบบสร้าง ตรวจ file signature จำกัดขนาดก่อนอ่านทั้งหมด สแกน malware เมื่อเหมาะสม และให้ฐานข้อมูลเก็บเพียง object key กับ metadata
 
-การตรวจ MIME prefix ปัจจุบัน **ไม่พิสูจน์ว่า byte ภายในเป็นรูปจริง** จึงจัดสถานะเป็น partial เท่านั้น
+การตรวจ file signature พิสูจน์ได้เพียงชนิดไฟล์พื้นฐาน **ไม่ได้พิสูจน์ว่าไฟล์ปลอด malware หรือถอดรหัสได้สมบูรณ์** จึงยังต้องใช้มาตรการเพิ่มเมื่อเป็น production
 
 ## Production Security Gate
 

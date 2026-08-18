@@ -125,16 +125,16 @@ Endpoint นี้ไม่มี idempotency key การส่ง payload เ
 
 ## Error Responses
 
-| status                      | meaning                                                                          | error_code                    | body                       | description                                                                      |
-| --------------------------- | -------------------------------------------------------------------------------- | ----------------------------- | -------------------------- | -------------------------------------------------------------------------------- |
-| `400 Bad Request`           | JSON binding, ข้อมูลไม่ผ่านกฎ หรือ `occupationCode` ไม่ตรงกับข้อมูลหลักที่ใช้งาน | ไม่มีใน payload ปัจจุบัน      | `ValidationProblemDetails` | ไม่เขียนระเบียนและคืนรายการข้อความแยกตามฟิลด์                                    |
-| `413 Content Too Large`     | request body เกิน 3 MiB                                                          | ไม่มี                         | reverse-proxy/API response | ปฏิเสธก่อนตรรกะธุรกิจและไม่เขียนระเบียน                                          |
-| `429 Too Many Requests`     | IP เดียวเรียก POST เกิน 20 ครั้งใน 1 นาที                                        | ไม่มี                         | empty response             | ไม่เข้าคิวและไม่เขียนระเบียน                                                     |
-| `500 Internal Server Error` | API หรือ PostgreSQL ล้มเหลวโดยไม่คาดหมาย                                         | ไม่มีสัญญาแบบตายตัวในปัจจุบัน | server error response      | ไม่รับรองว่าบันทึกสำเร็จ; Client แสดงข้อความทั่วไปและห้ามแสดงรายละเอียดฐานข้อมูล |
+| status                      | meaning                                                                          | error_code               | body                       | description                                                         |
+| --------------------------- | -------------------------------------------------------------------------------- | ------------------------ | -------------------------- | ------------------------------------------------------------------- |
+| `400 Bad Request`           | JSON binding, ข้อมูลไม่ผ่านกฎ หรือ `occupationCode` ไม่ตรงกับข้อมูลหลักที่ใช้งาน | ไม่มีใน payload ปัจจุบัน | `ValidationProblemDetails` | ไม่เขียนระเบียนและคืนรายการข้อความแยกตามฟิลด์                       |
+| `413 Content Too Large`     | request body เกิน 3 MiB                                                          | ไม่มี                    | reverse-proxy/API response | ปฏิเสธก่อนตรรกะธุรกิจและไม่เขียนระเบียน                             |
+| `429 Too Many Requests`     | IP เดียวเรียก POST เกิน 20 ครั้งใน 1 นาที                                        | ไม่มี                    | empty response             | ไม่เข้าคิวและไม่เขียนระเบียน                                        |
+| `500 Internal Server Error` | API หรือ PostgreSQL ล้มเหลวโดยไม่คาดหมาย                                         | ไม่มี                    | `ProblemDetails`           | มี `traceId`; ไม่มี detail, stack trace, SQL หรือ connection string |
 
 Endpoint public นี้ไม่มี `401` และ `403`; ไม่มี uniqueness rule จึงไม่มี `409` ในขอบเขตปัจจุบัน
 
-> ข้อจำกัดปัจจุบัน: API ยังไม่มี machine-readable `errorCode` และยังไม่ได้กำหนด schema ของ `500` แบบตายตัว เอกสารจึงไม่สร้างค่าที่ runtime ไม่ได้ส่งจริง
+> ข้อจำกัดปัจจุบัน: API ยังไม่มี machine-readable `errorCode`; `413` ที่ Nginx ปฏิเสธและ `429` ไม่มี schema แบบ JSON
 
 ### ValidationProblemDetails
 
@@ -147,6 +147,15 @@ Endpoint public นี้ไม่มี `401` และ `403`; ไม่มี 
 | `traceId` | string                        | yes      | ASP.NET Core request activity | รหัสช่วยติดตามคำขอ ห้ามมีข้อมูลส่วนบุคคลหรือ Base64 image            |
 
 ตัวอย่าง: `examples/api-cp-01-post-candidate-profiles/validation-problem-response.example.yaml`
+
+### ProblemDetails สำหรับ 500
+
+| field     | type    | required | rule                                                                   |
+| --------- | ------- | -------- | ---------------------------------------------------------------------- |
+| `type`    | string  | yes      | URI อ้างอิงประเภท HTTP error                                           |
+| `title`   | string  | yes      | ค่า `An unexpected error occurred.`                                    |
+| `status`  | integer | yes      | ค่า `500`                                                              |
+| `traceId` | string  | yes      | ใช้ติดตาม log; ห้ามมีข้อมูลส่วนบุคคล Base64 SQL หรือ connection string |
 
 ## Observability and Data Handling
 
