@@ -13,7 +13,7 @@ namespace Example.InterviewQuestion004.Api.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "CandidateProfiles",
+                name: "Profiles",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -30,7 +30,7 @@ namespace Example.InterviewQuestion004.Api.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CandidateProfiles", x => x.Id);
+                    table.PrimaryKey("PK_Profiles", x => x.Id);
                 });
         }
 
@@ -38,7 +38,7 @@ namespace Example.InterviewQuestion004.Api.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CandidateProfiles");
+                name: "Profiles");
         }
     }
 }

@@ -17,9 +17,8 @@ export default defineConfig({
     [
       './e2e/support/markdown-reporter.ts',
       {
-        outputFile:
-          '../../documentation/09-qa-and-test/01-candidate-profile/playwright-test-result.md',
-        screenshotDir: '../../documentation/09-qa-and-test/01-candidate-profile/screenshots',
+        outputFile: '../../documentation/09-qa-and-test/01-profile/playwright-test-result.md',
+        screenshotDir: '../../documentation/09-qa-and-test/01-profile/screenshots',
         baseURL,
       },
     ],

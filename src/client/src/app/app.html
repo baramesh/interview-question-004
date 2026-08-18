@@ -8,8 +8,8 @@
         E
       </div>
       <div>
-        <p class="m-0 text-sm font-semibold text-slate-950">Example.com Careers</p>
-        <p class="m-0 text-xs text-slate-500">Candidate onboarding</p>
+        <p class="m-0 text-sm font-semibold text-slate-950">Example.com Profile</p>
+        <p class="m-0 text-xs text-slate-500">Profile management</p>
       </div>
     </div>
     <span
@@ -19,16 +19,13 @@
   </div>
 </header>
 
-<main
-  class="mx-auto w-[min(1040px,calc(100%-2rem))] py-8 md:py-12"
-  data-testid="candidate-profile-page"
->
+<main class="mx-auto w-[min(1040px,calc(100%-2rem))] py-8 md:py-12" data-testid="profile-page">
   <article
     class="form-shell overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl"
   >
     <header class="border-b border-slate-200 px-6 py-7 md:px-10 md:py-9">
       <p class="m-0 text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">
-        Candidate record
+        Personal profile
       </p>
       <div class="mt-2 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
@@ -36,11 +33,10 @@
             id="page-title"
             class="m-0 text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl"
           >
-            Candidate profile
+            Profile
           </h1>
           <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
-            Provide accurate information for your candidate record. Review each section before
-            saving.
+            Provide accurate information for your profile. Review each section before saving.
           </p>
         </div>
         <p class="m-0 shrink-0 text-sm text-slate-600" data-testid="required-fields-note">
@@ -64,7 +60,7 @@
       </div>
     }
 
-    <form [formGroup]="form" (ngSubmit)="save()" novalidate data-testid="candidate-profile-form">
+    <form [formGroup]="form" (ngSubmit)="save()" novalidate data-testid="profile-form">
       <section
         class="form-section"
         aria-labelledby="profile-photo-heading"
@@ -92,7 +88,7 @@
             @if (imagePreview(); as preview) {
               <img class="size-full object-cover" [src]="preview" alt="Selected profile preview" />
             } @else {
-              <span aria-hidden="true">CP</span>
+              <span aria-hidden="true">PF</span>
             }
           </div>
           <div class="min-w-0 flex-1">
@@ -120,14 +116,14 @@
                 class="sr-only"
                 id="profile"
                 type="file"
-                accept="image/png,image/jpeg,image/gif,image/webp"
+                accept="image/png,image/jpeg"
                 (change)="selectProfile($event)"
                 data-testid="profile-image-input"
               />
             </div>
             <p class="mt-3 truncate text-sm font-medium text-slate-700">{{ selectedFileName() }}</p>
             <p class="mt-1 text-xs leading-5 text-slate-500">
-              PNG, JPEG, GIF or WebP. Maximum file size 2 MB.
+              PNG or JPEG. Maximum file size 2 MB.
             </p>
             @if (showError('profileBase64')) {
               <p class="mt-2 text-xs font-medium text-red-600" data-testid="profile-image-error">
@@ -185,15 +181,20 @@
             <mat-label>Birth date</mat-label>
             <input
               matInput
+              [matDatepicker]="birthDatePicker"
+              [max]="maxBirthDate"
               required
-              type="text"
               formControlName="birthDate"
               autocomplete="bday"
-              inputmode="numeric"
               placeholder="DD/MM/YYYY"
-              maxlength="10"
               data-testid="birth-date-input"
             />
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="birthDatePicker"
+              data-testid="birth-date-toggle"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #birthDatePicker></mat-datepicker>
             <mat-hint>DD/MM/YYYY</mat-hint>
             @if (showError('birthDate')) {
               <mat-error data-testid="birth-date-error">{{ errorMessage('birthDate') }}</mat-error>
@@ -229,7 +230,7 @@
           <span class="section-index">03</span>
           <div>
             <h2 id="contact-details-heading">Contact details</h2>
-            <p>How the recruitment team can reach you.</p>
+            <p>Contact information associated with this profile.</p>
           </div>
         </div>
         <div class="section-fields grid gap-x-5 sm:grid-cols-2">
@@ -333,5 +334,5 @@
 </main>
 
 <footer class="pb-8 text-center text-xs text-slate-500">
-  © {{ currentYear }} Example.com · Candidate onboarding
+  © {{ currentYear }} Example.com · Profile management
 </footer>

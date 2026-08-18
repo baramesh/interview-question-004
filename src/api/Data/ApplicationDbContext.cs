@@ -6,13 +6,13 @@ namespace Example.InterviewQuestion004.Api.Data;
 public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
     : DbContext(options)
 {
-    public DbSet<CandidateProfile> CandidateProfiles => Set<CandidateProfile>();
+    public DbSet<Profile> Profiles => Set<Profile>();
     public DbSet<Occupation> Occupations => Set<Occupation>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        var profile = modelBuilder.Entity<CandidateProfile>();
-        profile.ToTable("candidate_profiles");
+        var profile = modelBuilder.Entity<Profile>();
+        profile.ToTable("profiles");
         profile.Property(item => item.Id).HasColumnName("id");
         profile.Property(item => item.FirstName).HasColumnName("first_name");
         profile.Property(item => item.LastName).HasColumnName("last_name");
@@ -24,7 +24,7 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
         profile.Property(item => item.Sex).HasColumnName("sex");
         profile.Property(item => item.CreatedAtUtc).HasColumnName("created_at_utc");
         profile.HasOne(item => item.Occupation)
-            .WithMany(item => item.CandidateProfiles)
+            .WithMany(item => item.Profiles)
             .HasForeignKey(item => item.OccupationId)
             .OnDelete(DeleteBehavior.Restrict);
 

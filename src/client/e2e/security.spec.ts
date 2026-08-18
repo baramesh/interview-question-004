@@ -14,12 +14,12 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
-test('SEC-CP-001 ปฏิเสธรูปที่ถอดรหัสแล้วเกิน 2 MiB', async ({ request }) => {
+test('SEC-PF-001 ปฏิเสธรูปที่ถอดรหัสแล้วเกิน 2 MiB', async ({ request }) => {
   const oversizedPng = Buffer.concat([
     Buffer.from('89504e470d0a1a0a', 'hex'),
     Buffer.alloc(2 * 1024 * 1024),
   ]).toString('base64');
-  const response = await request.post('/api/candidate-profiles', {
+  const response = await request.post('/api/profiles', {
     data: { ...validPayload, profileBase64: `data:image/png;base64,${oversizedPng}` },
   });
 
@@ -28,9 +28,9 @@ test('SEC-CP-001 ปฏิเสธรูปที่ถอดรหัสแล
   expect(body.errors['ProfileBase64']).toBeTruthy();
 });
 
-test('SEC-CP-002 ปฏิเสธ MIME ที่ไม่ตรงกับ byte signature', async ({ request }) => {
+test('SEC-PF-002 ปฏิเสธ MIME ที่ไม่ตรงกับ byte signature', async ({ request }) => {
   const jpegBytes = Buffer.from('ffd8ff00', 'hex').toString('base64');
-  const response = await request.post('/api/candidate-profiles', {
+  const response = await request.post('/api/profiles', {
     data: { ...validPayload, profileBase64: `data:image/png;base64,${jpegBytes}` },
   });
 
@@ -41,8 +41,8 @@ test('SEC-CP-002 ปฏิเสธ MIME ที่ไม่ตรงกับ by
   );
 });
 
-test('SEC-CP-003 ปฏิเสธ request body เกิน 3 MiB', async ({ request }) => {
-  const response = await request.post('/api/candidate-profiles', {
+test('SEC-PF-003 ปฏิเสธ request body เกิน 3 MiB', async ({ request }) => {
+  const response = await request.post('/api/profiles', {
     data: {
       ...validPayload,
       profileBase64: `data:image/png;base64,${'A'.repeat(3 * 1024 * 1024)}`,
@@ -52,7 +52,31 @@ test('SEC-CP-003 ปฏิเสธ request body เกิน 3 MiB', async ({ r
   expect(response.status()).toBe(413);
 });
 
-test('SEC-CP-008 ส่ง security headers ผ่าน Nginx', async ({ request }) => {
+test('SEC-PF-011 ปฏิเสธ GIF และ WebP', async ({ page, request }) => {
+  await page.getByTestId('profile-image-input').setInputFiles({
+    name: 'unsupported.gif',
+    mimeType: 'image/gif',
+    buffer: Buffer.from('R0lGODlh', 'base64'),
+  });
+  await expect(page.getByTestId('profile-image-error')).toHaveText('Select a PNG or JPEG image.');
+
+  for (const profileBase64 of [
+    'data:image/gif;base64,R0lGODlh',
+    'data:image/webp;base64,UklGRgAAAABXRUJQ',
+  ]) {
+    const response = await request.post('/api/profiles', {
+      data: { ...validPayload, profileBase64 },
+    });
+
+    expect(response.status()).toBe(400);
+    const body = (await response.json()) as { errors: Record<string, string[]> };
+    expect(body.errors['ProfileBase64']).toContain(
+      'Profile must be a Base64 encoded PNG or JPEG image.',
+    );
+  }
+});
+
+test('SEC-PF-008 ส่ง security headers ผ่าน Nginx', async ({ request }) => {
   for (const path of ['/', '/api/occupations']) {
     const response = await request.get(path);
 
@@ -64,12 +88,12 @@ test('SEC-CP-008 ส่ง security headers ผ่าน Nginx', async ({ reques
   }
 });
 
-test('SEC-CP-004 จำกัดอัตราคำขอสร้างข้อมูล', async ({ request }) => {
+test('SEC-PF-004 จำกัดอัตราคำขอสร้างข้อมูล', async ({ request }) => {
   const invalidPayload = { ...validPayload, profileBase64: 'invalid' };
   const statuses: number[] = [];
 
   for (let index = 0; index < 21; index += 1) {
-    const response = await request.post('/api/candidate-profiles', { data: invalidPayload });
+    const response = await request.post('/api/profiles', { data: invalidPayload });
     statuses.push(response.status());
     if (response.status() === 429) {
       break;

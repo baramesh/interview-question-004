@@ -25,7 +25,7 @@ namespace Example.InterviewQuestion004.Api.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Example.InterviewQuestion004.Api.Models.CandidateProfile", b =>
+            modelBuilder.Entity("Example.InterviewQuestion004.Api.Models.Profile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -69,7 +69,7 @@ namespace Example.InterviewQuestion004.Api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CandidateProfiles");
+                    b.ToTable("Profiles");
                 });
 #pragma warning restore 612, 618
         }

@@ -2,11 +2,26 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild, computed, signal } from '@angular/core';
 import { FormBuilder, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { format, isBefore, isValid, startOfToday, subDays } from 'date-fns';
+import { enUS } from 'date-fns/locale';
+
+const PROFILE_DATE_FORMATS = {
+  parse: { dateInput: 'dd/MM/yyyy' },
+  display: {
+    dateInput: 'dd/MM/yyyy',
+    monthYearLabel: 'MMM yyyy',
+    dateA11yLabel: 'PP',
+    monthYearA11yLabel: 'MMMM yyyy',
+  },
+};
 
 interface SaveResponse {
   id: number;
@@ -23,11 +38,16 @@ interface OccupationOption {
   imports: [
     ReactiveFormsModule,
     MatButtonModule,
+    MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,
     MatRadioModule,
     MatSelectModule,
+  ],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: enUS },
+    ...provideDateFnsAdapter(PROFILE_DATE_FORMATS),
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
@@ -46,6 +66,7 @@ export class App implements OnInit {
   protected readonly selectedFileName = signal('No file selected');
   protected readonly imagePreview = signal<string | null>(null);
   protected readonly currentYear = new Date().getFullYear();
+  protected readonly maxBirthDate = subDays(startOfToday(), 1);
   protected readonly hasPreview = computed(() => this.imagePreview() !== null);
   protected readonly form;
 
@@ -59,7 +80,7 @@ export class App implements OnInit {
       email: ['', [Validators.required, Validators.email, Validators.maxLength(254)]],
       phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9](?:[0-9 .()-]{7,18}[0-9])$/)]],
       profileBase64: ['', Validators.required],
-      birthDate: ['', [Validators.required, this.birthDateValidator]],
+      birthDate: [null as Date | null, [Validators.required, this.birthDateValidator]],
       occupationCode: ['', Validators.required],
       sex: ['', Validators.required],
     });
@@ -103,9 +124,10 @@ export class App implements OnInit {
       return;
     }
 
-    if (!['image/png', 'image/jpeg', 'image/gif', 'image/webp'].includes(file.type)) {
+    if (!['image/png', 'image/jpeg'].includes(file.type)) {
       control.setValue('');
-      control.setErrors({ file: 'Select a PNG, JPEG, GIF or WebP image.' });
+      control.setErrors({ file: 'Select a PNG or JPEG image.' });
+      control.markAsTouched();
       this.selectedFileName.set('Unsupported file');
       return;
     }
@@ -113,6 +135,7 @@ export class App implements OnInit {
     if (file.size > 2 * 1024 * 1024) {
       control.setValue('');
       control.setErrors({ file: 'Profile image must be no larger than 2 MB.' });
+      control.markAsTouched();
       this.selectedFileName.set('File is too large');
       return;
     }
@@ -137,7 +160,12 @@ export class App implements OnInit {
     }
 
     this.isSaving.set(true);
-    this.http.post<SaveResponse>('/api/candidate-profiles', this.form.getRawValue()).subscribe({
+    const value = this.form.getRawValue();
+    const payload = {
+      ...value,
+      birthDate: value.birthDate ? format(value.birthDate, 'dd/MM/yyyy') : '',
+    };
+    this.http.post<SaveResponse>('/api/profiles', payload).subscribe({
       next: ({ id, message }) => {
         this.notification.set({ type: 'success', text: `${message} · ID: ${id}` });
         this.resetForm(false);
@@ -177,22 +205,10 @@ export class App implements OnInit {
     if (this.profileInput) this.profileInput.nativeElement.value = '';
   }
 
-  private readonly birthDateValidator = (control: { value: string }) => {
+  private readonly birthDateValidator = (control: { value: Date | null }) => {
     if (!control.value) return null;
-    const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(control.value);
-    if (!match) return { birthDate: true };
-
-    const [, dayText, monthText, yearText] = match;
-    const day = Number(dayText);
-    const month = Number(monthText);
-    const year = Number(yearText);
-    const date = new Date(Date.UTC(year, month - 1, day));
-    const today = new Date();
-    const valid =
-      date.getUTCFullYear() === year &&
-      date.getUTCMonth() === month - 1 &&
-      date.getUTCDate() === day &&
-      date < today;
-    return valid ? null : { birthDate: true };
+    return isValid(control.value) && isBefore(control.value, startOfToday())
+      ? null
+      : { birthDate: true };
   };
 }

@@ -7,7 +7,7 @@ interface TestableApp {
   occupations: () => Array<{ code: string; name: string }>;
   form: {
     controls: { occupationCode: { setValue: (value: string) => void; value: string } };
-    setValue: (value: Record<string, string>) => void;
+    setValue: (value: Record<string, string | Date>) => void;
   };
   save: () => void;
 }
@@ -25,14 +25,19 @@ describe('App', () => {
 
   afterEach(() => httpTesting.verify());
 
-  it('renders the candidate form', () => {
+  it('renders the profile form with the Angular Material datepicker', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     flushOccupations();
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
-    expect(element.querySelector('h1')?.textContent).toContain('Candidate profile');
-    expect(element.querySelector('[data-testid="candidate-profile-form"]')).not.toBeNull();
+    expect(element.querySelector('h1')?.textContent).toContain('Profile');
+    expect(element.querySelector('[data-testid="profile-form"]')).not.toBeNull();
+    expect(element.querySelector('[data-testid="birth-date-toggle"]')).not.toBeNull();
+    expect(element.querySelector('input[type="date"]')).toBeNull();
+    expect(
+      element.querySelector('[data-testid="profile-image-input"]')?.getAttribute('accept'),
+    ).toBe('image/png,image/jpeg');
     expect(element.querySelector('[data-testid="profile-photo-section"]')).not.toBeNull();
     expect(element.querySelector('[data-testid="personal-details-section"]')).not.toBeNull();
     expect(element.querySelector('[data-testid="contact-details-section"]')).not.toBeNull();
@@ -96,16 +101,17 @@ describe('App', () => {
       email: 'ada@example.com',
       phone: '+66 81 234 5678',
       profileBase64: 'data:image/png;base64,iVBORw0KGgo=',
-      birthDate: '18/08/1990',
+      birthDate: new Date(1990, 7, 18),
       occupationCode: 'software-engineer',
       sex: 'Female',
     });
 
     component.save();
 
-    const request = httpTesting.expectOne('/api/candidate-profiles');
+    const request = httpTesting.expectOne('/api/profiles');
     expect(request.request.method).toBe('POST');
     expect(request.request.body.occupationCode).toBe('software-engineer');
+    expect(request.request.body.birthDate).toBe('18/08/1990');
     request.flush({ id: 1, message: 'save data success' });
   });
 

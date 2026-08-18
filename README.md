@@ -15,9 +15,9 @@ Full-stack implementation of Test 1, Question 4 for `example.com`.
 
 - Required validation for every field
 - Email and phone format validation
-- Birth date validation in `DD/MM/YYYY` format
+- Angular Material Datepicker with Moment adapter for birth date selection and `DD/MM/YYYY` formatting; no browser-native date input
 - PostgreSQL-backed occupation master data loaded through `GET /api/occupations`
-- Candidate submission sends `occupationCode`; the API resolves it to an internal foreign key
+- Profile submission sends `occupationCode`; the API resolves it to an internal foreign key
 - Image profile stored as a Base64 data URL
 - PostgreSQL-generated record ID and success notification
 - Form reset after save and a dedicated Clear action
@@ -87,7 +87,7 @@ npm audit
 | ----: | ------------------ | --------------------------------------------------------- |
 |     1 | `00-intake`        | โจทย์ต้นทางกำหนดอะไรและมีขอบเขตเท่าใด                     |
 |     2 | `01-requirements`  | ระบบต้องทำอะไร กฎข้อมูลและคุณภาพที่ต้องผ่านคืออะไร        |
-|     3 | `02-bu-process`    | ผู้สมัครทำอะไรตามลำดับ                                    |
+|     3 | `02-bu-process`    | ผู้กรอกแบบฟอร์มทำอะไรตามลำดับ                             |
 |     4 | `03-domain-data`   | ข้อมูลใดถูกเก็บ ความสัมพันธ์และข้อมูลหลักเป็นอย่างไร      |
 |     5 | `04-arch-desc`     | Angular, Nginx, API และ PostgreSQL ทำงานร่วมกันอย่างไร    |
 |     6 | `08-security-arch` | ขอบเขต OWASP และข้อจำกัดของ local/production คืออะไร      |
@@ -102,4 +102,4 @@ npm audit
 - ผู้ตรวจหน้าเว็บ: `05-ui-desc → 06-api-contract → 09-qa-and-test`
 - ผู้ตรวจความมั่นคงปลอดภัย: `01-requirements/quality-attributes → 08-security-arch → 09-qa-and-test/security-test-plan.md`
 
-ผล Playwright และภาพล่าสุดอยู่ที่ [`documentation/09-qa-and-test/01-candidate-profile/playwright-test-result.md`](documentation/09-qa-and-test/01-candidate-profile/playwright-test-result.md) ส่วนผล Unit Test อยู่ที่ [`unit-test-result.md`](documentation/09-qa-and-test/01-candidate-profile/unit-test-result.md)
+ผล Playwright และภาพล่าสุดอยู่ที่ [`documentation/09-qa-and-test/01-profile/playwright-test-result.md`](documentation/09-qa-and-test/01-profile/playwright-test-result.md) ส่วนผล Unit Test อยู่ที่ [`unit-test-result.md`](documentation/09-qa-and-test/01-profile/unit-test-result.md)

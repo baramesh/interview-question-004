@@ -7,5 +7,5 @@ public sealed class Occupation
     public required string Name { get; set; }
     public int DisplayOrder { get; set; }
     public bool IsActive { get; set; } = true;
-    public ICollection<CandidateProfile> CandidateProfiles { get; set; } = [];
+    public ICollection<Profile> Profiles { get; set; } = [];
 }

@@ -25,7 +25,7 @@ namespace Example.InterviewQuestion004.Api.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Example.InterviewQuestion004.Api.Models.CandidateProfile", b =>
+            modelBuilder.Entity("Example.InterviewQuestion004.Api.Models.Profile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -80,7 +80,7 @@ namespace Example.InterviewQuestion004.Api.Data.Migrations
 
                     b.HasIndex("OccupationId");
 
-                    b.ToTable("candidate_profiles", (string)null);
+                    b.ToTable("profiles", (string)null);
                 });
 
             modelBuilder.Entity("Example.InterviewQuestion004.Api.Models.Occupation", b =>
@@ -162,10 +162,10 @@ namespace Example.InterviewQuestion004.Api.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Example.InterviewQuestion004.Api.Models.CandidateProfile", b =>
+            modelBuilder.Entity("Example.InterviewQuestion004.Api.Models.Profile", b =>
                 {
                     b.HasOne("Example.InterviewQuestion004.Api.Models.Occupation", "Occupation")
-                        .WithMany("CandidateProfiles")
+                        .WithMany("Profiles")
                         .HasForeignKey("OccupationId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -175,7 +175,7 @@ namespace Example.InterviewQuestion004.Api.Data.Migrations
 
             modelBuilder.Entity("Example.InterviewQuestion004.Api.Models.Occupation", b =>
                 {
-                    b.Navigation("CandidateProfiles");
+                    b.Navigation("Profiles");
                 });
 #pragma warning restore 612, 618
         }

@@ -39,7 +39,7 @@ builder.Services.AddRateLimiter(options =>
             Activity.Current?.Id ?? context.HttpContext.TraceIdentifier);
         return ValueTask.CompletedTask;
     };
-    options.AddPolicy("candidate-write", httpContext =>
+    options.AddPolicy("profile-write", httpContext =>
         RateLimitPartition.GetFixedWindowLimiter(
             httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
             _ => new FixedWindowRateLimiterOptions

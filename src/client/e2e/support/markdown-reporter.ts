@@ -69,13 +69,13 @@ export default class MarkdownReporter implements Reporter {
     const failed = this.results.length - passed;
     const lines = [
       '---',
-      'doc_id: QAT-CP-04',
-      'module: CANDIDATE_PROFILE',
+      'doc_id: QAT-PF-04',
+      'module: PROFILE',
       'type: playwright-test-result',
       `generated_at: ${new Date().toISOString()}`,
       '---',
       '',
-      '# QAT-CP-04 — ผลทดสอบ Playwright',
+      '# QAT-PF-04 — ผลทดสอบ Playwright',
       '',
       '> ไฟล์นี้สร้างอัตโนมัติจาก `npm run test:e2e` ห้ามแก้ผลด้วยมือ',
       '',
@@ -129,7 +129,7 @@ export default class MarkdownReporter implements Reporter {
       '## การสืบย้อน',
       '',
       '- รายละเอียดขั้นตอนและผลที่คาดหวัง: `playwright-test-cases.md`',
-      '- รหัสทดสอบในรายงานตรงกับชื่อ `test()` ใน `src/client/e2e/candidate-profile.spec.ts` และ `src/client/e2e/security.spec.ts`',
+      '- รหัสทดสอบในรายงานตรงกับชื่อ `test()` ใน `src/client/e2e/profile.spec.ts` และ `src/client/e2e/security.spec.ts`',
       '',
     );
 

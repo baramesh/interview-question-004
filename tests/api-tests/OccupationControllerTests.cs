@@ -33,14 +33,14 @@ public sealed class OccupationControllerTests
     public async Task Create_rejects_unknown_occupation_code()
     {
         await using var dbContext = CreateDbContext();
-        var controller = new CandidateProfilesController(dbContext);
+        var controller = new ProfilesController(dbContext);
 
         var actionResult = await controller.Create(CreateValidRequest("unknown"), CancellationToken.None);
         var error = Assert.IsType<ObjectResult>(actionResult.Result);
         var problem = Assert.IsType<ValidationProblemDetails>(error.Value);
 
-        Assert.Contains(nameof(CreateCandidateProfileRequest.OccupationCode), problem.Errors.Keys);
-        Assert.Empty(dbContext.CandidateProfiles);
+        Assert.Contains(nameof(CreateProfileRequest.OccupationCode), problem.Errors.Keys);
+        Assert.Empty(dbContext.Profiles);
     }
 
     [Fact]
@@ -50,13 +50,13 @@ public sealed class OccupationControllerTests
         dbContext.Occupations.Add(
             new Occupation { Id = 201, Code = "software-engineer", Name = "Software Engineer", DisplayOrder = 10 });
         await dbContext.SaveChangesAsync();
-        var controller = new CandidateProfilesController(dbContext);
+        var controller = new ProfilesController(dbContext);
 
         var actionResult = await controller.Create(
             CreateValidRequest("software-engineer"), CancellationToken.None);
         var created = Assert.IsType<ObjectResult>(actionResult.Result);
-        var response = Assert.IsType<CreateCandidateProfileResponse>(created.Value);
-        var profile = Assert.Single(dbContext.CandidateProfiles);
+        var response = Assert.IsType<CreateProfileResponse>(created.Value);
+        var profile = Assert.Single(dbContext.Profiles);
 
         Assert.Equal(201, created.StatusCode);
         Assert.True(response.Id > 0);
@@ -71,7 +71,7 @@ public sealed class OccupationControllerTests
         return new ApplicationDbContext(options);
     }
 
-    private static CreateCandidateProfileRequest CreateValidRequest(string occupationCode) => new()
+    private static CreateProfileRequest CreateValidRequest(string occupationCode) => new()
     {
         FirstName = "Ada",
         LastName = "Lovelace",

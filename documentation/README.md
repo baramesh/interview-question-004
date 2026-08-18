@@ -4,14 +4,14 @@
 
 1. `00-intake` — แหล่งโจทย์และคำสั่งส่งมอบ
 2. `01-requirements` — ความสามารถและเกณฑ์ยอมรับ
-3. `02-bu-process` — ลำดับงานของผู้สมัคร
+3. `02-bu-process` — ลำดับงานของผู้กรอกแบบฟอร์ม
 4. `03-domain-data` — แบบจำลองข้อมูล PostgreSQL
 5. `04-arch-desc` — สถาปัตยกรรม runtime และการ deploy บน OrbStack
 6. `05-ui-desc` — หน้าจอ พฤติกรรม และการเข้าถึง
 7. `06-api-contract` — สัญญา API
 8. `07-integ-contract` — ขอบเขตระบบภายนอก
-9. `08-security-arch` — ขอบเขตและ OWASP security baseline; เริ่มที่ [`08-security-arch/01-candidate-profile/00-README.md`](08-security-arch/01-candidate-profile/00-README.md)
-10. `09-qa-and-test` — กลยุทธ์ Test Case, Test Step, ผลทดสอบ และภาพหลักฐาน; เริ่มที่ [`09-qa-and-test/01-candidate-profile/00-README.md`](09-qa-and-test/01-candidate-profile/00-README.md)
+9. `08-security-arch` — ขอบเขตและ OWASP security baseline; เริ่มที่ [`08-security-arch/01-profile/00-README.md`](08-security-arch/01-profile/00-README.md)
+10. `09-qa-and-test` — กลยุทธ์ Test Case, Test Step, ผลทดสอบ และภาพหลักฐาน; เริ่มที่ [`09-qa-and-test/01-profile/00-README.md`](09-qa-and-test/01-profile/00-README.md)
 
 ## ขอบเขต
 

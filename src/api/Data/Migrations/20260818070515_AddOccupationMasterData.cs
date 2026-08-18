@@ -43,13 +43,13 @@ namespace Example.InterviewQuestion004.Api.Data.Migrations
 
             migrationBuilder.AddColumn<int>(
                 name: "occupation_id",
-                table: "candidate_profiles",
+                table: "profiles",
                 type: "integer",
                 nullable: true);
 
             migrationBuilder.Sql(
                 """
-                UPDATE candidate_profiles AS profile
+                UPDATE profiles AS profile
                 SET occupation_id = occupation.id
                 FROM occupations AS occupation
                 WHERE occupation.name = profile.occupation;
@@ -57,7 +57,7 @@ namespace Example.InterviewQuestion004.Api.Data.Migrations
 
             migrationBuilder.AlterColumn<int>(
                 name: "occupation_id",
-                table: "candidate_profiles",
+                table: "profiles",
                 type: "integer",
                 nullable: false,
                 oldClrType: typeof(int),
@@ -66,11 +66,11 @@ namespace Example.InterviewQuestion004.Api.Data.Migrations
 
             migrationBuilder.DropColumn(
                 name: "occupation",
-                table: "candidate_profiles");
+                table: "profiles");
 
             migrationBuilder.CreateIndex(
-                name: "IX_candidate_profiles_occupation_id",
-                table: "candidate_profiles",
+                name: "IX_profiles_occupation_id",
+                table: "profiles",
                 column: "occupation_id");
 
             migrationBuilder.CreateIndex(
@@ -80,8 +80,8 @@ namespace Example.InterviewQuestion004.Api.Data.Migrations
                 unique: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_candidate_profiles_occupations_occupation_id",
-                table: "candidate_profiles",
+                name: "FK_profiles_occupations_occupation_id",
+                table: "profiles",
                 column: "occupation_id",
                 principalTable: "occupations",
                 principalColumn: "id",
@@ -92,31 +92,31 @@ namespace Example.InterviewQuestion004.Api.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_candidate_profiles_occupations_occupation_id",
-                table: "candidate_profiles");
+                name: "FK_profiles_occupations_occupation_id",
+                table: "profiles");
 
             migrationBuilder.AddColumn<string>(
                 name: "occupation",
-                table: "candidate_profiles",
+                table: "profiles",
                 type: "text",
                 nullable: false,
                 defaultValue: "");
 
             migrationBuilder.Sql(
                 """
-                UPDATE candidate_profiles AS profile
+                UPDATE profiles AS profile
                 SET occupation = occupation.name
                 FROM occupations AS occupation
                 WHERE occupation.id = profile.occupation_id;
                 """);
 
             migrationBuilder.DropIndex(
-                name: "IX_candidate_profiles_occupation_id",
-                table: "candidate_profiles");
+                name: "IX_profiles_occupation_id",
+                table: "profiles");
 
             migrationBuilder.DropColumn(
                 name: "occupation_id",
-                table: "candidate_profiles");
+                table: "profiles");
 
             migrationBuilder.DropTable(
                 name: "occupations");
