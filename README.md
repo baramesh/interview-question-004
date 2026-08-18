@@ -8,7 +8,7 @@ Full-stack implementation of Test 1, Question 4 for `example.com`.
 - Backend: ASP.NET Core 10 Web API (C#)
 - Database: PostgreSQL 18 with Entity Framework Core and Npgsql
 - Local deployment: OrbStack with Docker Compose and Nginx
-- Tests: Vitest and xUnit
+- Tests: Playwright, Vitest and xUnit
 
 ## Requirements implemented
 
@@ -73,9 +73,12 @@ cd src/client
 npm ci
 npm test -- --watch=false
 npm run build
+npm run test:e2e
 npm audit
 ```
 
 ## Design documentation
 
 Start with [`design-new/README.md`](design-new/README.md). It traces the attached requirements through business flow, PostgreSQL data design, runtime architecture, UI behavior, API contract, security boundary, and test evidence.
+
+Playwright test cases and the generated latest result are stored in [`design-new/09-qa-and-test/01-candidate-profile`](design-new/09-qa-and-test/01-candidate-profile).

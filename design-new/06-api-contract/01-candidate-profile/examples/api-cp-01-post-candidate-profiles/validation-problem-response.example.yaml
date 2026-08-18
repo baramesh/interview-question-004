@@ -1,0 +1,13 @@
+status: 400
+headers:
+  Content-Type: application/problem+json
+body:
+  type: "https://tools.ietf.org/html/rfc9110#section-15.5.1"
+  title: One or more validation errors occurred.
+  status: 400
+  errors:
+    Email:
+      - The Email field is not a valid e-mail address.
+    FirstName:
+      - The FirstName field is required.
+  traceId: "00-example-trace-id-00"
