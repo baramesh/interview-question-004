@@ -5,6 +5,7 @@ Full-stack implementation of Test 1, Question 4 for `example.com`.
 ## Technology
 
 - Frontend: Angular 22, Angular Material 22, Tailwind CSS 4
+- Typography: Google Sans bundled locally through Fontsource
 - Backend: ASP.NET Core 10 Web API (C#)
 - Database: PostgreSQL 18 with Entity Framework Core and Npgsql
 - Local deployment: OrbStack with Docker Compose and Nginx

@@ -2,7 +2,7 @@
 doc_id: QAT-CP-04
 module: CANDIDATE_PROFILE
 type: playwright-test-result
-generated_at: 2026-08-18T07:54:21.941Z
+generated_at: 2026-08-18T08:21:39.326Z
 ---
 
 # QAT-CP-04 — ผลทดสอบ Playwright
@@ -21,31 +21,32 @@ generated_at: 2026-08-18T07:54:21.941Z
 
 | ทั้งหมด | ผ่าน | ไม่ผ่าน | สถานะชุดทดสอบ |
 | ------: | ---: | ------: | ------------- |
-|      13 |   13 |       0 | PASS          |
+|      14 |   14 |       0 | PASS          |
 
 ## ผลรายกรณี
 
 | Test Case ID  | ชื่อกรณีทดสอบ                                             | Project  | ผล   | เวลา (ms) | Screenshot                               |
 | ------------- | --------------------------------------------------------- | -------- | ---- | --------: | ---------------------------------------- |
-| TC-CP-E2E-001 | แสดงฟิลด์และปุ่มตามข้อกำหนด                               | chromium | PASS |       220 | [เปิดภาพ](screenshots/tc-cp-e2e-001.png) |
-| TC-CP-E2E-002 | ปฏิเสธการส่งแบบฟอร์มว่างโดยไม่เรียก API                   | chromium | PASS |       265 | [เปิดภาพ](screenshots/tc-cp-e2e-002.png) |
-| TC-CP-E2E-003 | แสดงข้อผิดพลาดของอีเมล โทรศัพท์ และวันเกิด                | chromium | PASS |       277 | [เปิดภาพ](screenshots/tc-cp-e2e-003.png) |
-| TC-CP-E2E-004 | ปุ่ม Clear ล้างข้อมูลและรูปตัวอย่าง                       | chromium | PASS |       475 | [เปิดภาพ](screenshots/tc-cp-e2e-004.png) |
-| TC-CP-E2E-005 | บันทึกโปรไฟล์ผ่าน API และล้างสถานะแบบฟอร์ม                | chromium | PASS |       603 | [เปิดภาพ](screenshots/tc-cp-e2e-005.png) |
-| TC-CP-E2E-006 | API ตอบ ValidationProblemDetails เมื่อ payload ไม่ถูกต้อง | chromium | PASS |       216 | [เปิดภาพ](screenshots/tc-cp-e2e-006.png) |
-| TC-CP-E2E-007 | หน้าจอมือถือไม่มีการล้นแนวนอน                             | chromium | PASS |       217 | [เปิดภาพ](screenshots/tc-cp-e2e-007.png) |
-| TC-CP-E2E-008 | แสดงข้อมูลหลักอาชีพจาก API ตามลำดับ                       | chromium | PASS |       233 | [เปิดภาพ](screenshots/tc-cp-e2e-008.png) |
-| SEC-CP-001    | ปฏิเสธรูปที่ถอดรหัสแล้วเกิน 2 MiB                         | chromium | PASS |       235 | [เปิดภาพ](screenshots/sec-cp-001.png)    |
-| SEC-CP-002    | ปฏิเสธ MIME ที่ไม่ตรงกับ byte signature                   | chromium | PASS |       189 | [เปิดภาพ](screenshots/sec-cp-002.png)    |
-| SEC-CP-003    | ปฏิเสธ request body เกิน 3 MiB                            | chromium | PASS |       205 | [เปิดภาพ](screenshots/sec-cp-003.png)    |
-| SEC-CP-008    | ส่ง security headers ผ่าน Nginx                           | chromium | PASS |       208 | [เปิดภาพ](screenshots/sec-cp-008.png)    |
-| SEC-CP-004    | จำกัดอัตราคำขอสร้างข้อมูล                                 | chromium | PASS |       227 | [เปิดภาพ](screenshots/sec-cp-004.png)    |
+| TC-CP-E2E-001 | แสดงหมวดข้อมูล ฟิลด์ และปุ่มตามข้อกำหนด                   | chromium | PASS |       260 | [เปิดภาพ](screenshots/tc-cp-e2e-001.png) |
+| TC-CP-E2E-002 | ปฏิเสธการส่งแบบฟอร์มว่างโดยไม่เรียก API                   | chromium | PASS |       257 | [เปิดภาพ](screenshots/tc-cp-e2e-002.png) |
+| TC-CP-E2E-003 | แสดงข้อผิดพลาดของอีเมล โทรศัพท์ และวันเกิด                | chromium | PASS |       238 | [เปิดภาพ](screenshots/tc-cp-e2e-003.png) |
+| TC-CP-E2E-004 | ปุ่ม Clear ล้างข้อมูลและรูปตัวอย่าง                       | chromium | PASS |       645 | [เปิดภาพ](screenshots/tc-cp-e2e-004.png) |
+| TC-CP-E2E-005 | บันทึกโปรไฟล์ผ่าน API และล้างสถานะแบบฟอร์ม                | chromium | PASS |       620 | [เปิดภาพ](screenshots/tc-cp-e2e-005.png) |
+| TC-CP-E2E-006 | API ตอบ ValidationProblemDetails เมื่อ payload ไม่ถูกต้อง | chromium | PASS |       200 | [เปิดภาพ](screenshots/tc-cp-e2e-006.png) |
+| TC-CP-E2E-007 | หน้าจอมือถือไม่มีการล้นแนวนอน                             | chromium | PASS |       195 | [เปิดภาพ](screenshots/tc-cp-e2e-007.png) |
+| TC-CP-E2E-008 | แสดงข้อมูลหลักอาชีพจาก API ตามลำดับ                       | chromium | PASS |       216 | [เปิดภาพ](screenshots/tc-cp-e2e-008.png) |
+| TC-CP-E2E-009 | แสดงรูปโปรไฟล์ใน avatar แบบองค์กร                         | chromium | PASS |       455 | [เปิดภาพ](screenshots/tc-cp-e2e-009.png) |
+| SEC-CP-001    | ปฏิเสธรูปที่ถอดรหัสแล้วเกิน 2 MiB                         | chromium | PASS |       226 | [เปิดภาพ](screenshots/sec-cp-001.png)    |
+| SEC-CP-002    | ปฏิเสธ MIME ที่ไม่ตรงกับ byte signature                   | chromium | PASS |       176 | [เปิดภาพ](screenshots/sec-cp-002.png)    |
+| SEC-CP-003    | ปฏิเสธ request body เกิน 3 MiB                            | chromium | PASS |       188 | [เปิดภาพ](screenshots/sec-cp-003.png)    |
+| SEC-CP-008    | ส่ง security headers ผ่าน Nginx                           | chromium | PASS |       166 | [เปิดภาพ](screenshots/sec-cp-008.png)    |
+| SEC-CP-004    | จำกัดอัตราคำขอสร้างข้อมูล                                 | chromium | PASS |       192 | [เปิดภาพ](screenshots/sec-cp-004.png)    |
 
 ## ภาพหลักฐาน
 
-### TC-CP-E2E-001 — แสดงฟิลด์และปุ่มตามข้อกำหนด
+### TC-CP-E2E-001 — แสดงหมวดข้อมูล ฟิลด์ และปุ่มตามข้อกำหนด
 
-![TC-CP-E2E-001 — แสดงฟิลด์และปุ่มตามข้อกำหนด](screenshots/tc-cp-e2e-001.png)
+![TC-CP-E2E-001 — แสดงหมวดข้อมูล ฟิลด์ และปุ่มตามข้อกำหนด](screenshots/tc-cp-e2e-001.png)
 
 ### TC-CP-E2E-002 — ปฏิเสธการส่งแบบฟอร์มว่างโดยไม่เรียก API
 
@@ -74,6 +75,10 @@ generated_at: 2026-08-18T07:54:21.941Z
 ### TC-CP-E2E-008 — แสดงข้อมูลหลักอาชีพจาก API ตามลำดับ
 
 ![TC-CP-E2E-008 — แสดงข้อมูลหลักอาชีพจาก API ตามลำดับ](screenshots/tc-cp-e2e-008.png)
+
+### TC-CP-E2E-009 — แสดงรูปโปรไฟล์ใน avatar แบบองค์กร
+
+![TC-CP-E2E-009 — แสดงรูปโปรไฟล์ใน avatar แบบองค์กร](screenshots/tc-cp-e2e-009.png)
 
 ### SEC-CP-001 — ปฏิเสธรูปที่ถอดรหัสแล้วเกิน 2 MiB
 

@@ -44,6 +44,7 @@ test_source: src/client/e2e/candidate-profile.spec.ts
 | `TC-CP-E2E-006` | Negative    | API contract                |
 | `TC-CP-E2E-007` | Responsive  | Visual                      |
 | `TC-CP-E2E-008` | Master data | Integration / Display order |
+| `TC-CP-E2E-009` | Functional  | Profile image / Visual      |
 | `SEC-CP-001`    | Security    | Negative / File size        |
 | `SEC-CP-002`    | Security    | Negative / File signature   |
 | `SEC-CP-003`    | Security    | Negative / Request limit    |
@@ -113,6 +114,14 @@ test_source: src/client/e2e/candidate-profile.spec.ts
 - **ขั้นตอน:** เรียก `GET /api/occupations` ตรวจ `code`/`name` แล้วเปิด combo box อาชีพบนหน้าเว็บ
 - **ผลที่คาดหวัง:** API ตอบ `200` พร้อม 5 รายการตาม `displayOrder`; ตัวเลือกบนหน้าแสดง `name` ตรงกับ response
 - **สืบย้อน:** `FR-CP-02`, `DDC-CP-02`, `API-CP-02`, `UIX-CP-01`
+
+### TC-CP-E2E-009 — แสดงรูปโปรไฟล์ใน avatar แบบองค์กร
+
+- **ประเภท:** Functional / Profile image / Visual
+- **เป้าหมาย:** พิสูจน์การแสดงรูปใน avatar และการควบคุมไฟล์ตาม `UIS-CP-01`
+- **ขั้นตอน:** อัปโหลด `profile.png` แล้วตรวจรูป ชื่อไฟล์ ปุ่ม Remove ขนาด avatar และวิธีจัดวางรูป
+- **ผลที่คาดหวัง:** avatar เป็นวงกลม 96x96px รูปใช้ `object-fit: cover` และมีปุ่ม Remove
+- **สืบย้อน:** `FR-CP-01`, `AC-CP-01`, `UIS-CP-01`, `UIX-CP-01`
 
 ### SEC-CP-001 — ปฏิเสธรูปที่ถอดรหัสแล้วเกิน 2 MiB
 
