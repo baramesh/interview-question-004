@@ -4,9 +4,10 @@ Full-stack implementation of Test 1, Question 4 for `example.com`.
 
 ## Technology
 
-- Frontend: Angular 22 with reactive forms
+- Frontend: Angular 22, Angular Material 22, Tailwind CSS 4
 - Backend: ASP.NET Core 10 Web API (C#)
-- Database: SQLite with Entity Framework Core
+- Database: PostgreSQL 18 with Entity Framework Core and Npgsql
+- Local deployment: OrbStack with Docker Compose and Nginx
 - Tests: Vitest and xUnit
 
 ## Requirements implemented
@@ -16,23 +17,44 @@ Full-stack implementation of Test 1, Question 4 for `example.com`.
 - Birth date validation in `DD/MM/YYYY` format
 - Mock occupation combo box
 - Image profile stored as a Base64 data URL
-- Database-generated record ID and success notification
+- PostgreSQL-generated record ID and success notification
 - Form reset after save and a dedicated Clear action
 - Server-side validation in addition to browser validation
+- Responsive Angular Material controls with Tailwind CSS layout
 
-## Run locally
+## Run the complete stack on OrbStack
 
-### API
+OrbStack must be running with Docker context `orbstack`.
+
+```bash
+cp .env.example .env
+docker compose up -d --build
+docker compose ps
+```
+
+Open [http://localhost:4204](http://localhost:4204). The API health endpoint is available at [http://localhost:5004/health](http://localhost:5004/health), and PostgreSQL is exposed locally on port `5434` for inspection.
+
+Stop the services without removing PostgreSQL data:
+
+```bash
+docker compose down
+```
+
+## Run in development mode
+
+Start PostgreSQL only:
+
+```bash
+docker compose up -d postgres
+```
+
+Start the API:
 
 ```bash
 dotnet run --project src/api --urls http://127.0.0.1:5000
 ```
 
-The SQLite database is created automatically on first run.
-
-### Web application
-
-In a second terminal:
+Start the Angular client in a second terminal. Its proxy sends `/api` to port `5000`:
 
 ```bash
 cd src/client
@@ -46,8 +68,14 @@ Open [http://localhost:4200](http://localhost:4200).
 
 ```bash
 dotnet test
+dotnet list package --vulnerable --include-transitive
 cd src/client
 npm ci
 npm test -- --watch=false
 npm run build
+npm audit
 ```
+
+## Design documentation
+
+Start with [`design-new/README.md`](design-new/README.md). It traces the attached requirements through business flow, PostgreSQL data design, runtime architecture, UI behavior, API contract, security boundary, and test evidence.

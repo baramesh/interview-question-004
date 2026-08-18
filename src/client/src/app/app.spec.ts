@@ -16,7 +16,8 @@ describe('App', () => {
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
     expect(element.querySelector('h1')?.textContent).toContain('Create your profile');
-    expect(element.querySelectorAll('input').length).toBeGreaterThanOrEqual(7);
+    expect(element.querySelector('[data-testid="candidate-profile-form"]')).not.toBeNull();
+    expect(element.querySelectorAll('input').length).toBeGreaterThanOrEqual(6);
   });
 
   it('does not submit an empty form', () => {
@@ -27,6 +28,17 @@ describe('App', () => {
     ) as HTMLButtonElement;
     button.click();
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelectorAll('small').length).toBeGreaterThan(0);
+    expect(fixture.nativeElement.querySelector('[data-testid="first-name-error"]')).not.toBeNull();
+  });
+
+  it('clears the submitted error state', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    (element.querySelector('[data-testid="save-button"]') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    (element.querySelector('[data-testid="clear-button"]') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(element.querySelector('.mat-form-field-invalid')).toBeNull();
   });
 });

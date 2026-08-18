@@ -1,6 +1,12 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, ViewChild, computed, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
 
 interface SaveResponse {
   id: number;
@@ -9,12 +15,21 @@ interface SaveResponse {
 
 @Component({
   selector: 'app-root',
-  imports: [ReactiveFormsModule],
+  imports: [
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatSelectModule,
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App {
   @ViewChild('profileInput') private profileInput?: ElementRef<HTMLInputElement>;
+  @ViewChild(FormGroupDirective) private formDirective?: FormGroupDirective;
 
   protected readonly occupations = [
     'Software Engineer',
@@ -108,20 +123,18 @@ export class App {
     }
 
     this.isSaving.set(true);
-    this.http
-      .post<SaveResponse>('http://127.0.0.1:5000/api/candidate-profiles', this.form.getRawValue())
-      .subscribe({
-        next: ({ id, message }) => {
-          this.notification.set({ type: 'success', text: `${message} · ID: ${id}` });
-          this.resetForm(false);
-          this.isSaving.set(false);
-        },
-        error: (error: HttpErrorResponse) => {
-          const details = error.error?.title ?? 'Unable to save the data. Please try again.';
-          this.notification.set({ type: 'error', text: details });
-          this.isSaving.set(false);
-        },
-      });
+    this.http.post<SaveResponse>('/api/candidate-profiles', this.form.getRawValue()).subscribe({
+      next: ({ id, message }) => {
+        this.notification.set({ type: 'success', text: `${message} · ID: ${id}` });
+        this.resetForm(false);
+        this.isSaving.set(false);
+      },
+      error: (error: HttpErrorResponse) => {
+        const details = error.error?.title ?? 'Unable to save the data. Please try again.';
+        this.notification.set({ type: 'error', text: details });
+        this.isSaving.set(false);
+      },
+    });
   }
 
   protected clear(): void {
@@ -129,7 +142,11 @@ export class App {
   }
 
   private resetForm(clearNotification: boolean): void {
-    this.form.reset();
+    if (this.formDirective) {
+      this.formDirective.resetForm();
+    } else {
+      this.form.reset();
+    }
     this.clearProfile();
     if (clearNotification) this.notification.set(null);
   }

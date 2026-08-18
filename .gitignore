@@ -4,6 +4,7 @@
 *.db
 *.db-shm
 *.db-wal
+.env
 
 # Angular / Node.js
 **/node_modules/

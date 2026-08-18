@@ -1,184 +1,248 @@
-<main class="page-shell">
-  <section class="intro" aria-labelledby="page-title">
-    <div class="brand-mark" aria-hidden="true">E</div>
-    <p class="eyebrow">EXAMPLE.COM · CANDIDATE PROFILE</p>
-    <h1 id="page-title">Create your profile</h1>
-    <p class="intro-copy">
+<main
+  class="mx-auto grid w-[min(1180px,calc(100%-2rem))] overflow-hidden rounded-[28px] bg-white shadow-2xl lg:my-12 lg:grid-cols-[0.72fr_1.28fr]"
+  data-testid="candidate-profile-page"
+>
+  <section class="intro p-8 text-white md:p-12" aria-labelledby="page-title">
+    <div
+      class="grid size-12 place-items-center rounded-2xl border border-white/40 bg-white/10 text-2xl font-extrabold text-lime-200"
+      aria-hidden="true"
+    >
+      E
+    </div>
+    <p class="mt-14 text-xs font-extrabold tracking-[0.16em] text-lime-200">
+      EXAMPLE.COM · CANDIDATE PROFILE
+    </p>
+    <h1 id="page-title" class="mt-3 text-4xl font-bold leading-none tracking-tight md:text-5xl">
+      Create your profile
+    </h1>
+    <p class="mt-6 max-w-sm leading-7 text-emerald-100/80">
       Tell us a little about yourself. All fields are required before your profile can be saved.
     </p>
 
-    <div class="feature-list" aria-label="Profile guidelines">
-      <div>
-        <span>01</span>
-        <p><strong>Personal details</strong><br />Use accurate contact information.</p>
+    <div class="mt-11 grid gap-6" aria-label="Profile guidelines">
+      <div class="grid grid-cols-[38px_1fr] gap-3">
+        <span class="pt-1 text-xs font-extrabold tracking-widest text-emerald-200/70">01</span>
+        <p class="m-0 text-sm leading-6 text-emerald-100/75">
+          <strong class="text-white">Personal details</strong><br />Use accurate contact
+          information.
+        </p>
       </div>
-      <div>
-        <span>02</span>
-        <p><strong>Profile image</strong><br />PNG, JPEG, GIF or WebP up to 2 MB.</p>
+      <div class="grid grid-cols-[38px_1fr] gap-3">
+        <span class="pt-1 text-xs font-extrabold tracking-widest text-emerald-200/70">02</span>
+        <p class="m-0 text-sm leading-6 text-emerald-100/75">
+          <strong class="text-white">Profile image</strong><br />PNG, JPEG, GIF or WebP up to 2 MB.
+        </p>
       </div>
-      <div>
-        <span>03</span>
-        <p><strong>Secure record</strong><br />Your database ID appears after saving.</p>
+      <div class="grid grid-cols-[38px_1fr] gap-3">
+        <span class="pt-1 text-xs font-extrabold tracking-widest text-emerald-200/70">03</span>
+        <p class="m-0 text-sm leading-6 text-emerald-100/75">
+          <strong class="text-white">Persistent record</strong><br />Saved to PostgreSQL with a
+          generated ID.
+        </p>
       </div>
     </div>
   </section>
 
-  <section class="form-panel" aria-labelledby="form-title">
-    <div class="form-heading">
+  <section class="form-panel p-6 md:p-10 lg:p-12" aria-labelledby="form-title">
+    <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
       <div>
-        <p class="step-label">IT 04-1</p>
-        <h2 id="form-title">Candidate information</h2>
+        <p class="m-0 text-xs font-extrabold tracking-[0.16em] text-emerald-700">IT 04-1</p>
+        <h2 id="form-title" class="mt-2 text-3xl font-bold tracking-tight text-emerald-950">
+          Candidate information
+        </h2>
       </div>
-      <span class="required-note"><i></i> All fields required</span>
+      <span class="text-xs text-slate-500"
+        ><i class="mr-2 inline-block size-2 rounded-full bg-red-500"></i>All fields required</span
+      >
     </div>
 
     @if (notification(); as message) {
       <div
-        class="notification"
+        class="notification mb-6 flex items-center gap-3 rounded-xl p-4 text-sm font-bold"
         [class.success]="message.type === 'success'"
         [class.error]="message.type === 'error'"
         role="status"
+        data-testid="save-notification"
       >
-        <span>{{ message.type === 'success' ? '✓' : '!' }}</span
+        <span class="grid size-6 place-items-center rounded-full text-white">{{
+          message.type === 'success' ? '✓' : '!'
+        }}</span
         >{{ message.text }}
       </div>
     }
 
-    <form [formGroup]="form" (ngSubmit)="save()" novalidate>
-      <div class="form-grid">
-        <label>
-          <span>First name</span>
-          <input
+    <form [formGroup]="form" (ngSubmit)="save()" novalidate data-testid="candidate-profile-form">
+      <div class="grid gap-x-6 md:grid-cols-2">
+        <mat-form-field appearance="outline"
+          ><mat-label>First name</mat-label
+          ><input
+            matInput
             type="text"
             formControlName="firstName"
             autocomplete="given-name"
             placeholder="e.g. Baramesh"
+            data-testid="first-name-input"
           />
           @if (showError('firstName')) {
-            <small>{{ errorMessage('firstName') }}</small>
+            <mat-error data-testid="first-name-error">{{ errorMessage('firstName') }}</mat-error>
           }
-        </label>
-
-        <label>
-          <span>Last name</span>
-          <input
+        </mat-form-field>
+        <mat-form-field appearance="outline"
+          ><mat-label>Last name</mat-label
+          ><input
+            matInput
             type="text"
             formControlName="lastName"
             autocomplete="family-name"
             placeholder="Your family name"
+            data-testid="last-name-input"
           />
           @if (showError('lastName')) {
-            <small>{{ errorMessage('lastName') }}</small>
+            <mat-error data-testid="last-name-error">{{ errorMessage('lastName') }}</mat-error>
           }
-        </label>
-
-        <label>
-          <span>Email</span>
-          <input
+        </mat-form-field>
+        <mat-form-field appearance="outline"
+          ><mat-label>Email</mat-label
+          ><input
+            matInput
             type="email"
             formControlName="email"
             autocomplete="email"
             placeholder="name@example.com"
+            data-testid="email-input"
           />
           @if (showError('email')) {
-            <small>{{ errorMessage('email') }}</small>
+            <mat-error data-testid="email-error">{{ errorMessage('email') }}</mat-error>
           }
-        </label>
-
-        <label>
-          <span>Phone</span>
-          <input
+        </mat-form-field>
+        <mat-form-field appearance="outline"
+          ><mat-label>Phone</mat-label
+          ><input
+            matInput
             type="tel"
             formControlName="phone"
             autocomplete="tel"
             placeholder="+66 81 234 5678"
+            data-testid="phone-input"
           />
           @if (showError('phone')) {
-            <small>{{ errorMessage('phone') }}</small>
+            <mat-error data-testid="phone-error">{{ errorMessage('phone') }}</mat-error>
           }
-        </label>
-
-        <label>
-          <span>Birth date</span>
-          <input
+        </mat-form-field>
+        <mat-form-field appearance="outline"
+          ><mat-label>Birth date</mat-label
+          ><input
+            matInput
             type="text"
             formControlName="birthDate"
             autocomplete="bday"
             inputmode="numeric"
             placeholder="DD/MM/YYYY"
             maxlength="10"
+            data-testid="birth-date-input"
           />
           @if (showError('birthDate')) {
-            <small>{{ errorMessage('birthDate') }}</small>
+            <mat-error data-testid="birth-date-error">{{ errorMessage('birthDate') }}</mat-error>
           }
-        </label>
-
-        <label>
-          <span>Occupation</span>
-          <select formControlName="occupation">
-            <option value="" disabled>Select an occupation</option>
+        </mat-form-field>
+        <mat-form-field appearance="outline"
+          ><mat-label>Occupation</mat-label
+          ><mat-select formControlName="occupation" data-testid="occupation-select">
             @for (occupation of occupations; track occupation) {
-              <option [value]="occupation">{{ occupation }}</option>
+              <mat-option [value]="occupation">{{ occupation }}</mat-option>
             }
-          </select>
+          </mat-select>
           @if (showError('occupation')) {
-            <small>{{ errorMessage('occupation') }}</small>
+            <mat-error data-testid="occupation-error">{{ errorMessage('occupation') }}</mat-error>
           }
-        </label>
+        </mat-form-field>
       </div>
 
-      <fieldset class="sex-field">
-        <legend>Sex</legend>
-        <label><input type="radio" formControlName="sex" value="Male" /><span>Male</span></label>
-        <label
-          ><input type="radio" formControlName="sex" value="Female" /><span>Female</span></label
+      <fieldset class="mb-6 border-0 p-0" data-testid="sex-fieldset">
+        <legend class="mb-2 text-sm font-semibold text-slate-700">Sex</legend>
+        <mat-radio-group
+          formControlName="sex"
+          aria-label="Sex"
+          class="flex gap-6"
+          data-testid="sex-radio-group"
+          ><mat-radio-button value="Male">Male</mat-radio-button
+          ><mat-radio-button value="Female">Female</mat-radio-button></mat-radio-group
         >
         @if (showError('sex')) {
-          <small>{{ errorMessage('sex') }}</small>
+          <p class="mt-1 text-xs text-red-600" data-testid="sex-error">{{ errorMessage('sex') }}</p>
         }
       </fieldset>
 
-      <div class="profile-field">
-        <div class="profile-copy">
-          <span>Profile image</span>
-          <p>The image is converted to Base64 before it is sent to the API.</p>
+      <div
+        class="profile-field flex flex-col gap-5 rounded-2xl border border-dashed border-emerald-300 bg-emerald-50/50 p-5 sm:flex-row sm:items-center sm:justify-between"
+        data-testid="profile-image-field"
+      >
+        <div>
+          <span class="text-sm font-semibold text-slate-700">Profile image</span>
+          <p class="mt-1 max-w-sm text-xs leading-5 text-slate-500">
+            The image is converted to Base64 before it is sent to the API.
+          </p>
           @if (showError('profileBase64')) {
-            <small>{{ errorMessage('profileBase64') }}</small>
+            <p class="mt-1 text-xs text-red-600" data-testid="profile-image-error">
+              {{ errorMessage('profileBase64') }}
+            </p>
           }
         </div>
-        <div class="upload-control">
-          <div class="avatar-preview" [class.has-image]="hasPreview()">
+        <div class="flex min-w-60 items-center gap-3">
+          <div
+            class="avatar-preview grid size-14 shrink-0 place-items-center overflow-hidden rounded-full bg-emerald-100 text-2xl text-emerald-700"
+            [class.has-image]="hasPreview()"
+          >
             @if (imagePreview(); as preview) {
-              <img [src]="preview" alt="Selected profile preview" />
+              <img class="size-full object-cover" [src]="preview" alt="Selected profile preview" />
             } @else {
               <span>+</span>
             }
           </div>
           <div>
-            <label class="upload-button" for="profile">Choose image</label>
-            <input
+            <button
+              mat-stroked-button
+              type="button"
+              (click)="profileInput.click()"
+              data-testid="choose-image-button"
+            >
+              Choose image</button
+            ><input
               #profileInput
+              class="sr-only"
               id="profile"
               type="file"
               accept="image/png,image/jpeg,image/gif,image/webp"
               (change)="selectProfile($event)"
+              data-testid="profile-image-input"
             />
-            <p>{{ selectedFileName() }}</p>
+            <p class="mt-1 max-w-40 truncate text-xs text-slate-500">{{ selectedFileName() }}</p>
           </div>
         </div>
       </div>
 
-      <div class="actions">
-        <button type="button" class="secondary" (click)="clear()" [disabled]="isSaving()">
+      <div class="mt-8 flex justify-end gap-3">
+        <button
+          mat-stroked-button
+          type="button"
+          (click)="clear()"
+          [disabled]="isSaving()"
+          data-testid="clear-button"
+        >
           Clear
         </button>
-        <button type="submit" class="primary" [disabled]="isSaving()">
-          {{ isSaving() ? 'Saving…' : 'Save profile' }}
-          <span aria-hidden="true">→</span>
+        <button mat-flat-button type="submit" [disabled]="isSaving()" data-testid="save-button">
+          @if (isSaving()) {
+            <mat-spinner diameter="18" aria-label="Saving"></mat-spinner>
+          } @else {
+            Save profile <span aria-hidden="true">→</span>
+          }
         </button>
       </div>
     </form>
   </section>
 </main>
 
-<footer>© {{ currentYear }} Example.com · Interview Question 004</footer>
+<footer class="pb-8 text-center text-xs text-slate-500">
+  © {{ currentYear }} Example.com · Interview Question 004
+</footer>
