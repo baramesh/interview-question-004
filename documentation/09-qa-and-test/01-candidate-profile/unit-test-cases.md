@@ -30,6 +30,8 @@ client_test_source:
 | `UT-API-CP-009` | Master data / Query            | `GetAll_returns_only_active_occupations_in_display_order` | กรองสถานะและลำดับข้อมูลหลัก | คืนเฉพาะ active ตาม `displayOrder`               |
 | `UT-API-CP-010` | Negative / Business rule       | `Create_rejects_unknown_occupation_code`                  | code ไม่อยู่ในข้อมูลหลัก    | มีข้อผิดพลาด `OccupationCode` และไม่สร้างโปรไฟล์ |
 | `UT-API-CP-011` | Positive / Persistence mapping | `Create_resolves_occupation_code_to_foreign_key`          | code ที่ถูกต้อง             | สร้างโปรไฟล์ด้วย `occupation_id` ที่จับคู่ได้    |
+| `UT-API-CP-012` | Negative / File signature      | `Mismatched_image_signature_fails_validation`             | MIME ไม่ตรงกับ byte         | ผิดที่ `ProfileBase64` และไม่ผ่าน validation     |
+| `UT-API-CP-013` | Positive / File signature      | `Supported_image_signatures_pass_validation`              | signature ของรูปที่รองรับ   | PNG, JPEG, GIF และ WebP ผ่าน validation          |
 
 ## Client — Vitest
 
@@ -43,11 +45,11 @@ client_test_source:
 
 ## ขั้นตอน Unit Test
 
-### UT-API-CP-001–UT-API-CP-008 — Request validation
+### UT-API-CP-001–UT-API-CP-008, UT-API-CP-012–UT-API-CP-013 — Request validation
 
 1. Arrange: สร้าง `CreateCandidateProfileRequest` มาตรฐาน แล้วแทนค่าฟิลด์ที่ต้องการทดสอบ
 2. Act: เรียก `Validator.TryValidateObject` พร้อมตรวจ property ทั้งหมด
-3. Assert: กรณีถูกต้องไม่มีผลผิดพลาด; กรณีผิดต้องมี `MemberNames` ตรงฟิลด์เป้าหมาย
+3. Assert: กรณีถูกต้องไม่มีผลผิดพลาด; กรณีผิดต้องมี `MemberNames` ตรงฟิลด์เป้าหมาย รวมถึง MIME และ byte signature ต้องตรงกัน
 
 ### UT-API-CP-009 — Occupation list
 

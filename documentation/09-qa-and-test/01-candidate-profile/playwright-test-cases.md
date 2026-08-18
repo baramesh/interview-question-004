@@ -44,6 +44,11 @@ test_source: src/client/e2e/candidate-profile.spec.ts
 | `TC-CP-E2E-006` | Negative    | API contract                |
 | `TC-CP-E2E-007` | Responsive  | Visual                      |
 | `TC-CP-E2E-008` | Master data | Integration / Display order |
+| `SEC-CP-001`    | Security    | Negative / File size        |
+| `SEC-CP-002`    | Security    | Negative / File signature   |
+| `SEC-CP-003`    | Security    | Negative / Request limit    |
+| `SEC-CP-004`    | Security    | Abuse / Rate limit          |
+| `SEC-CP-008`    | Security    | Configuration / Headers     |
 
 ### TC-CP-E2E-001 — แสดงฟิลด์และปุ่มตามข้อกำหนด
 
@@ -108,6 +113,41 @@ test_source: src/client/e2e/candidate-profile.spec.ts
 - **ขั้นตอน:** เรียก `GET /api/occupations` ตรวจ `code`/`name` แล้วเปิด combo box อาชีพบนหน้าเว็บ
 - **ผลที่คาดหวัง:** API ตอบ `200` พร้อม 5 รายการตาม `displayOrder`; ตัวเลือกบนหน้าแสดง `name` ตรงกับ response
 - **สืบย้อน:** `FR-CP-02`, `DDC-CP-02`, `API-CP-02`, `UIX-CP-01`
+
+### SEC-CP-001 — ปฏิเสธรูปที่ถอดรหัสแล้วเกิน 2 MiB
+
+- **ประเภท:** Security / Negative / File size
+- **ขั้นตอน:** ส่ง Base64 ที่ถอดรหัสแล้วเกิน 2 MiB แต่ request รวมไม่เกิน 3 MiB
+- **ผลที่คาดหวัง:** API ตอบ `400` และระบุข้อผิดพลาดที่ `ProfileBase64`
+- **สืบย้อน:** `QAR-CP-01-01`, `API-CP-01`
+
+### SEC-CP-002 — ปฏิเสธ MIME ที่ไม่ตรงกับ byte signature
+
+- **ประเภท:** Security / Negative / File signature
+- **ขั้นตอน:** ประกาศ `image/png` แต่ส่ง byte signature ของ JPEG
+- **ผลที่คาดหวัง:** API ตอบ `400` และไม่บันทึกข้อมูล
+- **สืบย้อน:** `QAR-CP-01-01`, `BR-CP-01-07`, `API-CP-01`
+
+### SEC-CP-003 — ปฏิเสธ request body เกิน 3 MiB
+
+- **ประเภท:** Security / Negative / Resource limit
+- **ขั้นตอน:** ส่ง JSON ผ่าน Nginx ที่มีขนาดเกิน 3 MiB
+- **ผลที่คาดหวัง:** ตอบ `413` ก่อนเข้าสู่ตรรกะธุรกิจ
+- **สืบย้อน:** `QAR-CP-01-02`, `API-CP-01`, `SV-CP-02`
+
+### SEC-CP-004 — จำกัดอัตราคำขอสร้างข้อมูล
+
+- **ประเภท:** Security / Abuse / Rate limit
+- **ขั้นตอน:** ส่ง POST จาก IP เดียวซ้ำจนเกิน 20 คำขอภายใน 1 นาที
+- **ผลที่คาดหวัง:** อย่างน้อยหนึ่งคำขอตอบ `429` และคำขอที่เกินไม่ถูกเข้าคิว
+- **สืบย้อน:** `QAR-CP-01-03`, `API-CP-01`, `SV-CP-02`
+
+### SEC-CP-008 — ส่ง security headers ผ่าน Nginx
+
+- **ประเภท:** Security / Configuration / Browser
+- **ขั้นตอน:** เปิดหน้า `/` และเรียก `/api/occupations` ผ่านพอร์ต `4204` แล้วอ่าน response headers
+- **ผลที่คาดหวัง:** ทั้งสองคำตอบมี CSP, `X-Content-Type-Options`, frame protection, Referrer Policy และ Permissions Policy
+- **สืบย้อน:** `QAR-CP-01-04`, `SV-CP-02`, `DEP-CP-01`
 
 ## การรันและหลักฐาน
 

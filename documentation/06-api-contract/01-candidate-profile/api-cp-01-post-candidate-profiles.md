@@ -40,7 +40,7 @@ traces_down:
 
 ## Security
 
-Endpoint เป็น public เฉพาะสภาพแวดล้อมทดสอบในเครื่องตาม `SV-CP-01` จึงไม่รับ access token และไม่มี permission guard การนำไปใช้ภายนอกเครื่องหรือ production ต้องเพิ่ม authentication, authorization, HTTPS และการจัดการข้อมูลส่วนบุคคลก่อน
+Endpoint เป็น public สำหรับข้อสอบตาม `SV-CP-01` จึงไม่รับ access token และไม่มี permission guard การยืนยันตัวตนและการกำหนดสิทธิ์เป็น `OUT OF SCOPE` ส่วนมาตรการใน `QAR-CP-01` ยังต้องบังคับ ได้แก่ file signature, request-size limit, rate limit, security headers, safe error และการปิดพอร์ตไว้ที่ loopback
 
 ## Request Headers
 
@@ -66,16 +66,16 @@ Endpoint เป็น public เฉพาะสภาพแวดล้อมท
 
 `CreateCandidateProfileRequest`
 
-| field            | type   | required | source        | persistence mapping                                               | description                   | rule                                                                                              |
-| ---------------- | ------ | -------- | ------------- | ----------------------------------------------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------- |
-| `firstName`      | string | yes      | command input | `CandidateProfile.first_name`                                     | ชื่อผู้สมัคร                  | trim ก่อนบันทึก; ความยาว 1–100 ตัวอักษร                                                           |
-| `lastName`       | string | yes      | command input | `CandidateProfile.last_name`                                      | นามสกุลผู้สมัคร               | trim ก่อนบันทึก; ความยาว 1–100 ตัวอักษร                                                           |
-| `email`          | string | yes      | command input | `CandidateProfile.email`                                          | อีเมลติดต่อ                   | ต้องผ่านรูปแบบอีเมล ยาวไม่เกิน 254 ตัวอักษร; trim และแปลงเป็นอักษรเล็กก่อนบันทึก                  |
-| `phone`          | string | yes      | command input | `CandidateProfile.phone`                                          | หมายเลขโทรศัพท์               | trim ก่อนบันทึก; ยาวไม่เกิน 30 ตัวอักษรและต้องตรงรูปแบบโทรศัพท์จาก `BR-CP-01`                     |
-| `profileBase64`  | string | yes      | command input | `CandidateProfile.profile_base64`                                 | รูปโปรไฟล์แบบ Base64 data URL | MIME ต้องเป็น PNG, JPEG, GIF หรือ WebP; ส่วนข้อมูล Base64 ต้องถอดรหัสได้และมีขนาด 1 byte ถึง 2 MB |
-| `birthDate`      | string | yes      | command input | แปลงเป็น `CandidateProfile.birth_date` ชนิด `date`                | วันเกิด                       | ต้องเป็นวันที่อดีตในรูปแบบ `DD/MM/YYYY`                                                           |
-| `occupationCode` | string | yes      | command input | ค้น `Occupation.code` แล้วบันทึก `CandidateProfile.occupation_id` | รหัสอาชีพจากข้อมูลหลัก        | trim และแปลงเป็นอักษรเล็ก; ยาวไม่เกิน 50 ตัวอักษร; ต้องตรงกับรายการที่ `is_active = true`         |
-| `sex`            | string | yes      | command input | `CandidateProfile.sex`                                            | เพศ                           | รับเฉพาะ `Male` หรือ `Female`                                                                     |
+| field            | type   | required | source        | persistence mapping                                               | description                   | rule                                                                                                                    |
+| ---------------- | ------ | -------- | ------------- | ----------------------------------------------------------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `firstName`      | string | yes      | command input | `CandidateProfile.first_name`                                     | ชื่อผู้สมัคร                  | trim ก่อนบันทึก; ความยาว 1–100 ตัวอักษร                                                                                 |
+| `lastName`       | string | yes      | command input | `CandidateProfile.last_name`                                      | นามสกุลผู้สมัคร               | trim ก่อนบันทึก; ความยาว 1–100 ตัวอักษร                                                                                 |
+| `email`          | string | yes      | command input | `CandidateProfile.email`                                          | อีเมลติดต่อ                   | ต้องผ่านรูปแบบอีเมล ยาวไม่เกิน 254 ตัวอักษร; trim และแปลงเป็นอักษรเล็กก่อนบันทึก                                        |
+| `phone`          | string | yes      | command input | `CandidateProfile.phone`                                          | หมายเลขโทรศัพท์               | trim ก่อนบันทึก; ยาวไม่เกิน 30 ตัวอักษรและต้องตรงรูปแบบโทรศัพท์จาก `BR-CP-01`                                           |
+| `profileBase64`  | string | yes      | command input | `CandidateProfile.profile_base64`                                 | รูปโปรไฟล์แบบ Base64 data URL | MIME ต้องเป็น PNG, JPEG, GIF หรือ WebP; Base64 ต้องถอดรหัสได้ มีขนาด 1 byte ถึง 2 MB และ byte signature ต้องตรงกับ MIME |
+| `birthDate`      | string | yes      | command input | แปลงเป็น `CandidateProfile.birth_date` ชนิด `date`                | วันเกิด                       | ต้องเป็นวันที่อดีตในรูปแบบ `DD/MM/YYYY`                                                                                 |
+| `occupationCode` | string | yes      | command input | ค้น `Occupation.code` แล้วบันทึก `CandidateProfile.occupation_id` | รหัสอาชีพจากข้อมูลหลัก        | trim และแปลงเป็นอักษรเล็ก; ยาวไม่เกิน 50 ตัวอักษร; ต้องตรงกับรายการที่ `is_active = true`                               |
+| `sex`            | string | yes      | command input | `CandidateProfile.sex`                                            | เพศ                           | รับเฉพาะ `Male` หรือ `Female`                                                                                           |
 
 ### Master Data Dependency
 
@@ -99,9 +99,10 @@ Client ต้องอ่าน `code` และ `name` จาก `GET /api/occu
 |     1 | ASP.NET Core binding และ DataAnnotations ตรวจ required, length และ email          | API contract |
 |     2 | API ค้น `Occupation` ที่ `code` ตรงกับ `occupationCode` และ `is_active = true`    | `DDC-CP-02`  |
 |     3 | `IValidatableObject` ตรวจ phone, birthDate, sex และ Base64 image                  | API contract |
-|     4 | API trim ชื่อ นามสกุล อีเมล โทรศัพท์ และแปลงอีเมลเป็นอักษรเล็ก                    | API contract |
-|     5 | EF Core เพิ่ม `CandidateProfile` พร้อม `occupation_id` และบันทึกหนึ่ง transaction | `RV-CP-01`   |
-|     6 | PostgreSQL สร้าง `id`; API คืน `201 Created`                                      | API contract |
+|     4 | API ตรวจ byte signature ให้ตรงกับ MIME ที่ประกาศ                                  | `QAR-CP-01`  |
+|     5 | API trim ชื่อ นามสกุล อีเมล โทรศัพท์ และแปลงอีเมลเป็นอักษรเล็ก                    | API contract |
+|     6 | EF Core เพิ่ม `CandidateProfile` พร้อม `occupation_id` และบันทึกหนึ่ง transaction | `RV-CP-01`   |
+|     7 | PostgreSQL สร้าง `id`; API คืน `201 Created`                                      | API contract |
 
 ## Idempotency
 
@@ -127,6 +128,8 @@ Endpoint นี้ไม่มี idempotency key การส่ง payload เ
 | status                      | meaning                                                                          | error_code                    | body                       | description                                                                      |
 | --------------------------- | -------------------------------------------------------------------------------- | ----------------------------- | -------------------------- | -------------------------------------------------------------------------------- |
 | `400 Bad Request`           | JSON binding, ข้อมูลไม่ผ่านกฎ หรือ `occupationCode` ไม่ตรงกับข้อมูลหลักที่ใช้งาน | ไม่มีใน payload ปัจจุบัน      | `ValidationProblemDetails` | ไม่เขียนระเบียนและคืนรายการข้อความแยกตามฟิลด์                                    |
+| `413 Content Too Large`     | request body เกิน 3 MiB                                                          | ไม่มี                         | reverse-proxy/API response | ปฏิเสธก่อนตรรกะธุรกิจและไม่เขียนระเบียน                                          |
+| `429 Too Many Requests`     | IP เดียวเรียก POST เกิน 20 ครั้งใน 1 นาที                                        | ไม่มี                         | empty response             | ไม่เข้าคิวและไม่เขียนระเบียน                                                     |
 | `500 Internal Server Error` | API หรือ PostgreSQL ล้มเหลวโดยไม่คาดหมาย                                         | ไม่มีสัญญาแบบตายตัวในปัจจุบัน | server error response      | ไม่รับรองว่าบันทึกสำเร็จ; Client แสดงข้อความทั่วไปและห้ามแสดงรายละเอียดฐานข้อมูล |
 
 Endpoint public นี้ไม่มี `401` และ `403`; ไม่มี uniqueness rule จึงไม่มี `409` ในขอบเขตปัจจุบัน
@@ -159,11 +162,17 @@ Endpoint public นี้ไม่มี `401` และ `403`; ไม่มี 
 | `TC-CP-E2E-006` | payload ผิดตอบ `400 ValidationProblemDetails`       |
 | `UT-API-CP-010` | code อาชีพไม่ถูกต้องถูกปฏิเสธและไม่สร้างโปรไฟล์     |
 | `UT-API-CP-011` | code อาชีพถูกจับคู่เป็น foreign key ก่อนบันทึก      |
+| `UT-API-CP-012` | MIME และ byte signature ไม่ตรงกันถูกปฏิเสธ          |
+| `SEC-CP-001`    | รูปที่ถอดรหัสเกิน 2 MiB ถูกปฏิเสธ                   |
+| `SEC-CP-002`    | MIME และ byte signature ไม่ตรงกันถูกปฏิเสธ          |
+| `SEC-CP-003`    | request body เกิน 3 MiB ถูกปฏิเสธ                   |
+| `SEC-CP-004`    | คำขอเกิน 20 ครั้งต่อนาทีตอบ `429`                   |
 
 ## Changelog
 
 | version | date       | change                                                                                                                                                              |
 | ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.2.0   | 2026-08-18 | เพิ่ม file-signature validation, request-size limit, rate limit และการสืบย้อนไป `QAR-CP-01`                                                                         |
 | 2.1.0   | 2026-08-18 | เปลี่ยน `occupation` เป็น `occupationCode` และอ้างข้อมูลหลักจาก `API-CP-02`                                                                                         |
 | 2.0.0   | 2026-08-18 | ปรับเป็นรูปแบบ endpoint-per-file เพิ่ม frontmatter, caller, security, schema tables, validation, persistence mapping, idempotency, error contract และ YAML examples |
 | 1.0.0   | 2026-08-18 | สร้าง contract ฉบับย่อเริ่มต้น                                                                                                                                      |
