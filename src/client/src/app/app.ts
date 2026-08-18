@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { format, isBefore, isValid, startOfToday, subDays } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 
@@ -44,6 +45,7 @@ interface OccupationOption {
     MatProgressSpinnerModule,
     MatRadioModule,
     MatSelectModule,
+    MatSnackBarModule,
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: enUS },
@@ -60,9 +62,6 @@ export class App implements OnInit {
   protected readonly isLoadingOccupations = signal(true);
   protected readonly occupationLoadError = signal<string | null>(null);
   protected readonly isSaving = signal(false);
-  protected readonly notification = signal<{ type: 'success' | 'error'; text: string } | null>(
-    null,
-  );
   protected readonly selectedFileName = signal('No file selected');
   protected readonly imagePreview = signal<string | null>(null);
   protected readonly currentYear = new Date().getFullYear();
@@ -73,6 +72,7 @@ export class App implements OnInit {
   constructor(
     formBuilder: FormBuilder,
     private readonly http: HttpClient,
+    private readonly snackBar: MatSnackBar,
   ) {
     this.form = formBuilder.nonNullable.group({
       firstName: ['', [Validators.required, Validators.maxLength(100)]],
@@ -153,7 +153,6 @@ export class App implements OnInit {
   }
 
   protected save(): void {
-    this.notification.set(null);
     if (this.form.invalid || this.isSaving()) {
       this.form.markAllAsTouched();
       return;
@@ -167,34 +166,44 @@ export class App implements OnInit {
     };
     this.http.post<SaveResponse>('/api/profiles', payload).subscribe({
       next: ({ id, message }) => {
-        this.notification.set({ type: 'success', text: `${message} · ID: ${id}` });
-        this.resetForm(false);
+        this.snackBar.open(`${message} · ID: ${id}`, 'Close', {
+          duration: 5000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+          panelClass: ['profile-toast', 'profile-toast-success'],
+        });
+        this.resetForm();
         this.isSaving.set(false);
       },
       error: (error: HttpErrorResponse) => {
         const details = error.error?.title ?? 'Unable to save the data. Please try again.';
-        this.notification.set({ type: 'error', text: details });
+        this.snackBar.open(details, 'Close', {
+          duration: 7000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+          panelClass: ['profile-toast', 'profile-toast-error'],
+        });
         this.isSaving.set(false);
       },
     });
   }
 
   protected clear(): void {
-    this.resetForm(true);
+    this.snackBar.dismiss();
+    this.resetForm();
   }
 
   protected removeProfile(): void {
     this.clearProfile();
   }
 
-  private resetForm(clearNotification: boolean): void {
+  private resetForm(): void {
     if (this.formDirective) {
       this.formDirective.resetForm();
     } else {
       this.form.reset();
     }
     this.clearProfile();
-    if (clearNotification) this.notification.set(null);
   }
 
   private clearProfile(): void {

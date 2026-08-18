@@ -23,7 +23,7 @@ relates_to:
 |     4 | Contact details      | อีเมลและโทรศัพท์                                                            | `contact-details-section`      |
 |     5 | Professional details | อาชีพจากข้อมูลหลัก                                                          | `professional-details-section` |
 |     6 | Form actions         | Clear form และ Save profile ชิดขวาท้ายแบบฟอร์ม                              | `clear-button`, `save-button`  |
-|     7 | Feedback             | ข้อผิดพลาดรายฟิลด์ สถานะกำลังบันทึก และผลสำเร็จ/ล้มเหลว                     | `save-notification`            |
+|     7 | Feedback             | ข้อผิดพลาดรายฟิลด์ สถานะกำลังบันทึก และ Toast ผลสำเร็จ/ล้มเหลว              | `mat-snack-bar-container`      |
 
 ## Visual Language
 
@@ -33,6 +33,12 @@ relates_to:
 - ช่องอัปโหลดรูปอนุญาตเฉพาะ `image/png` และ `image/jpeg`; แสดงข้อความ `PNG or JPEG. Maximum file size 2 MB.`
 - แต่ละหมวดมีหมายเลข ชื่อหมวด และคำอธิบายสั้น โดย field อยู่ด้านขวาบน desktop และเรียงลงบน mobile
 - ใช้สีเขียวกับสิ่งที่กดได้หรือสถานะสำเร็จ สีแดงใช้เฉพาะข้อผิดพลาดและเครื่องหมายฟิลด์บังคับ
+
+## Toast ผลการบันทึก
+
+- ใช้ `MatSnackBar` ของ Angular Material แทนกล่องข้อความแบบตรึงในหน้า จึงไม่ดันโครงสร้างแบบฟอร์ม
+- ผลสำเร็จแสดง `save data success · ID: {id}` มุมขวาบน 5 วินาที พร้อมปุ่ม `Close`
+- ผลล้มเหลวแสดงข้อผิดพลาด 7 วินาทีโดยไม่ล้างข้อมูลที่กรอก
 
 ## Required-field Indicator
 
@@ -53,7 +59,7 @@ relates_to:
 
 ## ตัวระบุทดสอบหลัก
 
-`profile-page`, `profile-form`, `profile-photo-section`, `personal-details-section`, `contact-details-section`, `professional-details-section`, `first-name-input`, `last-name-input`, `email-input`, `phone-input`, `birth-date-input`, `birth-date-toggle`, `occupation-select`, `sex-radio-group`, `profile-image-input`, `remove-image-button`, `clear-button`, `save-button`, `save-notification`
+`profile-page`, `profile-form`, `profile-photo-section`, `personal-details-section`, `contact-details-section`, `professional-details-section`, `first-name-input`, `last-name-input`, `email-input`, `phone-input`, `birth-date-input`, `birth-date-toggle`, `occupation-select`, `sex-radio-group`, `profile-image-input`, `remove-image-button`, `clear-button`, `save-button`
 
 ## การตอบสนองตามขนาดจอ
 

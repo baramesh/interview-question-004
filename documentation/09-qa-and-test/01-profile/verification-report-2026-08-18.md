@@ -11,8 +11,8 @@ verified_at: 2026-08-18
 | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | xUnit                         | ผ่าน 16 รายการ; ผลรายกรณีอยู่ใน `unit-test-result.md`                                                                         |
 | Angular Vitest                | ผ่าน 5 รายการ; ผลรายกรณีอยู่ใน `unit-test-result.md`                                                                          |
-| Playwright Chromium           | ผ่าน 16 รายการ รวม Angular Material Datepicker, avatar และ security 6 รายการ; มี screenshot ครบใน `playwright-test-result.md` |
-| Angular production build      | ผ่าน ขนาดเริ่มต้น 801.41 kB รวม Google Sans, Angular Material Datepicker และ date-fns ในระบบ                                  |
+| Playwright Chromium           | ผ่าน 16 รายการ รวม Toast พร้อม ID, Angular Material Datepicker, avatar และ security 6 รายการ; มี screenshot ครบใน `playwright-test-result.md` |
+| Angular production build      | ผ่าน ขนาดเริ่มต้น 814.87 kB รวม Google Sans, Angular Material Datepicker, MatSnackBar และ date-fns ในระบบ                     |
 | NuGet vulnerability scan      | ไม่พบแพ็กเกจที่มีช่องโหว่จากแหล่งปัจจุบัน                                                                                     |
 | npm audit                     | ไม่พบช่องโหว่                                                                                                                 |
 | Docker Compose บน OrbStack    | client, api, postgres ทำงานครบ; postgres healthy                                                                              |
@@ -29,6 +29,7 @@ verified_at: 2026-08-18
 
 ## หลักฐาน runtime ล่าสุด
 
-- การส่งผ่านหน้าเว็บได้ `save data success` พร้อม ID ที่ PostgreSQL สร้าง
+- การส่งผ่านหน้าเว็บได้ Toast `save data success · ID: {id}` โดย ID ตรงกับค่าที่ PostgreSQL สร้าง
+- ภาพ `screenshots/tc-pf-e2e-005.png` แสดง Toast จากการรันล่าสุดพร้อมปุ่ม `Close`
 - หลังบันทึกจำนวน Angular Material invalid field เท่ากับ `0`
 - ชุดบริการยังเปิดไว้ที่ `http://localhost:4204` เพื่อให้ตรวจต่อได้

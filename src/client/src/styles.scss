@@ -34,3 +34,21 @@ select,
   color: #dc2626;
   font-weight: 700;
 }
+
+.profile-toast.mat-mdc-snack-bar-container {
+  --mat-snack-bar-supporting-text-color: #fff;
+  --mat-snack-bar-button-color: #fff;
+
+  .mdc-snackbar__surface {
+    border-radius: 0.875rem;
+    box-shadow: 0 18px 48px rgb(15 23 42 / 24%);
+  }
+}
+
+.profile-toast-success.mat-mdc-snack-bar-container {
+  --mat-snack-bar-container-color: #166534;
+}
+
+.profile-toast-error.mat-mdc-snack-bar-container {
+  --mat-snack-bar-container-color: #991b1b;
+}

@@ -1,6 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { App } from './app';
 
 interface TestableApp {
@@ -90,11 +91,13 @@ describe('App', () => {
     expect(form.controls.occupationCode.value).toBe('software-engineer');
   });
 
-  it('posts the selected occupation code', () => {
+  it('posts the selected occupation code and opens a toast with the saved ID', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     flushOccupations();
     const component = fixture.componentInstance as unknown as TestableApp;
+    const snackBar = fixture.debugElement.injector.get(MatSnackBar);
+    const snackBarOpen = vi.spyOn(snackBar, 'open');
     component.form.setValue({
       firstName: 'Ada',
       lastName: 'Lovelace',
@@ -113,6 +116,15 @@ describe('App', () => {
     expect(request.request.body.occupationCode).toBe('software-engineer');
     expect(request.request.body.birthDate).toBe('18/08/1990');
     request.flush({ id: 1, message: 'save data success' });
+    expect(snackBarOpen).toHaveBeenCalledWith(
+      'save data success · ID: 1',
+      'Close',
+      expect.objectContaining({
+        duration: 5000,
+        horizontalPosition: 'end',
+        verticalPosition: 'top',
+      }),
+    );
   });
 
   function flushOccupations(): void {

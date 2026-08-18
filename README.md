@@ -19,7 +19,7 @@ Full-stack implementation of Test 1, Question 4 for `example.com`.
 - PostgreSQL-backed occupation master data loaded through `GET /api/occupations`
 - Profile submission sends `occupationCode`; the API resolves it to an internal foreign key
 - Image profile stored as a Base64 data URL
-- PostgreSQL-generated record ID and success notification
+- Angular Material Toast showing the PostgreSQL-generated record ID
 - Form reset after save and a dedicated Clear action
 - Server-side validation in addition to browser validation
 - Responsive Angular Material controls with Tailwind CSS layout

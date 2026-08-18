@@ -27,7 +27,8 @@ sequenceDiagram
   Api->>Db: INSERT profiles { occupation_id }
   Db-->>Api: generated id
   Api-->>Client: 201 { id, message }
-  Client-->>User: save data success และล้างแบบฟอร์ม
+  Client-->>User: Angular Material Toast: save data success · ID: {id}
+  Client->>Client: ล้างแบบฟอร์ม
 ```
 
 หากการตรวจข้อมูลล้มเหลว ระบบตอบ `400`; หากการเชื่อมต่อหรือฐานข้อมูลล้มเหลว Client แสดงข้อผิดพลาดและไม่ล้างข้อมูล

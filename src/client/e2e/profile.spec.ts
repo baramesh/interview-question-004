@@ -97,7 +97,7 @@ test('TC-PF-E2E-004 ปุ่ม Clear ล้างข้อมูลและ�
   await expect(page.getByRole('radio', { checked: true })).toHaveCount(0);
 });
 
-test('TC-PF-E2E-005 บันทึกโปรไฟล์ผ่าน API และล้างสถานะแบบฟอร์ม', async ({ page }) => {
+test('TC-PF-E2E-005 บันทึกโปรไฟล์ แสดง Toast พร้อม ID และล้างสถานะแบบฟอร์ม', async ({ page }) => {
   await fillValidForm(page, `${Date.now()}`);
 
   const responsePromise = page.waitForResponse(
@@ -113,9 +113,9 @@ test('TC-PF-E2E-005 บันทึกโปรไฟล์ผ่าน API แ�
   expect(body.id).toBeGreaterThan(0);
   expect(body.message).toBe('save data success');
   expect(requestBody.occupationCode).toBe('software-engineer');
-  await expect(page.getByTestId('save-notification')).toContainText(
-    `save data success · ID: ${body.id}`,
-  );
+  const toast = page.locator('mat-snack-bar-container');
+  await expect(toast).toContainText(`save data success · ID: ${body.id}`);
+  await expect(toast.getByRole('button', { name: 'Close' })).toBeVisible();
   await expect(page.getByTestId('first-name-input')).toHaveValue('');
   await expect(page.getByRole('radio', { checked: true })).toHaveCount(0);
   await expect(page.locator('mat-radio-button.mat-mdc-radio-checked')).toHaveCount(0);

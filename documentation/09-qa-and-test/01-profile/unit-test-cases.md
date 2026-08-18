@@ -42,7 +42,7 @@ client_test_source:
 | `UT-UI-PF-002` | Negative / Validation         | `does not submit an empty form`                                 | กดบันทึกเมื่อฟอร์มว่าง                           | แสดง required error และไม่ส่ง POST                                         |
 | `UT-UI-PF-003` | Functional / State management | `clears the submitted error state`                              | กด Clear หลังตรวจฟอร์มผิด                        | สถานะ Material invalid ถูกล้าง                                             |
 | `UT-UI-PF-004` | Master data / HTTP            | `loads occupation master data from the API`                     | GET ข้อมูลหลักและเก็บ code ในตัวควบคุม           | เรียก `/api/occupations` และเลือกค่า `software-engineer` ได้               |
-| `UT-UI-PF-005` | Positive / HTTP payload       | `posts the selected occupation code`                            | payload เมื่อบันทึกฟอร์มที่ถูกต้อง               | POST ส่ง `occupationCode = software-engineer` และ `birthDate = 18/08/1990` |
+| `UT-UI-PF-005` | Positive / HTTP / Toast       | `posts the selected occupation code and opens a toast with the saved ID` | payload และผลตอบเมื่อบันทึกฟอร์มที่ถูกต้อง | POST ส่ง code/วันที่ถูกต้อง และ `MatSnackBar.open` ได้ `save data success · ID: 1` |
 
 ## ขั้นตอน Unit Test
 
@@ -68,7 +68,7 @@ client_test_source:
 
 1. Arrange: สร้าง `App` ผ่าน Angular TestBed และใช้ HTTP testing backend
 2. Act: จำลอง `GET /api/occupations`, การกด Save/Clear หรือการส่งฟอร์มตามกรณี
-3. Assert: ตรวจ DOM, สถานะแบบฟอร์ม, HTTP method, URL และ `occupationCode` ใน request body
+3. Assert: ตรวจ DOM, สถานะแบบฟอร์ม, HTTP method, URL, `occupationCode` ใน request body และข้อความ Toast ที่มี ID จาก API
 
 ## คำสั่ง
 

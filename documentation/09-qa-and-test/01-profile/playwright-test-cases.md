@@ -85,12 +85,12 @@ test_source: src/client/e2e/profile.spec.ts
 - **ผลที่คาดหวัง:** ช่องข้อความว่าง ไม่มีรูปตัวอย่าง แสดง `No file selected` และไม่มี radio ที่ถูกเลือก
 - **สืบย้อน:** `AC-PF-01`, `UIX-PF-01`
 
-### TC-PF-E2E-005 — บันทึกโปรไฟล์สำเร็จผ่านระบบจริง
+### TC-PF-E2E-005 — บันทึกโปรไฟล์และแสดง Toast พร้อม ID
 
 - **ประเภท:** Positive / End-to-end / Persistence
 - **เป้าหมาย:** พิสูจน์เส้นทาง Angular → Nginx → API → PostgreSQL
-- **ขั้นตอน:** กรอกชุดข้อมูลมาตรฐานโดยใช้อีเมลไม่ซ้ำ กด Save รอคำตอบ API และอ่าน payload
-- **ผลที่คาดหวัง:** ได้ `201 Created`, payload ส่ง `occupationCode = software-engineer`, `id > 0`, `message = save data success`, แสดงข้อความพร้อม ID และฟอร์มกลับสู่สถานะว่างที่ไม่มี invalid field
+- **ขั้นตอน:** กรอกชุดข้อมูลมาตรฐานโดยใช้อีเมลไม่ซ้ำ กด Save รอคำตอบ API อ่าน `id` แล้วตรวจ Toast กับปุ่ม `Close`
+- **ผลที่คาดหวัง:** ได้ `201 Created`, payload ส่ง `occupationCode = software-engineer`, `id > 0`, `message = save data success`, Toast แสดง `save data success · ID: {id}` ตรงกับ API และฟอร์มกลับสู่สถานะว่างที่ไม่มี invalid field
 - **สืบย้อน:** `FR-PF-01`, `AC-PF-01`, `API-PF-01`, `RV-PF-01`
 
 ### TC-PF-E2E-006 — API ปฏิเสธ payload ไม่ถูกต้อง

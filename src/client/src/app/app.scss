@@ -85,24 +85,6 @@
   box-shadow: 0 0 0 2px #34d399;
 }
 
-.notification.success {
-  color: #166534;
-  background: #ecfdf3;
-
-  span {
-    background: #15803d;
-  }
-}
-
-.notification.error {
-  color: #991b1b;
-  background: #fef2f2;
-
-  span {
-    background: #dc2626;
-  }
-}
-
 mat-form-field {
   width: 100%;
 }
