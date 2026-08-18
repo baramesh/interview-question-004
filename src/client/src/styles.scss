@@ -4,13 +4,7 @@ html {
   min-width: 320px;
   min-height: 100%;
   background: #f2f6f3;
-  font-family:
-    Inter,
-    ui-sans-serif,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    sans-serif;
+  font-family: 'Google Sans', Arial, sans-serif;
 }
 body {
   min-height: 100vh;
@@ -18,6 +12,25 @@ body {
   background: radial-gradient(circle at 8% 4%, rgba(190, 230, 194, 0.28), transparent 24%), #f2f6f3;
 }
 button,
-input {
+input,
+textarea,
+select,
+.mat-mdc-form-field,
+.mat-mdc-select,
+.mat-mdc-radio-button,
+.mat-mdc-button-base {
   font-family: inherit;
+}
+
+.mat-mdc-form-field *,
+.mat-mdc-select *,
+.mat-mdc-radio-button *,
+.mat-mdc-button-base,
+.mat-mdc-option {
+  font-family: 'Google Sans', Arial, sans-serif !important;
+}
+
+.mat-mdc-form-field-required-marker {
+  color: #dc2626;
+  font-weight: 700;
 }

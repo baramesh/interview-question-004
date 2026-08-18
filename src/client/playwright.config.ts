@@ -29,7 +29,7 @@ export default defineConfig({
   use: {
     baseURL,
     trace: 'retain-on-failure',
-    screenshot: 'on',
+    screenshot: { mode: 'on', fullPage: true },
     video: 'retain-on-failure',
   },
   projects: [

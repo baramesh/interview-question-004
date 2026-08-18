@@ -155,6 +155,10 @@ export class App implements OnInit {
     this.resetForm(true);
   }
 
+  protected removeProfile(): void {
+    this.clearProfile();
+  }
+
   private resetForm(clearNotification: boolean): void {
     if (this.formDirective) {
       this.formDirective.resetForm();

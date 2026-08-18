@@ -13,10 +13,20 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
-test('TC-CP-E2E-001 แสดงฟิลด์และปุ่มตามข้อกำหนด', async ({ page }) => {
+test('TC-CP-E2E-001 แสดงหมวดข้อมูล ฟิลด์ และปุ่มตามข้อกำหนด', async ({ page }) => {
   await expect(page.locator('link[rel="stylesheet"]')).toHaveAttribute('media', 'all');
+  await page.evaluate(() => document.fonts.ready);
+  const fontFamily = await page.evaluate(() => getComputedStyle(document.body).fontFamily);
+  expect(fontFamily).toContain('Google Sans');
   await expect(page.getByTestId('candidate-profile-page')).toBeVisible();
   await expect(page.getByTestId('candidate-profile-form')).toBeVisible();
+  await expect(page.getByTestId('profile-photo-section')).toBeVisible();
+  await expect(page.getByTestId('personal-details-section')).toBeVisible();
+  await expect(page.getByTestId('contact-details-section')).toBeVisible();
+  await expect(page.getByTestId('professional-details-section')).toBeVisible();
+  await expect(page.getByTestId('required-fields-note')).toHaveText('Fields marked * are required');
+  await expect(page.locator('.mat-mdc-form-field-required-marker')).toHaveCount(6);
+  await expect(page.locator('.required-marker')).toHaveCount(3);
   await expect(page.getByTestId('first-name-input')).toBeVisible();
   await expect(page.getByTestId('last-name-input')).toBeVisible();
   await expect(page.getByTestId('email-input')).toBeVisible();
@@ -66,6 +76,7 @@ test('TC-CP-E2E-003 แสดงข้อผิดพลาดของอีเ
 test('TC-CP-E2E-004 ปุ่ม Clear ล้างข้อมูลและรูปตัวอย่าง', async ({ page }) => {
   await fillValidForm(page, 'clear');
   await expect(page.getByAltText('Selected profile preview')).toBeVisible();
+  await expect(page.getByTestId('remove-image-button')).toBeVisible();
 
   await page.getByTestId('clear-button').click();
 
@@ -76,6 +87,7 @@ test('TC-CP-E2E-004 ปุ่ม Clear ล้างข้อมูลและ�
   await expect(page.getByTestId('birth-date-input')).toHaveValue('');
   await expect(page.getByText('No file selected')).toBeVisible();
   await expect(page.getByAltText('Selected profile preview')).toHaveCount(0);
+  await expect(page.getByTestId('remove-image-button')).toHaveCount(0);
   await expect(page.getByRole('radio', { checked: true })).toHaveCount(0);
 });
 
@@ -164,6 +176,30 @@ test('TC-CP-E2E-008 แสดงข้อมูลหลักอาชีพจ
 
   await page.getByTestId('occupation-select').click();
   await expect(page.getByRole('option')).toHaveText(occupations.map((item) => item.name));
+});
+
+test('TC-CP-E2E-009 แสดงรูปโปรไฟล์ใน avatar แบบองค์กร', async ({ page }) => {
+  await fillValidForm(page, 'avatar');
+
+  const preview = page.getByAltText('Selected profile preview');
+  await expect(preview).toBeVisible();
+  await expect(page.getByText('profile.png')).toBeVisible();
+  await expect(page.getByTestId('remove-image-button')).toBeVisible();
+  const presentation = await preview.evaluate((element) => {
+    const avatar = element.parentElement;
+    const style = avatar ? getComputedStyle(avatar) : null;
+    return {
+      width: avatar?.getBoundingClientRect().width,
+      height: avatar?.getBoundingClientRect().height,
+      borderRadius: style?.borderRadius,
+      objectFit: getComputedStyle(element).objectFit,
+    };
+  });
+
+  expect(presentation.width).toBe(96);
+  expect(presentation.height).toBe(96);
+  expect(Number.parseFloat(presentation.borderRadius ?? '0')).toBeGreaterThanOrEqual(48);
+  expect(presentation.objectFit).toBe('cover');
 });
 
 async function fillValidForm(page: Page, suffix: string): Promise<void> {

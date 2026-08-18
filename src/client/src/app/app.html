@@ -1,64 +1,57 @@
+<header class="app-header border-b border-slate-200 bg-white">
+  <div class="mx-auto flex w-[min(1120px,calc(100%-2rem))] items-center justify-between py-4">
+    <div class="flex items-center gap-3">
+      <div
+        class="grid size-10 place-items-center rounded-xl bg-emerald-950 text-lg font-bold text-white"
+        aria-hidden="true"
+      >
+        E
+      </div>
+      <div>
+        <p class="m-0 text-sm font-semibold text-slate-950">Example.com Careers</p>
+        <p class="m-0 text-xs text-slate-500">Candidate onboarding</p>
+      </div>
+    </div>
+    <span
+      class="hidden rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800 sm:block"
+      >Interview Question 004</span
+    >
+  </div>
+</header>
+
 <main
-  class="mx-auto grid w-[min(1180px,calc(100%-2rem))] overflow-hidden rounded-[28px] bg-white shadow-2xl lg:my-12 lg:grid-cols-[0.72fr_1.28fr]"
+  class="mx-auto w-[min(1040px,calc(100%-2rem))] py-8 md:py-12"
   data-testid="candidate-profile-page"
 >
-  <section class="intro p-8 text-white md:p-12" aria-labelledby="page-title">
-    <div
-      class="grid size-12 place-items-center rounded-2xl border border-white/40 bg-white/10 text-2xl font-extrabold text-lime-200"
-      aria-hidden="true"
-    >
-      E
-    </div>
-    <p class="mt-14 text-xs font-extrabold tracking-[0.16em] text-lime-200">
-      EXAMPLE.COM · CANDIDATE PROFILE
-    </p>
-    <h1 id="page-title" class="mt-3 text-4xl font-bold leading-none tracking-tight md:text-5xl">
-      Create your profile
-    </h1>
-    <p class="mt-6 max-w-sm leading-7 text-emerald-100/80">
-      Tell us a little about yourself. All fields are required before your profile can be saved.
-    </p>
-
-    <div class="mt-11 grid gap-6" aria-label="Profile guidelines">
-      <div class="grid grid-cols-[38px_1fr] gap-3">
-        <span class="pt-1 text-xs font-extrabold tracking-widest text-emerald-200/70">01</span>
-        <p class="m-0 text-sm leading-6 text-emerald-100/75">
-          <strong class="text-white">Personal details</strong><br />Use accurate contact
-          information.
+  <article
+    class="form-shell overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl"
+  >
+    <header class="border-b border-slate-200 px-6 py-7 md:px-10 md:py-9">
+      <p class="m-0 text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">
+        Candidate record
+      </p>
+      <div class="mt-2 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+        <div>
+          <h1
+            id="page-title"
+            class="m-0 text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl"
+          >
+            Candidate profile
+          </h1>
+          <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+            Provide accurate information for your candidate record. Review each section before
+            saving.
+          </p>
+        </div>
+        <p class="m-0 shrink-0 text-sm text-slate-600" data-testid="required-fields-note">
+          Fields marked <span class="required-marker" aria-hidden="true">*</span> are required
         </p>
       </div>
-      <div class="grid grid-cols-[38px_1fr] gap-3">
-        <span class="pt-1 text-xs font-extrabold tracking-widest text-emerald-200/70">02</span>
-        <p class="m-0 text-sm leading-6 text-emerald-100/75">
-          <strong class="text-white">Profile image</strong><br />PNG, JPEG, GIF or WebP up to 2 MB.
-        </p>
-      </div>
-      <div class="grid grid-cols-[38px_1fr] gap-3">
-        <span class="pt-1 text-xs font-extrabold tracking-widest text-emerald-200/70">03</span>
-        <p class="m-0 text-sm leading-6 text-emerald-100/75">
-          <strong class="text-white">Persistent record</strong><br />Saved to PostgreSQL with a
-          generated ID.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section class="form-panel p-6 md:p-10 lg:p-12" aria-labelledby="form-title">
-    <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
-      <div>
-        <p class="m-0 text-xs font-extrabold tracking-[0.16em] text-emerald-700">IT 04-1</p>
-        <h2 id="form-title" class="mt-2 text-3xl font-bold tracking-tight text-emerald-950">
-          Candidate information
-        </h2>
-      </div>
-      <span class="text-xs text-slate-500"
-        ><i class="mr-2 inline-block size-2 rounded-full bg-red-500"></i>All fields required</span
-      >
-    </div>
+    </header>
 
     @if (notification(); as message) {
       <div
-        class="notification mb-6 flex items-center gap-3 rounded-xl p-4 text-sm font-bold"
+        class="notification mx-6 mt-6 flex items-center gap-3 rounded-xl p-4 text-sm font-semibold md:mx-10"
         [class.success]="message.type === 'success'"
         [class.error]="message.type === 'error'"
         role="status"
@@ -72,170 +65,252 @@
     }
 
     <form [formGroup]="form" (ngSubmit)="save()" novalidate data-testid="candidate-profile-form">
-      <div class="grid gap-x-6 md:grid-cols-2">
-        <mat-form-field appearance="outline"
-          ><mat-label>First name</mat-label
-          ><input
-            matInput
-            type="text"
-            formControlName="firstName"
-            autocomplete="given-name"
-            placeholder="e.g. Baramesh"
-            data-testid="first-name-input"
-          />
-          @if (showError('firstName')) {
-            <mat-error data-testid="first-name-error">{{ errorMessage('firstName') }}</mat-error>
-          }
-        </mat-form-field>
-        <mat-form-field appearance="outline"
-          ><mat-label>Last name</mat-label
-          ><input
-            matInput
-            type="text"
-            formControlName="lastName"
-            autocomplete="family-name"
-            placeholder="Your family name"
-            data-testid="last-name-input"
-          />
-          @if (showError('lastName')) {
-            <mat-error data-testid="last-name-error">{{ errorMessage('lastName') }}</mat-error>
-          }
-        </mat-form-field>
-        <mat-form-field appearance="outline"
-          ><mat-label>Email</mat-label
-          ><input
-            matInput
-            type="email"
-            formControlName="email"
-            autocomplete="email"
-            placeholder="name@example.com"
-            data-testid="email-input"
-          />
-          @if (showError('email')) {
-            <mat-error data-testid="email-error">{{ errorMessage('email') }}</mat-error>
-          }
-        </mat-form-field>
-        <mat-form-field appearance="outline"
-          ><mat-label>Phone</mat-label
-          ><input
-            matInput
-            type="tel"
-            formControlName="phone"
-            autocomplete="tel"
-            placeholder="+66 81 234 5678"
-            data-testid="phone-input"
-          />
-          @if (showError('phone')) {
-            <mat-error data-testid="phone-error">{{ errorMessage('phone') }}</mat-error>
-          }
-        </mat-form-field>
-        <mat-form-field appearance="outline"
-          ><mat-label>Birth date</mat-label
-          ><input
-            matInput
-            type="text"
-            formControlName="birthDate"
-            autocomplete="bday"
-            inputmode="numeric"
-            placeholder="DD/MM/YYYY"
-            maxlength="10"
-            data-testid="birth-date-input"
-          />
-          @if (showError('birthDate')) {
-            <mat-error data-testid="birth-date-error">{{ errorMessage('birthDate') }}</mat-error>
-          }
-        </mat-form-field>
-        <mat-form-field appearance="outline"
-          ><mat-label>Occupation</mat-label
-          ><mat-select
-            formControlName="occupationCode"
-            data-testid="occupation-select"
-            [disabled]="isLoadingOccupations()"
-          >
-            @if (isLoadingOccupations()) {
-              <mat-option disabled>Loading occupations...</mat-option>
-            }
-            @for (occupation of occupations(); track occupation.code) {
-              <mat-option [value]="occupation.code">{{ occupation.name }}</mat-option>
-            }
-          </mat-select>
-          @if (showError('occupationCode')) {
-            <mat-error data-testid="occupation-error">{{
-              errorMessage('occupationCode')
-            }}</mat-error>
-          }
-        </mat-form-field>
-        @if (occupationLoadError()) {
-          <p class="-mt-3 text-xs text-red-600" data-testid="occupation-load-error">
-            {{ occupationLoadError() }}
-          </p>
-        }
-      </div>
-
-      <fieldset class="mb-6 border-0 p-0" data-testid="sex-fieldset">
-        <legend class="mb-2 text-sm font-semibold text-slate-700">Sex</legend>
-        <mat-radio-group
-          formControlName="sex"
-          aria-label="Sex"
-          class="flex gap-6"
-          data-testid="sex-radio-group"
-          ><mat-radio-button value="Male">Male</mat-radio-button
-          ><mat-radio-button value="Female">Female</mat-radio-button></mat-radio-group
-        >
-        @if (showError('sex')) {
-          <p class="mt-1 text-xs text-red-600" data-testid="sex-error">{{ errorMessage('sex') }}</p>
-        }
-      </fieldset>
-
-      <div
-        class="profile-field flex flex-col gap-5 rounded-2xl border border-dashed border-emerald-300 bg-emerald-50/50 p-5 sm:flex-row sm:items-center sm:justify-between"
-        data-testid="profile-image-field"
+      <section
+        class="form-section"
+        aria-labelledby="profile-photo-heading"
+        data-testid="profile-photo-section"
       >
-        <div>
-          <span class="text-sm font-semibold text-slate-700">Profile image</span>
-          <p class="mt-1 max-w-sm text-xs leading-5 text-slate-500">
-            The image is converted to Base64 before it is sent to the API.
-          </p>
-          @if (showError('profileBase64')) {
-            <p class="mt-1 text-xs text-red-600" data-testid="profile-image-error">
-              {{ errorMessage('profileBase64') }}
-            </p>
-          }
+        <div class="section-heading">
+          <span class="section-index">01</span>
+          <div>
+            <h2 id="profile-photo-heading">
+              Profile photo <span class="required-marker" aria-hidden="true">*</span>
+            </h2>
+            <p>Add a recent image that clearly shows your face.</p>
+          </div>
         </div>
-        <div class="flex min-w-60 items-center gap-3">
+        <div
+          class="profile-editor"
+          role="group"
+          aria-labelledby="profile-photo-heading"
+          aria-required="true"
+        >
           <div
-            class="avatar-preview grid size-14 shrink-0 place-items-center overflow-hidden rounded-full bg-emerald-100 text-2xl text-emerald-700"
+            class="avatar-preview grid size-24 shrink-0 place-items-center overflow-hidden rounded-full bg-emerald-100 text-xl font-semibold text-emerald-800"
             [class.has-image]="hasPreview()"
           >
             @if (imagePreview(); as preview) {
               <img class="size-full object-cover" [src]="preview" alt="Selected profile preview" />
             } @else {
-              <span>+</span>
+              <span aria-hidden="true">CP</span>
             }
           </div>
-          <div>
-            <button
-              mat-stroked-button
-              type="button"
-              (click)="profileInput.click()"
-              data-testid="choose-image-button"
-            >
-              Choose image</button
-            ><input
-              #profileInput
-              class="sr-only"
-              id="profile"
-              type="file"
-              accept="image/png,image/jpeg,image/gif,image/webp"
-              (change)="selectProfile($event)"
-              data-testid="profile-image-input"
-            />
-            <p class="mt-1 max-w-40 truncate text-xs text-slate-500">{{ selectedFileName() }}</p>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-center gap-3">
+              <button
+                mat-stroked-button
+                type="button"
+                (click)="profileInput.click()"
+                data-testid="choose-image-button"
+              >
+                Upload photo
+              </button>
+              @if (hasPreview()) {
+                <button
+                  mat-button
+                  type="button"
+                  (click)="removeProfile()"
+                  data-testid="remove-image-button"
+                >
+                  Remove
+                </button>
+              }
+              <input
+                #profileInput
+                class="sr-only"
+                id="profile"
+                type="file"
+                accept="image/png,image/jpeg,image/gif,image/webp"
+                (change)="selectProfile($event)"
+                data-testid="profile-image-input"
+              />
+            </div>
+            <p class="mt-3 truncate text-sm font-medium text-slate-700">{{ selectedFileName() }}</p>
+            <p class="mt-1 text-xs leading-5 text-slate-500">
+              PNG, JPEG, GIF or WebP. Maximum file size 2 MB.
+            </p>
+            @if (showError('profileBase64')) {
+              <p class="mt-2 text-xs font-medium text-red-600" data-testid="profile-image-error">
+                {{ errorMessage('profileBase64') }}
+              </p>
+            }
           </div>
         </div>
-      </div>
+      </section>
 
-      <div class="mt-8 flex justify-end gap-3">
+      <section
+        class="form-section"
+        aria-labelledby="personal-details-heading"
+        data-testid="personal-details-section"
+      >
+        <div class="section-heading">
+          <span class="section-index">02</span>
+          <div>
+            <h2 id="personal-details-heading">Personal details</h2>
+            <p>Identity and demographic information.</p>
+          </div>
+        </div>
+        <div class="section-fields grid gap-x-5 sm:grid-cols-2">
+          <mat-form-field appearance="outline">
+            <mat-label>First name</mat-label>
+            <input
+              matInput
+              required
+              type="text"
+              formControlName="firstName"
+              autocomplete="given-name"
+              placeholder="e.g. Baramesh"
+              data-testid="first-name-input"
+            />
+            @if (showError('firstName')) {
+              <mat-error data-testid="first-name-error">{{ errorMessage('firstName') }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Last name</mat-label>
+            <input
+              matInput
+              required
+              type="text"
+              formControlName="lastName"
+              autocomplete="family-name"
+              placeholder="Your family name"
+              data-testid="last-name-input"
+            />
+            @if (showError('lastName')) {
+              <mat-error data-testid="last-name-error">{{ errorMessage('lastName') }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Birth date</mat-label>
+            <input
+              matInput
+              required
+              type="text"
+              formControlName="birthDate"
+              autocomplete="bday"
+              inputmode="numeric"
+              placeholder="DD/MM/YYYY"
+              maxlength="10"
+              data-testid="birth-date-input"
+            />
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            @if (showError('birthDate')) {
+              <mat-error data-testid="birth-date-error">{{ errorMessage('birthDate') }}</mat-error>
+            }
+          </mat-form-field>
+          <fieldset class="sex-fieldset" data-testid="sex-fieldset">
+            <legend>Sex <span class="required-marker" aria-hidden="true">*</span></legend>
+            <mat-radio-group
+              formControlName="sex"
+              aria-label="Sex"
+              aria-required="true"
+              class="flex min-h-14 items-center gap-6"
+              data-testid="sex-radio-group"
+            >
+              <mat-radio-button value="Male">Male</mat-radio-button
+              ><mat-radio-button value="Female">Female</mat-radio-button>
+            </mat-radio-group>
+            @if (showError('sex')) {
+              <p class="mt-1 text-xs font-medium text-red-600" data-testid="sex-error">
+                {{ errorMessage('sex') }}
+              </p>
+            }
+          </fieldset>
+        </div>
+      </section>
+
+      <section
+        class="form-section"
+        aria-labelledby="contact-details-heading"
+        data-testid="contact-details-section"
+      >
+        <div class="section-heading">
+          <span class="section-index">03</span>
+          <div>
+            <h2 id="contact-details-heading">Contact details</h2>
+            <p>How the recruitment team can reach you.</p>
+          </div>
+        </div>
+        <div class="section-fields grid gap-x-5 sm:grid-cols-2">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              required
+              type="email"
+              formControlName="email"
+              autocomplete="email"
+              placeholder="name@example.com"
+              data-testid="email-input"
+            />
+            @if (showError('email')) {
+              <mat-error data-testid="email-error">{{ errorMessage('email') }}</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Phone</mat-label>
+            <input
+              matInput
+              required
+              type="tel"
+              formControlName="phone"
+              autocomplete="tel"
+              placeholder="+66 81 234 5678"
+              data-testid="phone-input"
+            />
+            @if (showError('phone')) {
+              <mat-error data-testid="phone-error">{{ errorMessage('phone') }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </section>
+
+      <section
+        class="form-section"
+        aria-labelledby="professional-details-heading"
+        data-testid="professional-details-section"
+      >
+        <div class="section-heading">
+          <span class="section-index">04</span>
+          <div>
+            <h2 id="professional-details-heading">Professional details</h2>
+            <p>Your current professional discipline.</p>
+          </div>
+        </div>
+        <div class="section-fields">
+          <mat-form-field appearance="outline" class="w-full sm:max-w-md">
+            <mat-label>Occupation</mat-label>
+            <mat-select
+              required
+              formControlName="occupationCode"
+              data-testid="occupation-select"
+              [disabled]="isLoadingOccupations()"
+            >
+              @if (isLoadingOccupations()) {
+                <mat-option disabled>Loading occupations...</mat-option>
+              }
+              @for (occupation of occupations(); track occupation.code) {
+                <mat-option [value]="occupation.code">{{ occupation.name }}</mat-option>
+              }
+            </mat-select>
+            @if (showError('occupationCode')) {
+              <mat-error data-testid="occupation-error">{{
+                errorMessage('occupationCode')
+              }}</mat-error>
+            }
+          </mat-form-field>
+          @if (occupationLoadError()) {
+            <p class="-mt-3 text-xs font-medium text-red-600" data-testid="occupation-load-error">
+              {{ occupationLoadError() }}
+            </p>
+          }
+        </div>
+      </section>
+
+      <footer
+        class="form-actions flex flex-col-reverse gap-3 border-t border-slate-200 bg-slate-50 px-6 py-5 sm:flex-row sm:justify-end md:px-10"
+      >
         <button
           mat-stroked-button
           type="button"
@@ -243,20 +318,20 @@
           [disabled]="isSaving()"
           data-testid="clear-button"
         >
-          Clear
+          Clear form
         </button>
         <button mat-flat-button type="submit" [disabled]="isSaving()" data-testid="save-button">
           @if (isSaving()) {
             <mat-spinner diameter="18" aria-label="Saving"></mat-spinner>
           } @else {
-            Save profile <span aria-hidden="true">→</span>
+            Save profile
           }
         </button>
-      </div>
+      </footer>
     </form>
-  </section>
+  </article>
 </main>
 
 <footer class="pb-8 text-center text-xs text-slate-500">
-  © {{ currentYear }} Example.com · Interview Question 004
+  © {{ currentYear }} Example.com · Candidate onboarding
 </footer>

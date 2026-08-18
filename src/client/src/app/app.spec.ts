@@ -31,8 +31,15 @@ describe('App', () => {
     flushOccupations();
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
-    expect(element.querySelector('h1')?.textContent).toContain('Create your profile');
+    expect(element.querySelector('h1')?.textContent).toContain('Candidate profile');
     expect(element.querySelector('[data-testid="candidate-profile-form"]')).not.toBeNull();
+    expect(element.querySelector('[data-testid="profile-photo-section"]')).not.toBeNull();
+    expect(element.querySelector('[data-testid="personal-details-section"]')).not.toBeNull();
+    expect(element.querySelector('[data-testid="contact-details-section"]')).not.toBeNull();
+    expect(element.querySelector('[data-testid="professional-details-section"]')).not.toBeNull();
+    expect(element.querySelector('[data-testid="required-fields-note"]')?.textContent).toContain(
+      'Fields marked * are required',
+    );
     expect(element.querySelectorAll('input').length).toBeGreaterThanOrEqual(6);
   });
 
