@@ -5,6 +5,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+    <RootNamespace>Example.InterviewQuestion004.Api.Tests</RootNamespace>
+    <AssemblyName>Example.InterviewQuestion004.Api.Tests</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
